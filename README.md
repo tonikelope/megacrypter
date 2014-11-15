@@ -2,7 +2,9 @@ megacrypter
 ===========
 
 1) Apache with mod_rewrite + allowoverride
+
 2) PHP 5.5 (cURL + mcrypt + memcache)
+
 3) MySQL (optional for blacklist).
 
 And...
