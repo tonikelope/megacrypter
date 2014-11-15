@@ -7,6 +7,6 @@ megacrypter
 
 3) MySQL (optional for blacklist).
 
-4) Edit app/config files
+4) Edit applicatioh/config files
 
 GL!
