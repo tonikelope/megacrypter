@@ -1,0 +1,29 @@
+# Apache configuration file (see httpd.apache.org/docs/2.2/mod/quickreference.html)
+
+Options -Indexes +FollowSymLinks
+
+RewriteEngine on
+
+RewriteBase /
+
+RewriteRule ^$ index.php?controller=cover [NC,L]
+
+RewriteRule ^crypt\/*$ index.php?controller=LinkCrypt [NC,L]
+
+RewriteRule ^(![0-9a-z_\/-]+![0-9a-f\/]+)(?:!([0-9a-f\/]+))?$ index.php?controller=LinkInfo&link=$1&backdoor=$2 [NC,L]
+
+RewriteRule ^(help|takedown|api_doc|tos|api)(?:\/+([^\/]+))?\/*$ index.php?controller=$1&action=$2 [NC,L]
+
+RewriteRule ^(megadown)\/*$ https://github.com/tonikelope/$1 [R=301,L]
+
+# Posibles errores más habituales
+ErrorDocument 400 /index.php?controller=HttpError
+ErrorDocument 401 /index.php?controller=HttpError
+ErrorDocument 402 /index.php?controller=HttpError
+ErrorDocument 403 /index.php?controller=HttpError
+ErrorDocument 404 /index.php?controller=HttpError
+ErrorDocument 405 /index.php?controller=HttpError
+ErrorDocument 500 /index.php?controller=HttpError
+ErrorDocument 501 /index.php?controller=HttpError
+ErrorDocument 502 /index.php?controller=HttpError
+ErrorDocument 503 /index.php?controller=HttpError

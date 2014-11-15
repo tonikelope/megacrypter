@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block extra_meta %}
+<meta name="robots" content="noindex" />
+{% endblock extra_meta %}
+{% block extra_js %}
+<script type="text/javascript" src="/js/crypt.js"></script>
+{% endblock extra_js %}
+{% block content %}
+<div id="crypt_links">
+<textarea readonly id="crypt_textarea" name="links" rows="10" cols="{{cols}}" wrap="off">{{links}}</textarea>
+<p><button class="button_submit" onclick="$('#crypt_textarea').select();">{% trans %}Select all links{% endtrans %} ({{tot_links}})</button> <button class="button_submit" id="https_crypt">HTTP links</button></p>
+</div>
+{% endblock content %}

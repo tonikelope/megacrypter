@@ -1,0 +1,2 @@
+{% extends "base_warning.html" %}
+{% block warning_message %}{{message|trans|replace({"\n":"<br>"})|raw}}{% endblock warning_message %}

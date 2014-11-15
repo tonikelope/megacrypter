@@ -1,0 +1,13 @@
+$(document).ready(function()
+{
+    $('.faq_question').click(function(){
+        if($(this).next().is(":visible"))
+        {
+            $(this).next().slideUp('fast');
+        }
+        else
+        {
+            $(this).next().slideDown('fast');
+        }   
+    });
+});

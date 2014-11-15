@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="{{constant('HTML_LANG')}}">
+<head>
+{% block head %}
+    <meta charset="UTF-8" />
+    <meta name="description" content="{% trans "Protect your MEGA links from prying eyes" %}" lang="{{constant('HTML_LANG')}}" />
+    <meta name="keywords" lang="{{constant('HTML_LANG')}}" content="" />
+    {% block extra_meta %}{% endblock extra_meta %}
+    <title>{% block title %}{% trans "Share your files, not your links" %} - MegaCrypter{% endblock title %}</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/menu.css" />
+    <link rel="stylesheet" href="/js/fancybox/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
+    {% block extra_css %}{% endblock extra_css %}
+    <script type="text/javascript" src="/js/jquery/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="/js/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+    <script type="text/javascript" src="/js/base.js"></script>
+    {% block extra_js %}{% endblock extra_js %}
+{% endblock head %}
+</head>
+<body>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/es_ES/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<div id="lb-bg"></div>
+<div id="wrapper">
+{% if maint_warning is defined %}<div class="warning_message">WEB MAINTENANCE ENABLED!</div>{% endif %}
+<div id="header">
+        <div id="logo"><a href="/"><img src="/images/lock.png" alt="lock" /><img src="/images/logo.png" alt="logo" /></a></div>
+        <div id='cssmenu'>
+            <ul>
+               <li class='active has-sub'><a href='#'><span>MENU</span></a>
+                  <ul>
+                     <li class='has-sub'><a class="fancybox" href='/help' data-fancybox-type="iframe" >{% trans "FAQ" %}</a></li>
+                     <li class='has-sub'><a class="fancybox" href='/api_doc' data-fancybox-type="iframe" >{% trans "API" %}</a></li>
+                     <li class='has-sub'><a class="fancybox" href='/tos' data-fancybox-type="iframe" >{% trans "TOS" %}</a></li>
+                  </ul>
+               </li>
+            </ul>
+        </div>
+        <div id="social_buttons"><div class="fb-like" data-href="//www.facebook.com/megacrypter" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
+            <a href="//www.facebook.com/megacrypter" target="_blank"><img id="button_facebook" src="/images/facebook.png" alt="facebook" /></a><a href="https://twitter.com/megacrypter" target="_blank"><img id="button_twitter" src="/images/twitter.png" alt="twitter" /></a></div>
+        <div id="quote_rand">"{{quote}}" (<a href="//www.google.com/#q={{quote_a_google}}+wikipedia" target="_blank">{{quote_a}}</a>)</div>
+</div>
+<div id="content">{% block content %}{% endblock content %}</div>
+<div id="footer" title="megacrypter@gmail.com"><div id="footer_message">© [2013-{{"now"|date("Y")}}] megacrypter <img id="red_spade" src="/images/red_spade.png" alt="red_spade" /> ({{sys_load[0]}} {{sys_load[1]}} {{sys_load[2]}})</div>
+</div>
+</div>
+</body>
+<!--Thanks to Julien Marchand for his research on MEGA API ;)-->
+</html>
+		

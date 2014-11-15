@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block extra_meta %}
+<meta name="robots" content="noindex" />
+{% endblock extra_meta %}
+{% block title %}{% trans "Warning!" %} - MegaCrypter{% endblock title %}
+{% block content %}
+<div class="info_box info_warning">
+    {% block icon %}<img class="info_box_icon" src="/images/warning.png" alt="warning" />{% endblock %}
+    <div class="info_box_message"><strong>{% block warning_message %}{% endblock warning_message %}</strong></div>
+</div>
+{% endblock content %}

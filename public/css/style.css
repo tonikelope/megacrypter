@@ -1,0 +1,649 @@
+/*
+    megacrypter.com
+*/
+
+@import url(//fonts.googleapis.com/css?family=Gochi+Hand);
+
+html, body {
+	margin:0;
+	padding:0;
+	height:100%;
+        background: #C1CDC1;
+        font-family: 'Gochi Hand';
+        background-image: url('/images/green_micro_lock.png');
+        background-attachment:fixed;
+}
+
+#wrapper {
+	min-height:100%;
+	position:relative;
+        background-image: url('/images/mik.png');
+        background-position: 0px -85px;
+        background-attachment:fixed;
+}
+
+#lb-bg { z-index:500; background:#000; height:100%; width:100%; position:fixed; left:0px; top:0px; display:none; }
+
+#header {
+        background: #3B3B3B;
+	height: 160px;
+        width: auto;
+	padding:10px;
+}
+
+#content {
+	padding:10px;
+	padding-bottom:30px;   /* Height of the footer element */
+	text-align:center;
+}
+
+#footer {
+	width:100%;
+	height:30px;
+	position:absolute;
+	bottom:0;
+	left:0;
+	background: #3B3B3B;
+        color: white;
+        text-align: center;
+        font-size: 0.7em;
+}
+
+#quote_rand {
+    
+    color: lightgray;
+    padding-top: 50px;
+}
+
+#quote_rand a:link,
+#quote_rand a:visited,
+#quote_rand a:hover {
+    color: lightgray;
+}
+
+#vlc_wrapper {
+    display:none;
+}
+
+button
+{
+    border: 0px;
+    border-radius: 7px;
+    font-family: 'Gochi Hand';
+    cursor: pointer;
+}
+
+image {
+    border:none;
+}
+
+button:hover
+{
+    background-color: #CCFFCC;
+}
+
+a:link
+{
+    text-decoration: none;
+}
+
+a:visited
+{
+    text-decoration: none;
+}
+
+a:active
+{
+    text-decoration: none;
+}
+
+a:hover
+{
+    text-decoration: underline;
+}
+
+#logo {
+	float: left;
+	margin-left: 10px;
+        margin-right: 45px;
+}
+
+#java_help
+{
+    font-size: 0.3em;
+}
+
+#stream_help
+{
+    font-size: 0.7em;
+}
+
+.applet_div
+{
+    font-size: 0.7em;
+    font-style: italic;
+}
+
+#pass_link
+{
+    position: relative;
+    top: 6px;
+    margin-top:10px;
+}
+
+.spinner{
+    display: none;
+}
+
+#downloader #dl_applet_message {
+    padding: 5px 5px 5px 5px;
+    border: dashed 2px;
+    display: none;
+}
+
+label
+{
+    cursor:pointer;
+}
+
+#tos #email
+{
+    text-align: right;
+    font-style: italic;
+}
+
+#megad_logo
+{
+    margin-right: 10px;
+}
+
+#beta_tag {
+    right: 0px;
+    top: 0px;
+    position:fixed;
+}
+
+#button_bar {
+    float: left;
+    margin-right: 5px;
+    margin-top: 115px;
+    font-size: 1.5em;
+    position: relative;
+    top: -10px;
+}
+
+#tos_ok
+{
+    width: 1.2em;
+    height: 1.2em;
+    position: relative;
+    top: 2px;
+}
+
+#tos_ok_label
+{
+    font-size: 0.5em;
+}
+
+#tos_ok_label a
+{
+    color: orange;
+}
+
+#crypt_form #tos_ok_label 
+{
+    font-size: 1.2em;
+}
+
+#timer
+{
+    float: right;
+    font-size: 0.5em;
+    cursor: pointer;
+}
+
+#tos
+{
+    padding: 10px 10px 10px 10px;
+    background-color: orange;
+    text-align:justify;
+}
+
+#tos h1
+{
+    text-align:center;
+    background-color: yellow;
+}
+
+#tos #accept
+{
+    text-align: center;
+}
+
+#api_doc
+{ 
+    padding: 10px 10px 10px 10px;
+    background-color: lightgoldenrodyellow;
+    text-align:justify;
+}
+
+#api_doc h1
+{
+    text-align:center;
+    background-color: lightblue;
+}
+
+#api_doc .api_method
+{
+    background-color: lightblue;
+    border: dashed 2px;
+    border-radius: 7px;
+    padding: 5px 5px 5px 5px;
+}
+
+#api_doc .api_error
+{
+    background-color: orangered; 
+    border: dashed 2px;
+    border-radius: 7px;
+    padding: 5px 5px 5px 5px;
+}
+
+#api_doc .opt_param
+{
+    background-color: yellow;
+}
+
+#api_doc .extra_info
+{
+    font-size: 0.9em;
+}
+
+#api_doc #evil
+{
+    text-align: right;
+    font-style: italic;
+}
+
+#help
+{
+    padding: 10px 10px 10px 10px;
+    background-color: lightgoldenrodyellow;
+    text-align:justify;
+}
+
+#downloader {
+    display:none;
+    position: relative;
+    z-index: 600;
+}
+
+#help h1
+{
+    text-align:center;
+    background-color: orange;
+}
+
+#download_footer
+{
+    margin-top: 20px;
+}
+
+#download_footer #logos
+{
+    float:right;
+}
+
+#download_footer #vfree
+{
+    position: relative;
+    top:5px;
+}
+
+.fancy_frame
+{
+    border: dashed 4px;
+    border-radius: 7px;
+}
+
+#crypt_form {
+    padding: 10px 10px 10px 10px;
+    display: inline-block;
+    border: dashed 4px;
+    border-radius: 7px;
+    background-color: green;
+    color:white;
+}
+
+#crypt_links {
+    padding: 10px 10px 10px 10px;
+    display: inline-block;
+    border: dashed 4px;
+    border-radius: 7px;
+    background-color: green;
+    color:white;
+}
+
+#takedown_form h1 {
+    font-size: 2.5em;
+    margin:0px 0px 0px 0px;
+}
+
+#takedown_form {
+    padding: 10px 10px 10px 10px;
+    display: inline-block;
+    border: dashed 4px;
+    border-radius: 7px;
+    background-color: lightblue;
+}
+
+#takedown_form #instructions {
+    cursor:pointer;
+}
+
+#takedown_form #message {
+    display:none;
+    border: dashed 2px;
+    border-radius: 7px;
+    background-color: lightsalmon;
+    width:75%;
+    text-align: justify;
+    margin: auto;
+    margin-bottom: 10px;
+    padding: 10px 10px 10px 10px;
+}
+
+#takedown_form .required {
+    font-size: 0.8em;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+#takedown_form #tos_ok_wrapper {
+    width:60%;
+    margin:auto;
+}
+
+#streamer {
+    display:none;
+    z-index: 600;
+    padding: 10px 10px 10px 10px;
+    position: relative;
+}
+
+#streamer #vlc_player
+{
+    border: solid 4px;
+    border-radius: 7px;
+}
+
+#streamer #vlc_buttons
+{
+    margin-bottom: 20px;
+}
+
+#vlc_fullscreen {
+    font-size: 0.7em;
+}
+
+#lightsOn {
+    font-size: 0.7em;
+}
+
+#lightsOff {
+    font-size: 0.7em;
+}
+
+#file_info {
+    padding: 10px 10px 0px 10px;
+    display: inline-block;
+    border: dashed 4px;
+    border-radius: 7px;
+    background-color: green;
+    color: white;
+    font-size: 2.5em;
+}
+
+#file_info #size {
+    color: yellow;
+    font-style: italic;
+}
+
+#file_info #zero_size {
+    color: red;
+    font-style: italic;
+}
+
+#file_info #main
+{
+    font-size: 1.2em;
+    clear:both;
+}
+
+#file_info #name
+{
+    cursor:pointer;
+}
+
+#file_info #extra
+{
+    color:lawngreen;
+    font-size: 0.6em;
+}
+
+#file_info #referer
+{
+    font-size: 0.4em;
+}
+
+#file_info #form_block
+{
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.info_box {
+    padding: 10px 15px 10px 10px;
+    display: inline-block;
+    border: dashed 4px;
+    border-radius: 7px;
+    font-size: 2.5em;
+}
+
+.info_box_message {
+    display: inline-block;
+    margin-top: 45px;
+    margin-bottom: 45px;
+}
+
+.info_box_icon {
+    float:left;
+}
+
+.info_error {
+    background-color: red;
+    color: #FFFFFF;
+}
+
+.info_warning {
+    background-color: gold;
+}
+
+.info_ok {
+    background-color: lightgreen;
+    color: #000000;
+}
+
+
+#plain_textarea
+{
+    background-color: lightgoldenrodyellow;
+    padding: 5px 5px 5px 5px;
+    border: none;
+    width: 600px;
+    height: 200px;
+}
+
+#takedown_textarea{
+    background-color: lightgoldenrodyellow;
+    padding: 5px 5px 5px 5px;
+    border: none;
+    width: 90%;
+    height: 150px;
+}
+
+#crypt_textarea
+{
+    background-color: #CCFFCC;
+    padding: 5px 5px 5px 5px;
+    border: none;
+}
+
+#backdoor
+{
+    font-size: 0.7em;
+    color: lawngreen;
+}
+
+.input_text
+{
+    background-color: lightgoldenrodyellow;
+    border:none;
+}
+
+.warning_message
+{
+    color:black;
+    background-color: gold;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.error_message
+{
+    color: white;
+    background-color: red;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.button_submit
+{
+    font-size: 1.9em;
+    border: 0px;
+    border-radius: 7px;
+    font-family: 'Gochi Hand';
+    cursor: pointer;
+}
+
+.button_submit:hover
+{
+    background-color: #CCFFCC;
+}
+
+.button_submit_disabled
+{
+    font-size: 1.9em;
+    border: 0px;
+    border-radius: 7px;
+    font-family: 'Gochi Hand';
+    cursor: pointer;
+}
+
+.button_submit_disabled:hover
+{
+    background-color: #FF2C2C;
+}
+
+#button_stream
+{
+    font-size: 0.8em;
+    margin-top: 10px;
+}
+
+.button_header
+{
+    font-size: 1.5em;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#adv_fields
+{
+    display:none;    
+}
+
+#button_twitter
+{
+    margin-left: 4px;
+    margin-right: 4px;
+    position:relative;
+    top: 6px;
+}
+
+#button_facebook
+{
+    margin-left: 4px;
+    margin-right: 4px;
+    position:relative;
+    top: 6px;
+}
+
+#social_buttons {
+    float:right;
+}
+
+#footer #red_spade
+{
+    position: relative;
+    top:4px;
+}
+
+#footer_message {
+    float: center;
+}
+
+#dlock_warning
+{
+    display: none;
+    font-size: 0.8em;
+    width:600px;
+}
+
+#cover_text_fields
+{
+    width: 75%;
+}
+
+#cover_text_fields input
+{
+    float: right;
+}
+
+#cover_text_fields #pass_warning
+{
+    display: none;
+    font-size: 0.8em;
+}
+
+select {
+    font-family: 'Gochi Hand';
+}
+
+.faq_question {
+    cursor:pointer;
+}
+
+.faq_answer {
+    display:none;
+}
+
+#knock {
+    display:none;
+    font-family: 'Gochi Hand';
+    font-size: 1.8em;
+    text-align: center;
+    background-color: orange;
+}

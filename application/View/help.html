@@ -1,0 +1,150 @@
+{% extends "base_frame.html" %}
+{% block title %}{% trans "FAQ" %}{% endblock title %}
+{% block js %}
+<script type="text/javascript" src="/js/jquery/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="/js/help.js"></script>
+{% endblock js %}
+{% block content %}
+<body class="fancy_frame" id="help">
+<h1>{% trans "Frequently Asked Questions" %}</h1>
+<div>
+<h2 class="faq_question">{% trans %}Q: What is <span style="color:green">MegaCrypter</span>?</h2>
+<div class="faq_answer">A: <a href="https://megacrypter.com" target="_blank">MegaCrypter</a> is an open-source anonymous crypted url forwarding software for MEGA links. Its main goal is to protect your MEGA account encrypting your links <strong>BEFORE</strong> sending them through a channel you don't trust at all.{% endtrans %}</div>
+</div>
+<div>
+<h2 class="faq_question">{% trans %}Q: How can i <span style="color:green">download</span> MegaCrypter links?</h2>
+<div class="faq_answer">A:<p><strong>Option 1 (only domain-lock links):</strong> download from your browser (<a href="//java.com" target="_blank">Java plugin</a> is required and remember you must agree with <a href="/tos">TOS</a>).</p>
+<p><strong>Option 2:</strong> use some download manager like <a href="//www.google.com/search?q=jdownloader+2" target="_blank">Jdownloader 2 beta</a>, <a href="//www.google.com/search?q=pyload" target="_blank">Pyload</a>, <a href="//www.google.com/search?q=mipony" target="_blank">Mipony</a>, <a href="//www.google.com/search?q=downdroid" target="_blank">DownDroid</a>, <a href="//www.google.com/search?q=ponydroid" target="_blank">PonyDroid</a> (<strong>pay attention to the versions</strong>).</p>
+<p><strong>Option 3:</strong> use this <a href="/megadown" target="_blank">bash script</a></p>
+<p><strong>Option 4:</strong> code your own download application using MegaCrypter public <a href="/api_doc">API</a>.{% endtrans %}</p></div></div>
+<div>
+<h2 class="faq_question">{% trans %}Q: How <span style="color:green">safe</span> is MegaCrypter?</h2>
+<div class="faq_answer">
+A: Your MEGA links (and other sensitive data) travel encrypted over <a href="//en.wikipedia.org/wiki/HTTP_Secure" target="_blank">HTTPS</a> On the other hand, MegaCrypter links use <a href="//en.wikipedia.org/wiki/Advanced_Encryption_Standard" target="_blank">AES (256 bits)</a> and are decrypted on the fly at server side. If you are concerned about your privacy, you may like to know that MegaCrypter <strong>DOES NOT LOG ANYTHING</strong> about you or your links.{% endtrans %}
+</div>
+</div>
+<div>
+<h2 class="faq_question">{% trans %}Q: Can i protect MEGA <span style="color:green">folders</span>?</h2><div class="faq_answer">
+A: Yes. MegaCrypter will return you a protected link for every file that is inside the folder at this moment.{% endtrans %}
+</div>
+</div>
+<div>
+<h2 class="faq_question">{% trans %}Q: Why MC shows <span style="color:red">"Web access was not enabled for this link"</span> ?</h2>
+<div class="faq_answer">
+A: Because that link was created WITHOUT DOMAIN LOCK protection (see advanced options below) and it can be only downloaded using a download manager.{% endtrans %}
+</div>
+</div>
+<div>
+<h2 class="faq_question">{% trans %}Q: <span style="color:green">Where</span> are files downloaded from?</h2>
+<div class="faq_answer">
+A: MEGA files are directly downloaded from MEGA cloud to your computer (MegaCrypter does not host nor stream any MEGA file).{% endtrans %}
+</div>
+</div>
+<div>
+<h2 class="faq_question">{% trans %}Q: I don't have <span style="color:green">Java</span> browser plugin. What should i install?</h2>
+<div class="faq_answer">
+A: all you need is <a href="//java.com" target="_blank">here</a>.{% endtrans %}
+</div>
+</div>
+<div>
+<h2 class="faq_question">{% trans %}Q: I have installed Java, but plugin does <span style="color:red">not load :(</span></h2>
+<div class="faq_answer">
+A: First, reboot your system. If problem persists, read <a href="//java.com/en/download/help/enable_browser.xml" target="_blank">this</a> and <a href="//java.com/en/download/faq/chrome.xml" target="_blank">this</a> (You can also test your Java installation <a href="//java.com/en/download/testjava.jsp" target="_blank">here</a>).{% endtrans %}
+</div>
+</div>
+<div>
+<h2 class="faq_question">{% trans %}Q: What if Java shows <span style="color:red">"your security settings have blocked a self-signed application from running"</span>?</h2>
+<div class="faq_answer">
+A: <br /><iframe id="how_to_frame" width="500" height="304" frameborder="0" src="//www.youtube.com/embed/hCIt6NSqACg?rel=0" allowfullscreen /></iframe><br />1) Go to the Java Control Panel (On Windows Click Start and then Configure Java)<br />
+2) Click on the Security tab<br />
+3) Click on the Edit Site List button<br />
+4) Click Add in the Exception Site List window and introduce https://megacrypter.com<br />
+<img src="//www.java.com/en/img/download/add_url.jpg"><br />More info <a href="//www.java.com/en/download/help/java_blocked.xml" target="_blank">here</a>{% endtrans %}
+</div>
+</div>
+<div>
+<h2 class="faq_question">{% trans %}Q: Ok, i have now Java working but it asks me to load <em>Kissdownloader</em> and it says it could be <span style="color:red">dangerous</span>!</h2>
+<div class="faq_answer">
+A: <strong>DO NOT WORRY!!</strong> <em>Kissdownloader</em> is our self-signed Java applet for download and decrypt MEGA files. Java warning it's default behavior for applets that have disc access permission. <strong>It does not contain any kind of adware or spyware</strong>. (You can check "always trust" to skip future warnings from megacrypter).{% endtrans %}
+</div>
+</div>
+<div>
+<h2 class="faq_question">{% trans %}Q: I'm downloading a file with <em>Kissdownloader</em>... Can i <span style="color:green">stop and resume</span> download later?</h2>
+<div class="faq_answer">
+A: yes, you can (even closing your browser), but before quitting you MUST push <span class="error_message">STOP DOWNLOAD</span> button. (Just remember next time, you must use the <strong>same filename</strong> if you want to resume your previous download).{% endtrans %}
+</div>
+</div>
+<div>
+<h2 class="faq_question">{% trans %}Q: What are <span style="color:green">slots</span>?</h2>
+<div class="faq_answer">
+A: Download slots are very useful if you want to maximize your download speed. Try increasing them step by step until your download speed is maximum, but keep in mind that slots consume CPU/memory resources and might produce network overhead, so try to keep slots value as minimum as possible.{% endtrans %}
+</div>
+</div>
+<div>
+<h2 class="faq_question">{% trans %}Q: Can i download several files at the <span style="color:green">same time</span>?</h2>
+<div class="faq_answer">
+A: Of course you can ;){% endtrans %}
+</div>
+</div>
+<div>
+<h2 class="faq_question">{% trans %}Q: How does file <span style="color:green">integrity check</span> work?</h2>
+<div class="faq_answer">
+A: It's quite simple. AFTER download is finished, Kissdownloader generates file's <a href="//en.wikipedia.org/wiki/CBC-MAC" target="_blank">CBC-MAC</a> and compares it against original files's CBC-MAC (which is derivated from mega link key). If both codes are equal, your file is (99.9% prob) <em>bit-by-bit</em> identical to the original.{% endtrans %}
+</div>
+</div>
+<div>
+<h2 class="faq_question">{% trans %}Q: Kissdownloader says my file is <span style="color:red">damaged</span>. What does it mean?</h2>
+<div class="faq_answer">
+A: There are basically two scenarios for this error:
+
+<p>Scenario 1: Your downloaded file was corrupted due some Internet connection problem (try to download again but if error persists, you are probably in scenario 2).</p>
+
+<p>Scenario 2: MEGA file was corrupted during upload (file must be re-uploaded).{% endtrans %}</p>
+</div>
+</div>
+<div>
+<h2 class="faq_question">{% trans %}Q: What does it mean <span style="color:red"><em>file temporarily unavailable</em></span>?</h2>
+<div class="faq_answer">
+A: It means what it says xD Jokes apart, this "random" error it's related to MEGA servers maintenance. It can be fixed in a couple of minutes, hours or days...{% endtrans %}
+</div>
+</div>
+<div>
+<h2 class="faq_question">{% trans %}Q: Kissdownloader loads but download speed keeps <span style="color:red">frozen</span> or <span style="color:red">very slow</span>. Why?</h2>
+<div class="faq_answer">
+A: Some MEGA files are stored in more overloaded servers. This problem is related with "file temporarily unavailable" and it appears and fixes itself apparently in random. If download speed is frozen you can wait for it to start or cancel download (be patient while download is stopping), but if download speed is slow, you can try to increment slots.{% endtrans %}
+</div>
+</div>
+<div>
+<h2 class="faq_question">{% trans %}Q: What about video <span style="color:green">streaming</span>?</h2>
+<div class="faq_answer">
+A: You can watch protected video files directly from web with <a href="//www.videolan.org" target="_blank">VLC</a> and <a href="//java.com" target="_blank">Java</a>. Before pressing PLAY button in VLC player, you MUST wait for <em>Kissvideostreamer</em> to load (It's necessary to decrypt MEGA video files on the fly). And, keep in mind that it's still experimental.{% endtrans %}
+</div>
+</div>
+<div>
+<h2 class="faq_question">{% trans %}Q: If i don't want some MegaCrypter link to be active anymore, can i <span style="color:green">disable</span> it?</h2>
+<div class="faq_answer">
+A: MegaCrypter links can't be directly disabled but you can delete or move to another folder your original MEGA file associated with some MegaCrypter link to disable it (and restore it to enable MegaCrypter link again). Remember you can also set an expiration time value when you create MegaCrypter links (see advanced options).{% endtrans %}
+</div>
+</div>
+<div>
+<h2 class="faq_question">{% trans %}Q: Could you explain MegaCrypter links <span style="color:green">advanced options</span>?</h2>
+<div class="faq_answer">
+A: <p><strong>Expire</strong>: By default MegaCrypter links are eternal (unless original MEGA file is removed), but, in case you need it, you can set an expiration time value from 10 minutes to one year (if your MegaCrypter link expires, your original MEGA file WILL NOT be affected in any way).</p>
+<p><strong>Append file info</strong>: this option is useful in case you protect a lot of links (or an entire folder) because you won't have to add manually file names to every protected link. (Off by default)</p>
+<p><strong>Return short urls</strong>: If you need crypted short urls use this option (Off by default).</p>
+<p><strong>Mask filenames even at download time</strong>: MegaCrypter will hide file name except file extension or episode numbers. (It can be useful against web crawlers).</p>
+<p><strong>Domain lock</strong>: Using this option, your MegaCrypter links only will be accessible by cliking from some particular domain name (they still can be downloaded using a download manager).</p>
+<p><strong>Extra info</strong>: Put here any interesting information about your links (64 characters max).</p>
+<p><strong>Email</strong>: Put here an email to alert you in case that something happens with your links (64 characters max).</p>
+<p><strong>Password</strong>: You can add an extra security layer to your MegaCryper links. (Just remember passwords are case sensitive).{% endtrans %}</p>
+</div>
+</div>
+<div>
+<h2 class="faq_question">{% trans %}Q: Java killed my family and ate my dog. I hate it!</h2>
+<div class="faq_answer">
+A: I'm so sorry, but that is not a question xD{% endtrans %}
+</div>
+</div>
+<div style="text-align: center">( {% trans "Remember to keep an eye on" %} <a href="//twitter.com/megacrypter" target="_blank">MC twitter</a> )</div>
+</body>
+{% endblock content %}

@@ -1,0 +1,903 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-11-08 18:23+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: /tmp/cache/ac/16/4bdfa5b41ce5b72dffb4a5b0b109ac4c9b8c8da6c6c614b47af30aed99b7.php:42
+msgid "How-to"
+msgstr "Tutorial"
+
+#: /tmp/cache/ac/16/4bdfa5b41ce5b72dffb4a5b0b109ac4c9b8c8da6c6c614b47af30aed99b7.php:46
+#: /tmp/cache/65/9e/938fe3907a764f8eb0f162bf1712d8298489c806c98501e9b7f26caf91d3.php:32
+msgid "FAQ"
+msgstr "AYUDA"
+
+#: /tmp/cache/ac/16/4bdfa5b41ce5b72dffb4a5b0b109ac4c9b8c8da6c6c614b47af30aed99b7.php:50
+msgid "API"
+msgstr ""
+
+#: /tmp/cache/ac/16/4bdfa5b41ce5b72dffb4a5b0b109ac4c9b8c8da6c6c614b47af30aed99b7.php:54
+msgid "TOS"
+msgstr "TDU"
+
+#: /tmp/cache/ac/16/4bdfa5b41ce5b72dffb4a5b0b109ac4c9b8c8da6c6c614b47af30aed99b7.php:90
+#: /tmp/cache/74/8d/5175da5649701e1a7715f01f92a198f73fcfa3fb4d6ece882d09f720ebed.php:50
+msgid "Protect your MEGA links from prying eyes"
+msgstr "Protege tus enlaces de MEGA de curiosos"
+
+#: /tmp/cache/ac/16/4bdfa5b41ce5b72dffb4a5b0b109ac4c9b8c8da6c6c614b47af30aed99b7.php:126
+msgid "Share your files, not your links"
+msgstr "Comparte tus archivos, no tus enlaces"
+
+#: /tmp/cache/97/34/d41e99fe410dad9115268fb234f507452660f93ed96e1570682f271e11fb.php:46
+msgid "Encrypt links"
+msgstr "Proteger enlaces"
+
+#: /tmp/cache/97/34/d41e99fe410dad9115268fb234f507452660f93ed96e1570682f271e11fb.php:50
+msgid "Advanced options"
+msgstr "Opciones avanzadas"
+
+msgid "Expire"
+msgstr "Caducidad"
+
+#: /tmp/cache/97/34/d41e99fe410dad9115268fb234f507452660f93ed96e1570682f271e11fb.php:56
+msgid "Never"
+msgstr "Nunca"
+
+#: /tmp/cache/97/34/d41e99fe410dad9115268fb234f507452660f93ed96e1570682f271e11fb.php:60
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:95
+msgid "minutes"
+msgstr "minutos"
+
+#: /tmp/cache/97/34/d41e99fe410dad9115268fb234f507452660f93ed96e1570682f271e11fb.php:64
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:97
+msgid "hour"
+msgstr "hora"
+
+#: /tmp/cache/97/34/d41e99fe410dad9115268fb234f507452660f93ed96e1570682f271e11fb.php:68
+msgid "day"
+msgstr "día"
+
+#: /tmp/cache/97/34/d41e99fe410dad9115268fb234f507452660f93ed96e1570682f271e11fb.php:72
+msgid "week"
+msgstr "semana"
+
+#: /tmp/cache/97/34/d41e99fe410dad9115268fb234f507452660f93ed96e1570682f271e11fb.php:76
+msgid "weeks"
+msgstr "semanas"
+
+#: /tmp/cache/97/34/d41e99fe410dad9115268fb234f507452660f93ed96e1570682f271e11fb.php:80
+msgid "month"
+msgstr "mes"
+
+#: /tmp/cache/97/34/d41e99fe410dad9115268fb234f507452660f93ed96e1570682f271e11fb.php:84
+#: /tmp/cache/97/34/d41e99fe410dad9115268fb234f507452660f93ed96e1570682f271e11fb.php:88
+msgid "months"
+msgstr "meses"
+
+#: /tmp/cache/97/34/d41e99fe410dad9115268fb234f507452660f93ed96e1570682f271e11fb.php:92
+msgid "year"
+msgstr "año"
+
+#: /tmp/cache/97/34/d41e99fe410dad9115268fb234f507452660f93ed96e1570682f271e11fb.php:97
+msgid "Append file info to encrypted links"
+msgstr "Añade información del archivo a los enlaces"
+
+#: /tmp/cache/97/34/d41e99fe410dad9115268fb234f507452660f93ed96e1570682f271e11fb.php:99
+msgid "Append file info (slower)"
+msgstr "Añadir información del archivo al enlace (más lento)"
+
+#: /tmp/cache/97/34/d41e99fe410dad9115268fb234f507452660f93ed96e1570682f271e11fb.php:103
+msgid "Returns short crypted links"
+msgstr "Devuelve los enlaces acortados"
+
+#: /tmp/cache/97/34/d41e99fe410dad9115268fb234f507452660f93ed96e1570682f271e11fb.php:105
+msgid "Return short urls (slower)"
+msgstr "Acortar enlaces protegidos (más lento)"
+
+#: /tmp/cache/97/34/d41e99fe410dad9115268fb234f507452660f93ed96e1570682f271e11fb.php:109
+msgid "Check it for maximum security against crawlers."
+msgstr "Úsalo para conseguir máxima seguridad contra bots"
+
+#: /tmp/cache/97/34/d41e99fe410dad9115268fb234f507452660f93ed96e1570682f271e11fb.php:111
+msgid "Mask filenames even at download time"
+msgstr "Enmascarar nombres de archivo incluso al descargar"
+
+#: /tmp/cache/97/34/d41e99fe410dad9115268fb234f507452660f93ed96e1570682f271e11fb.php:115
+msgid "Domain lock"
+msgstr "Protección por dominio"
+
+#: /tmp/cache/97/34/d41e99fe410dad9115268fb234f507452660f93ed96e1570682f271e11fb.php:117
+msgid ""
+"Links will be accessible ONLY from this domain"
+msgstr ""
+"Los enlaces serán accesibles únicamente desde este dominio"
+
+#: /tmp/cache/97/34/d41e99fe410dad9115268fb234f507452660f93ed96e1570682f271e11fb.php:123
+msgid "Extra info"
+msgstr "Información extra"
+
+#: /tmp/cache/97/34/d41e99fe410dad9115268fb234f507452660f93ed96e1570682f271e11fb.php:125
+msgid "Put here any relevant information about the links."
+msgstr "Pon aquí cualquier dato interesante sobre los enlaces"
+
+#: /tmp/cache/97/34/d41e99fe410dad9115268fb234f507452660f93ed96e1570682f271e11fb.php:129
+msgid "Password"
+msgstr "Contraseña"
+
+#: /tmp/cache/97/34/d41e99fe410dad9115268fb234f507452660f93ed96e1570682f271e11fb.php:131
+msgid "Case sensitive!"
+msgstr "¡Sensible a minúsculas/mayúsculas!"
+
+#: /tmp/cache/97/34/d41e99fe410dad9115268fb234f507452660f93ed96e1570682f271e11fb.php:137
+msgid ""
+"Beware that password protected links might not yet be compatible with some "
+"download managers!"
+msgstr ""
+"¡Ten en cuenta que los enlaces protegidos con contraseña pueden no funcionar en algunos "
+"gestores de descarga!"
+
+#: /tmp/cache/b6/8c/a21df303484a5b6d1df2c31a5329312de94f608fa8fc6e8422d994b5edac.php:41
+msgid "Oops, something (bad) happened"
+msgstr "Oops, algo (malo) ha pasado"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:31
+msgid "API DOCUMENTATION"
+msgstr "DOCUMENTACIÓN DE LA API"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:41
+msgid "It's coding time, yaba daba doo!"
+msgstr "¡Es hora de programar, yaba daba doo!"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:45
+msgid ""
+"Are you developing a download manager? Good news, Megacrypter has a (beta) "
+"API ;)"
+msgstr ""
+"¿Estás programando un gestor de descargas? Buenas noticias, MegaCrypter dispone de "
+"una API pública ;)"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:49
+msgid "<strong>For NOW</strong> without API-KEY"
+msgstr "<strong>Por ahora</strong> sin API-KEY"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:53
+msgid "Let's see how it works"
+msgstr "Vamos a ver cómo funciona"
+
+msgid "with"
+msgstr "con"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:59
+msgid "uses"
+msgstr "utiliza"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:61
+msgid "HTTP POST requests"
+msgstr "peticiones HTTP POST"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:69
+msgid "Crypt-request"
+msgstr "Petición crypt"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:71
+msgid "for protecting a mega link list"
+msgstr "para proteger una lista de enlaces de MEGA"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:85
+msgid "Optional params"
+msgstr "Parámetros opcionales"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:89
+msgid "Expiration values"
+msgstr "Valores de caducidad"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:91
+msgid "never"
+msgstr "nunca"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:93
+msgid "default"
+msgstr "por defecto"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:101
+msgid "Tiny url option is false by default"
+msgstr "La opción de urls cortas está desactivada por defecto"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:105
+msgid "Append file info option is false by default"
+msgstr "La opción de añadir la información del archivo está desactivada por defecto"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:109
+msgid "Hide name option is false by default"
+msgstr "La opción de enmascarar los nombres de fichero está desactivada por defecto"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:113
+msgid "Passwords are case-sensitive"
+msgstr "Las contraseñas son sensibles a minúsculas/mayúsculas"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:117
+msgid "Referer is not required to include"
+msgstr "No es necesario que el referer incluya"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:124
+msgid "Extra-info is limited to"
+msgstr "La información extra está limitada a"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:128
+msgid "chars"
+msgstr "caracteres"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:132
+msgid "Note: link list is limited to "
+msgstr "Nota: la lista de enlaces está limitada a "
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:137
+msgid "Crypt-response"
+msgstr "Respuesta crypt"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:144
+msgid "<strong>Info-request</strong> (for retrieving some file information)"
+msgstr "<strong>Petición info</strong> (para obtener diversa información sobre un enlace)"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:151
+msgid "Info-response"
+msgstr "Respuesta info"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:162
+msgid "About password protected files"
+msgstr "En relación a los enlaces protegidos con contraseña"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:167
+msgid ""
+"File name, file key, and extra-info will be returned crypted using AES CBC "
+"(PKCS7) with md5(password) \n"
+"as 128 bits key and zero-iv. Moreover, double-md5 password hash will be "
+"returned to allow you checking \n"
+"password"
+msgstr ""
+"El nombre del archivo, su clave de cifrado, y su información extra serán "
+"devueltos cifrados con AES CBC\n(PKCS7) usando el hash MD5 de la contraseña "
+"como clave de 128 bits y un IV nulo. Además, un hash md5 doble \n"
+"será devuelto para permitir verificar la contraseña"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:175
+msgid "Follow this <strong>algorithm</strong> to decrypt crypted fields"
+msgstr "Sigue este <strong>algoritmo</strong> para descifrar los campos cifrados"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:194
+msgid ""
+"<strong>Dl-request</strong> (for getting a temporary url to the (crypted) file)"
+msgstr ""
+"<strong>Petición Dl</strong> (para obtener una URL temporal al archivo (cifrado))"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:201
+msgid "Dl-response"
+msgstr "Respuesta Dl"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:207
+msgid "<strong>Error-response</strong> (because shit happens...)"
+msgstr "<strong>Respuesta de error</strong>"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:213
+msgid "Error codes"
+msgstr "Códigos de error"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:221
+msgid "and ERROR CODES from MEGA API"
+msgstr "y CÓDIGOS DE ERROR de la API de MEGA"
+
+#: /tmp/cache/65/88/af11430aedbaced316d7054411a081cdf42f2d81f86c534cd13f15e70639.php:226
+msgid "Don't be evil"
+msgstr "Pórtate bien"
+
+#: /tmp/cache/65/9e/938fe3907a764f8eb0f162bf1712d8298489c806c98501e9b7f26caf91d3.php:51
+msgid "Frequently Asked Questions"
+msgstr "AYUDA"
+
+#: /tmp/cache/65/9e/938fe3907a764f8eb0f162bf1712d8298489c806c98501e9b7f26caf91d3.php:55
+msgid ""
+"Q: What is <span style=\"color:green\">MegaCrypter</span>?</h2>\n"
+"<div class=\"faq_answer\">A: MegaCrypter is a free anonymous crypted url forwarding service for MEGA links. Its main goal is to protect your MEGA account encrypting your links <strong>BEFORE</strong> sending them through a channel you don't trust at all."
+msgstr ""
+"P: ¿Qué es <span style=\"color:green\">MegaCrypter</span>?</h2>\n"
+"<div class=\"faq_answer\">R: MegaCrypter es un servicio gratuito de  "
+"redirección anónima y cifrada de enlaces de MEGA. Su función principal es proteger tu cuenta de MEGA cifrando tus enlaces "
+"<strong>ANTES</strong> de enviarlos a través de un canal que no sea de tu plena confianza."
+
+#: /tmp/cache/65/9e/938fe3907a764f8eb0f162bf1712d8298489c806c98501e9b7f26caf91d3.php:62
+msgid ""
+"Q: How can i <span style=\"color:green\">download</span> MegaCrypter links?</"
+"h2>\n"
+"<div class=\"faq_answer\">A:<p><strong>Option 1 (only domain-lock links):</strong> download from your "
+"browser (<a href=\"//java.com\" target=\"_blank\">Java plugin</a> is "
+"required and remember you must agree with <a href=\"/tos\">TOS</a>).</p>\n"
+"<p><strong>Option 2:</strong> use some download manager like "
+"<a href=\"//www.google.com/search?"
+"q=jdownloader+2\" target=\"_blank\">Jdownloader 2 beta</a>, <a href=\"//"
+"www.google.com/search?q=pyload\" target=\"_blank\">Pyload</a>, <a href="
+"\"//www.google.com/search?q=mipony\" target=\"_blank\">Mipony</a>, <a href=\"//www.google.com/search?q=downdroid\" target=\"_blank\">DownDroid</a>, <a href=\"//www.google.com/search?q=ponydroid\" target=\"_blank\">PonyDroid</a> "
+"(<strong>pay attention to the versions</strong>).</p>\n"
+"<p><strong>Option 3:</strong> use this <a href=\"/megadown\" target=\"_blank\">bash script</a></p>\n"
+"<p><strong>Option 4:</strong> code your own download application using "
+"MegaCrypter public <a href=\"/api_doc\">API</a>."
+msgstr ""
+"P: ¿Cómo puedo <span style=\"color:green\">descargar</span> los enlaces de MegaCrypter?</"
+"h2>\n"
+"<div class=\"faq_answer\">R:<p><strong>Opción 1 (sólo enlaces con domain-lock activado):</strong> descárgalos desde tu "
+"navegador (el <a href=\"//java.com\" target=\"_blank\">plugin de Java</a> es "
+"necesario y recuerda que tienes que aceptar los <a href=\"/tos\">TDU</a>).</p>\n"
+"<p><strong>Opción 2:</strong> utiliza algún gestor de descarga como "
+"<a href=\"//www.google.com/search?"
+"q=jdownloader+2\" target=\"_blank\">Jdownloader 2 beta</a>, <a href=\"//"
+"www.google.com/search?q=pyload\" target=\"_blank\">Pyload</a>, <a href="
+"\"//www.google.com/search?q=mipony\" target=\"_blank\">Mipony</a>, <a href=\"//www.google.com/search?q=downdroid\" target=\"_blank\">DownDroid</a>, <a href=\"//www.google.com/search?q=ponydroid\" target=\"_blank\">PonyDroid</a> "
+"(<strong>presta atención a las versiones</strong>).</p>\n"
+"<p><strong>Opción 3:</strong> usa este <a href=\"/megadown\" target=\"_blank\">bash script</a></p>\n"
+"<p><strong>Opción 4:</strong> programa tu propia aplicación de descarga usando "
+"la <a href=\"/api_doc\">API</a> de MegaCrypter."
+
+#: /tmp/cache/65/9e/938fe3907a764f8eb0f162bf1712d8298489c806c98501e9b7f26caf91d3.php:71
+msgid ""
+"Q: How <span style=\"color:green\">safe</span> is MegaCrypter?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"A: Your MEGA links (and other sensitive data) travel encrypted over <a href=\"//en.wikipedia.org/wiki/HTTP_Secure\" target=\"_blank\">HTTPS</a> On the other hand, MegaCrypter links use <a href=\"//en.wikipedia.org/wiki/Advanced_Encryption_Standard\" target=\"_blank\">AES (256 bits)</a> and are decrypted on the fly at server side. If you are concerned about your privacy, you may like to know that MegaCrypter <strong>DOES NOT LOG ANYTHING</strong> about you or your links."
+msgstr ""
+"P: ¿Cómo es de <span style=\"color:green\">seguro</span> MegaCrypter?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"A: Tus enlaces de MEGA (y otra información sensible) viajan cifrados sobre <a href=\"//en.wikipedia.org/wiki/HTTP_Secure\" target=\"_blank\">HTTPS</a> Por otro lado, los enlaces de MegaCrypter usan <a href=\"//en.wikipedia.org/wiki/Advanced_Encryption_Standard\" target=\"_blank\">AES (256 bits)</a> y se descifran en el servidor. Si te preocupa tu privacidad, te intereserá saber que MegaCrypter <strong>NO ALMACENA NINGUNA INFORMACIÓN</strong> sobre ti o tus enlaces."
+
+#: /tmp/cache/65/9e/938fe3907a764f8eb0f162bf1712d8298489c806c98501e9b7f26caf91d3.php:80
+msgid ""
+"Q: Can i protect MEGA <span style=\"color:green\">folders</span>?</h2><div "
+"class=\"faq_answer\">\n"
+"A: Yes. MegaCrypter will return you a protected link for every file that is "
+"inside the folder at this moment."
+msgstr ""
+"P: ¿Puedo proteger <span style=\"color:green\">carpetas</span>?</h2><div "
+"class=\"faq_answer\">\n"
+"R: Sí. MegaCrypter te devolverá un enlace protegido por cada fichero que contenga la carpeta "
+"en ese momento."
+
+#: /tmp/cache/65/9e/938fe3907a764f8eb0f162bf1712d8298489c806c98501e9b7f26caf91d3.php:88
+msgid ""
+"Q: <span style=\"color:green\">Where</span> are files downloaded from?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"A: MEGA files are directly downloaded from MEGA cloud to your computer "
+"(MegaCrypter does not host nor stream any MEGA file)."
+msgstr ""
+"P: ¿<span style=\"color:green\">Desde dónde</span> se descargan los archivos?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"R: Los archivos se descargan directamente desde la nube de MEGA a tu ordenador "
+"(MegaCrypter no almacena ni hace streaming de ningún archivo de MEGA)."
+
+#: /tmp/cache/65/9e/938fe3907a764f8eb0f162bf1712d8298489c806c98501e9b7f26caf91d3.php:97
+msgid ""
+"Q: I don't have <span style=\"color:green\">Java</span> browser plugin. What "
+"should i install?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"A: all you need is <a href=\"//java.com\" target=\"_blank\">here</a>."
+msgstr ""
+"P: No tengo el plugin de <span style=\"color:green\">Java</span>. ¿Qué "
+"necesito instalar?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"R: todo lo que necesitas está <a href=\"//java.com\" target=\"_blank\">aquí</a>."
+
+
+#: /tmp/cache/65/9e/938fe3907a764f8eb0f162bf1712d8298489c806c98501e9b7f26caf91d3.php:106
+msgid ""
+"Q: I have installed Java, but plugin does <span style=\"color:red\">not "
+"load :(</span></h2>\n"
+"<div class=\"faq_answer\">\n"
+"A: First, reboot your system. If problem persists, read <a href=\"//"
+"java.com/en/download/help/enable_browser.xml\" target=\"_blank\">this</a> "
+"and <a href=\"//java.com/en/download/faq/chrome.xml\" target=\"_blank"
+"\">this</a> (You can also test your Java installation <a href=\"//java."
+"com/en/download/testjava.jsp\" target=\"_blank\">here</a>)."
+msgstr ""
+"P: Ya he instalado Java pero el plugin <span style=\"color:red\">no "
+"arranca :(</span></h2>\n"
+"<div class=\"faq_answer\">\n"
+"R: Antes de nada reinicia. Si el problema persiste, lee <a href=\"//"
+"java.com/en/download/help/enable_browser.xml\" target=\"_blank\">esto</a> "
+"y <a href=\"//java.com/en/download/faq/chrome.xml\" target=\"_blank"
+"\">esto otro</a> (Puedes testear si te funciona Java <a href=\"//java."
+"com/en/download/testjava.jsp\" target=\"_blank\">aquí</a>)."
+
+#: /tmp/cache/65/9e/938fe3907a764f8eb0f162bf1712d8298489c806c98501e9b7f26caf91d3.php:115
+msgid ""
+"Q: Ok, i have now Java working but it asks me to load <em>Kissdownloader</"
+"em> and it says it could be <span style=\"color:red\">dangerous</span>!</"
+"h2>\n"
+"<div class=\"faq_answer\">\n"
+"A: <strong>DO NOT WORRY!!</strong> <em>Kissdownloader</em> is our self-"
+"signed Java applet for download and decrypt MEGA files. Java warning it's "
+"default behavior for applets that have disc access permission. <strong>It "
+"does not contain any kind of adware or spyware</strong>. (You can check "
+"\"always trust\" to skip future warnings from megacrypter)."
+msgstr ""
+"P: Vale, ya me funciona Java pero me pide permiso para ejecutar <em>Kissdownloader</"
+"em> ¡y dice que puede ser <span style=\"color:red\">peligroso</span>!</"
+"h2>\n"
+"<div class=\"faq_answer\">\n"
+"R: <strong>¡¡NO TE ASUSTES!!</strong> <em>Kissdownloader</em> es una pequeña aplicación "
+"necesaria para poder descargar y descifrar los ficheros de MEGA. El aviso de Java "
+"es algo rutinario porque el downloader necesita permiso de acceso al disco. Te garantizamos que <strong> "
+"no contiene ninguna clase de spy/adware</strong>. (Puedes marcar "
+"\"confiar siempre en este sitio\" para evitar futuros avisos desde megacrypter)."
+
+#: /tmp/cache/65/9e/938fe3907a764f8eb0f162bf1712d8298489c806c98501e9b7f26caf91d3.php:124
+msgid ""
+"Q: I'm downloading a file with <em>Kissdownloader</em>... Can i <span style="
+"\"color:green\">stop and resume</span> download later?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"A: yes, you can (even closing your browser), but before quitting you MUST "
+"push <span class=\"error_message\">STOP DOWNLOAD</span> button. (Just "
+"remember next time, you must use the <strong>same filename</strong> if you "
+"want to resume your previous download)."
+msgstr ""
+"P: Mientras descargo un archivo con <em>Kissdownloader</em>... ¿Puedo <span style="
+"\"color:green\">detener la descarga y continuarla</span> más tarde?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"R: Sí (incluso cerrando el navegador o apagando tu equipo) pero para ello, antes de salir DEBES "
+"pulsar el botón <span class=\"error_message\">STOP DOWNLOAD</span>. (Y recuerda "
+"que para continuar la descarga, la próxima vez DEBES usar <strong>el mismo nombre de archivo</strong>)."
+
+#: /tmp/cache/65/9e/938fe3907a764f8eb0f162bf1712d8298489c806c98501e9b7f26caf91d3.php:133
+msgid ""
+"Q: What are <span style=\"color:green\">slots</span>?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"A: Download slots are very useful if you want to maximize your download "
+"speed. Try increasing them step by step until your download speed is "
+"maximum, but keep in mind that slots consume CPU/memory resources and might "
+"produce network overhead, so try to keep slots value as minimum as possible."
+msgstr ""
+"P: ¿Para qué sirven los <span style=\"color:green\">slots</span>?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"R: Los slots son muy útiles para aprovechar toda tu capacidad de descarga. "
+"Mientras estés descargando, prueba a subir poco a poco hasta que tu velocidad de descarga sea "
+"máxima, pero recuerda que los slots consumen recursos de CPU/memoria y pueden "
+"producir \"overhead\", así que intenta mantener su valor lo más bajo posible."
+
+#: /tmp/cache/65/9e/938fe3907a764f8eb0f162bf1712d8298489c806c98501e9b7f26caf91d3.php:142
+msgid ""
+"Q: Can i download several files at the <span style=\"color:green\">same "
+"time</span>?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"A: Of course you can ;)"
+msgstr ""
+"P: ¿Puedo descargar varios archivos al <span style=\"color:green\">mismo "
+"tiempo</span>?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"A: Sí, claro ;)"
+
+#: /tmp/cache/65/9e/938fe3907a764f8eb0f162bf1712d8298489c806c98501e9b7f26caf91d3.php:151
+msgid ""
+"Q: How does file <span style=\"color:green\">integrity check</span> work?</"
+"h2>\n"
+"<div class=\"faq_answer\">\n"
+"A: It's quite simple. AFTER download is finished, Kissdownloader generates "
+"file's <a href=\"//en.wikipedia.org/wiki/CBC-MAC\" target=\"_blank"
+"\">CBC-MAC</a> and compares it against original files's CBC-MAC (which is "
+"derivated from mega link key). If both codes are equal, your file is (99.9% "
+"prob) <em>bit-by-bit</em> identical to the original."
+msgstr ""
+"P: ¿Cómo funciona el <span style=\"color:green\">chequeo de integridad</span>?</"
+"h2>\n"
+"<div class=\"faq_answer\">\n"
+"R: Es bastante simple. Después de descargar el archivo, Kissdownloader "
+"calcula su código <a href=\"//en.wikipedia.org/wiki/CBC-MAC\" target=\"_blank"
+"\">CBC-MAC</a> y lo compara con el código original (el cual "
+"se extrae de la clave de descifrado del archivo). Si ambos códigos coinciden, "
+"el archivo descargado es (99.9% prob) <em>bit-a-bit</em> idéntico al original."
+
+#: /tmp/cache/65/9e/938fe3907a764f8eb0f162bf1712d8298489c806c98501e9b7f26caf91d3.php:160
+msgid ""
+"Q: Kissdownloader says my file is <span style=\"color:red\">damaged</span>. "
+"What does it mean?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"A: There are basically two scenarios for this error:\n"
+"\n"
+"<p>Scenario 1: Your downloaded file was corrupted due some Internet "
+"connection problem (try to download again but if error persists, you are "
+"probably in scenario 2).</p>\n"
+"\n"
+"<p>Scenario 2: MEGA file was corrupted during upload (file must be re-"
+"uploaded)."
+msgstr ""
+"P: Kissdownloader dice que mi archivo está <span style=\"color:red\">dañado</span>. "
+"¿Qué significa eso?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"R: Hay dos escenarios posibles para este error:\n"
+"\n"
+"<p>Escenario 1: El archivo descargado se ha corrompido durante la descarga debido a algún "
+"fallo en la conexión a internet. (Bájalo de nuevo, pero si el error persiste, probablemente estés "
+"en el escenario 2).</p>\n"
+"\n"
+"<p>Escenario 2: El archivo se corrompió durante su subida a MEGA (es necesario resubirlo)."
+
+
+#: /tmp/cache/65/9e/938fe3907a764f8eb0f162bf1712d8298489c806c98501e9b7f26caf91d3.php:174
+msgid ""
+"Q: What does it mean <span style=\"color:red\"><em>file temporarily "
+"unavailable</em></span>?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"A: It means what it says xD Jokes apart, this \"random\" error it's related "
+"to MEGA servers maintenance. It can be fixed in a couple of minutes, hours "
+"or days..."
+msgstr ""
+"P: ¿Qué significa <span style=\"color:red\"><em>archivo temporalmente "
+"no disponible</em></span>?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"R: Significa eso mismo xD Bromas aparte, este error \"aleatorio\" está relacionado "
+"con el mantenimiento de los servidores de MEGA. Puede solucionarse en un par de minutos, horas o días... "
+
+
+#: /tmp/cache/65/9e/938fe3907a764f8eb0f162bf1712d8298489c806c98501e9b7f26caf91d3.php:183
+msgid ""
+"Q: Kissdownloader loads but download speed keeps <span style=\"color:red"
+"\">frozen</span> or <span style=\"color:red\">very slow</span>. Why?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"A: Some MEGA files are stored in more overloaded servers. This problem is "
+"related with \"file temporarily unavailable\" and it appears and fixes "
+"itself apparently in random. If download speed is frozen you can wait for it "
+"to start or cancel download (be patient while download is stopping), but if "
+"download speed is slow, you can try to increment slots."
+msgstr ""
+"P: Kissdownloader carga pero la velocidad de descarga está <span style=\"color:red"
+"\">congelada</span> o es <span style=\"color:red\">muy lenta</span>. ¿Por qué?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"R: Algunos archivos están alojados en servidores de la nube de MEGA más sobrecargados temporalmente. Este problema está "
+"relacionado con el error de \"archivo temporalmente no disponible\" y aparece y se soluciona "
+"por sí mismo de forma aleatoria. Si una descarga está congelada, puedes esperar a que arranque "
+"o cancelarla (ten paciencia mientras se para la descarga), pero si "
+"lo que pasa es que la velocidad es baja, podrías aumentar el número de slots."
+
+#: /tmp/cache/65/9e/938fe3907a764f8eb0f162bf1712d8298489c806c98501e9b7f26caf91d3.php:192
+msgid ""
+"Q: What about video <span style=\"color:green\">streaming</span>?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"A: You can watch protected video files directly from web with <a href="
+"\"//www.videolan.org\" target=\"_blank\">VLC</a> and <a href=\"//"
+"java.com\" target=\"_blank\">Java</a>. Before pressing PLAY button in VLC "
+"player, you MUST wait for <em>Kissvideostreamer</em> to load (It's necessary "
+"to decrypt MEGA video files on the fly). And, keep in mind that it's still "
+"experimental."
+msgstr ""
+"P: ¿Qué me puedes contar sobre el <span style=\"color:green\">streaming</span> de vídeos?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"R: Pues que es posible reproducir archivos de vídeo directamente desde la web de MegaCrypter mediante <a href="
+"\"//www.videolan.org\" target=\"_blank\">VLC</a> y <a href=\"//"
+"java.com\" target=\"_blank\">Java</a>. Antes de pulsar el botón de PLAY en VLC "
+"DEBES esperar a que <em>Kissvideostreamer</em> se cargue (Es necesario para "
+"descifrar el archivo de MEGA al vuelo). Ten en cuenta, que esta característica es "
+"experimental."
+
+#: /tmp/cache/65/9e/938fe3907a764f8eb0f162bf1712d8298489c806c98501e9b7f26caf91d3.php:201
+msgid ""
+"Q: If i don't want some MegaCrypter link to be active anymore, can i <span "
+"style=\"color:green\">disable</span> it?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"A: MegaCrypter links can't be directly disabled but you can delete or move "
+"to another folder your original MEGA file associated with some MegaCrypter "
+"link to disable it (and restore it to enable MegaCrypter link again). "
+"Remember you can also set an expiration time value when you create "
+"MegaCrypter links (see advanced options)."
+msgstr ""
+"P: Si no quiero que un enlace de MegaCrypter esté activo nunca más, ¿puedo <span "
+"style=\"color:green\">desactivarlo</span>?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"R: Los enlaces de MegaCrypter no se pueden desactivar directamente, pero puedes eliminar o mover "
+"a otra carpeta el archivo original asociado al enlace de MegaCrypter "
+"para desactivarlo (y al restaurar dicho archivo el enlace de MegaCrypter volverá a funcionar). "
+"Recuerda que también puedes poner un tiempo de caducidad al crear los enlaces de "
+"MegaCrypter (mira en opciones avanzadas)."
+
+#: /tmp/cache/65/9e/938fe3907a764f8eb0f162bf1712d8298489c806c98501e9b7f26caf91d3.php:210
+msgid ""
+"Q: Could you explain MegaCrypter links <span style=\"color:green\">advanced "
+"options</span>?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"A: <p><strong>Expire</strong>: By default MegaCrypter links are eternal "
+"(unless original MEGA file is removed), but, in case you need it, you can "
+"set an expiration time value from 10 minutes to one year (if your "
+"MegaCrypter link expires, your original MEGA file WILL NOT be affected in "
+"any way).</p>\n"
+"<p><strong>Append file info</strong>: this option is useful in case you "
+"protect a lot of links (or an entire folder) because you won't have to add "
+"manually file names to every protected link. (Off by default)</p>\n"
+"<p><strong>Return short urls</strong>: If you need crypted short urls use "
+"this option (Off by default).</p>\n"
+"<p><strong>Mask filenames even at download time</strong>: MegaCrypter will hide file name except file extension or episode numbers. (It can be "
+"useful against web crawlers).</p>\n"
+"<p><strong>Domain lock</strong>: Using this option, your MegaCrypter links "
+"only will be accessible by cliking from some particular domain name (they "
+"still can be downloaded using a download manager).</p>\n"
+"<p><strong>Extra info</strong>: Put here any interesting information about "
+"your links (64 characters max).</p>\n"
+"<p><strong>Email</strong>: Put here an email to alert you in case that something happens with your links (64 characters max).</p>\n"
+"<p><strong>Password</strong>: You can add an extra security layer to your "
+"MegaCryper links. (Just remember passwords are case sensitive)."
+msgstr ""
+"P: ¿Puedes explicar las <span style=\"color:green\">opciones "
+"avanzadas</span> de los enlaces de MegaCrypter?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"R: <p><strong>Caducidad</strong>: Por defecto, los enlaces de MegaCrypter son eternos "
+"(a menos que el fichero original de MEGA sea borrado), pero, en caso de necesitarlo puedes "
+"añadir un tiempo de caducidad que va desde diez minutos hasta un año (cuando el "
+"enlace de MegaCrypter caduca, el archivo original de MEGA no se ve afectado de ninguna forma)."
+"</p>\n"
+"<p><strong>Añadir información del archivo al enlace</strong>: esta opción es útil en caso de "
+"proteger muchos enlaces (o una carpeta entera) porque te evitará tener que añadir "
+"manualmente los nombres de los archivos a cada enlace. (Desactivada por defecto)</p>\n"
+"<p><strong>Acortar enlaces protegidos</strong>: Si necesitas enlaces protegidos más cortos "
+"usa esta opción (Desactivado por defecto).</p>\n"
+"<p><strong>Enmascarar nombres de archivo incluso al descargar</strong>: MegaCrypter esconderá el nombre del archivo excepto su extensión o el número de un episodio (Puede ser útil "
+"contra bots).</p>\n"
+"<p><strong>Protección por dominio</strong>: Usando esta opción, tus enlaces de MegaCrypter "
+"sólo serán accesibles haciendo click desde un nombre de dominio en particular ("
+"seguirán siendo descargables desde un gestor de descarga).</p>\n"
+"<p><strong>Información extra</strong>: Pon aquí cualquier información interesante sobre "
+"tus enlaces (64 caracteres max).</p>\n"
+"<p><strong>Email</strong>: Escribe aquí un email para avisarte en caso de que algo ocurra con tus enlaces (64 characters max).</p>\n"
+"<p><strong>Contraseña</strong>: Puedes añadir una capa extra de seguridad a tus enlaces "
+"de MegaCrypter (Recuerda que la contraseña es sensible a minúsculas/mayúsculas)."
+
+#: /tmp/cache/65/9e/938fe3907a764f8eb0f162bf1712d8298489c806c98501e9b7f26caf91d3.php:226
+msgid ""
+"Q: Java killed my family and ate my dog. I hate it!</h2>\n"
+"<div class=\"faq_answer\">\n"
+"A: I'm so sorry, but that is not a question xD"
+msgstr ""
+"P: Java mató a mi familia y se comió a mi perro. ¡Lo odio!</h2>\n"
+"<div class=\"faq_answer\">\n"
+"R: Lo siento mucho, pero eso no es una pregunta xD"
+
+#: /tmp/cache/23/64/c5b3ac3bf0c9d355da90034ced50e1ed0c81c492504c8ac0297a2ae5d43b.php:25
+msgid "Wait for"
+msgstr "Espera que"
+
+#: /tmp/cache/23/64/c5b3ac3bf0c9d355da90034ced50e1ed0c81c492504c8ac0297a2ae5d43b.php:27
+msgid "to load before playing the video"
+msgstr "cargue antes de reproducir el vídeo"
+
+#: /tmp/cache/01/f8/4985f36d5a102adb8a51e6cc9cb97a3af4033ae7052b0fcff13ce0782dfe.php:51
+msgid "Select all links"
+msgstr "Seleccionar todos los enlaces"
+
+#: /tmp/cache/cf/3e/ddcd90c4976e7c442ef78d6e49f26915c6ccf01b298b1fc25415177c68a3.php:31
+#: /tmp/cache/a9/a2/09de558ab865ebbb1020edb46ded3d6c941dbce8a4309dee419f3efccece.php:145
+msgid "Terms of Service"
+msgstr "Términos de Uso"
+
+#: /tmp/cache/cf/3e/ddcd90c4976e7c442ef78d6e49f26915c6ccf01b298b1fc25415177c68a3.php:41
+msgid "TERMS OF SERVICE"
+msgstr "TÉRMINOS DE USO"
+
+#: /tmp/cache/cf/3e/ddcd90c4976e7c442ef78d6e49f26915c6ccf01b298b1fc25415177c68a3.php:45
+msgid "(a.k.a. MC) is an independent web site from"
+msgstr "(alias MC) es un sitio web independiente de"
+
+#: /tmp/cache/cf/3e/ddcd90c4976e7c442ef78d6e49f26915c6ccf01b298b1fc25415177c68a3.php:47
+msgid "(a.k.a. MEGA)"
+msgstr "(alias MEGA)"
+
+#: /tmp/cache/cf/3e/ddcd90c4976e7c442ef78d6e49f26915c6ccf01b298b1fc25415177c68a3.php:51
+msgid ""
+"MC works as a free anonymous crypted url forwarding service for MEGA links"
+msgstr ""
+"MC funciona como un servicio gratuito de redirección anónima y cifrada de enlaces de MEGA"
+
+#: /tmp/cache/cf/3e/ddcd90c4976e7c442ef78d6e49f26915c6ccf01b298b1fc25415177c68a3.php:55
+msgid "MC does not host, index nor stream any MEGA file"
+msgstr "MC no almacena, indexa ni hace streaming de ningún archivo de MEGA"
+
+#: /tmp/cache/cf/3e/ddcd90c4976e7c442ef78d6e49f26915c6ccf01b298b1fc25415177c68a3.php:59
+msgid "MC does not log any kind of user data"
+msgstr "MC no registra ningún tipo de información sobre sus usuarios"
+
+#: /tmp/cache/cf/3e/ddcd90c4976e7c442ef78d6e49f26915c6ccf01b298b1fc25415177c68a3.php:63
+msgid ""
+"MC is not responsible for and has no knowledge and/or control over any content of any MEGA "
+"link forwarded from any MC link"
+msgstr ""
+"MC no es responsable ni tiene ningún conocimiento y/o control sobre ningún contenido de ningún archivo de MEGA "
+"redirigido desde un enlace de MC"
+
+#: /tmp/cache/cf/3e/ddcd90c4976e7c442ef78d6e49f26915c6ccf01b298b1fc25415177c68a3.php:67
+msgid "If you do not agree to these terms of service, please leave MC now"
+msgstr "Si no aceptas estos términos de uso, por favor abandona MC ahora mismo"
+
+#: /tmp/cache/a9/a2/09de558ab865ebbb1020edb46ded3d6c941dbce8a4309dee419f3efccece.php:84
+msgid "DO NOT CLOSE THIS WINDOW WHILE DOWNLOAD IS IN PROGRESS!"
+msgstr "NO CIERRES ESTA VENTANA MIENTRAS HAYA UNA DESCARGA EN PROGRESO"
+
+#: /tmp/cache/a9/a2/09de558ab865ebbb1020edb46ded3d6c941dbce8a4309dee419f3efccece.php:86
+msgid "If you want to quit, push"
+msgstr "Si quieres irte, pulsa"
+
+#: /tmp/cache/a9/a2/09de558ab865ebbb1020edb46ded3d6c941dbce8a4309dee419f3efccece.php:88
+msgid "before leaving (you can resume it later)"
+msgstr "antes de salir (puedes continuar luego)"
+
+#: /tmp/cache/a9/a2/09de558ab865ebbb1020edb46ded3d6c941dbce8a4309dee419f3efccece.php:94
+msgid "This link will expire in"
+msgstr "Este enlace caducará en"
+
+#: /tmp/cache/a9/a2/09de558ab865ebbb1020edb46ded3d6c941dbce8a4309dee419f3efccece.php:113
+msgid "EMPTY FILE"
+msgstr "ARCHIVO VACÍO"
+
+#: /tmp/cache/a9/a2/09de558ab865ebbb1020edb46ded3d6c941dbce8a4309dee419f3efccece.php:129
+msgid "Click on FAQ for alternative download methods"
+msgstr "Pincha en la AYUDA para conocer otros métodos de descarga"
+
+#: /tmp/cache/a9/a2/09de558ab865ebbb1020edb46ded3d6c941dbce8a4309dee419f3efccece.php:131
+msgid "DOWNLOAD"
+msgstr "DESCARGAR"
+
+#: /tmp/cache/a9/a2/09de558ab865ebbb1020edb46ded3d6c941dbce8a4309dee419f3efccece.php:135
+msgid "Java and VLC plugins are required"
+msgstr "Se requiere Java y el plugin de VLC"
+
+#: /tmp/cache/a9/a2/09de558ab865ebbb1020edb46ded3d6c941dbce8a4309dee419f3efccece.php:137
+msgid "WATCH IT NOW"
+msgstr "VER AHORA MISMO"
+
+#: /tmp/cache/a9/a2/09de558ab865ebbb1020edb46ded3d6c941dbce8a4309dee419f3efccece.php:141
+msgid "You must agree before download file"
+msgstr "Tienes que aceptar los términos de uso antes de poder descargar"
+
+#: /tmp/cache/a9/a2/09de558ab865ebbb1020edb46ded3d6c941dbce8a4309dee419f3efccece.php:143
+msgid "I agree with MC"
+msgstr "Acepto los"
+
+#: /tmp/cache/a9/a2/09de558ab865ebbb1020edb46ded3d6c941dbce8a4309dee419f3efccece.php:149
+msgid "Loading Kissdownloader, please wait"
+msgstr "Cargando Kissdownloader, por favor espera"
+
+#: /tmp/cache/a9/a2/09de558ab865ebbb1020edb46ded3d6c941dbce8a4309dee419f3efccece.php:156
+msgid "Loading Kissvideostreamer, please wait"
+msgstr "Cargando Kissvideostreamer, por favor espera"
+
+msgid "It's limited to"
+msgstr "Está limitado a"
+
+msgid "(If tiny url option is true, this will be ignored)."
+msgstr "(Si las urls cortas están activadas, esto será ignorado)."
+
+msgid "MEGA cloud temporarily unavailable"
+msgstr "MEGA está temporalmente no disponible"
+
+msgid "MEGA file temporarily unavailable"
+msgstr "Archivo de MEGA temporalmente no disponible"
+
+msgid "MEGA file not found!"
+msgstr "¡El archivo de MEGA no existe!"
+
+msgid "MEGA file is blocked!"
+msgstr "¡Archivo de MEGA bloqueado!"
+
+msgid "Bad MEGA file!"
+msgstr "¡Archivo de MEGA incorrecto!"
+
+msgid "MEGA file not found\n(user account was terminated)"
+msgstr "¡El archivo de MEGA no existe!\n(la cuenta de usuario fue cancelada)"
+
+msgid "Bad MC link!"
+msgstr "¡Enlace MC incorrecto!"
+
+msgid "Blocked MC link!"
+msgstr "¡Enlace MC bloqueado!"
+
+msgid "Expired MC link!"
+msgstr "¡Enlace MC caducado!"
+
+msgid "You MUST visit this link from"
+msgstr "DEBES visitar este enlace desde"
+
+msgid "Copy URL to clipboard"
+msgstr "Copiar URL al portapapeles"
+
+msgid "Click to copy URL"
+msgstr "Haz click para copiar el enlace al portapapeles"
+
+msgid "Enable advanced options"
+msgstr "Activar opciones avanzadas"
+
+msgid "Web access was not enabled for this link"
+msgstr "El acceso web no fue activado para este enlace"
+
+msgid "Warning!"
+msgstr "¡Atención!"
+
+msgid "Put here an email to alert you in case that something happens with your links"
+msgstr "Escribe aquí un email para avisarte en caso de que algo ocurra con tus enlaces"
+
+msgid "Something to report?"
+msgstr "¿Algo que reportar?"
+
+msgid "You must agree with <a href=\"/tos\">TOS</a> before you can use our API"
+msgstr "Debes aceptar los <a href=\"/tos\">TDU</a> antes de poder utilizar nuestra API"
+
+msgid "In order to get a <strong>reporter id</strong> you must send first a valid <a href=\"//en.wikipedia.org/wiki/Digital_Millennium_Copyright_Act\" target=\"_blank\">DMCA</a> complaint (or about any other abuse) to: <strong>abuse.megacrypter@gmail.com</strong>"
+msgstr "Para obtener un <strong>reporter id</strong> primero debe enviar una reclamación <a href=\"//en.wikipedia.org/wiki/Digital_Millennium_Copyright_Act\" target=\"_blank\">DMCA</a> válida (o de otro tipo de abuso) a: <strong>abuse.megacrypter@gmail.com</strong>"
+
+msgid "I hereby state that I have a good faith belief that the sharing of copyrighted material at the location above is not authorized by the copyright owner, its agent, or the law"
+msgstr "Por la presente declaro que tengo una creencia de buena fe de que el uso compartido de material con derechos de autor en la ubicación anterior no está autorizado por el propietario del copyright, su agente o la ley"
+
+msgid "Remove URLs"
+msgstr "Eliminar URLs"
+
+msgid "were successfully removed."
+msgstr "fueron eliminadas correctamente"
+
+msgid "Your reporter ID is not valid!"
+msgstr "¡Su reporter id no es válido!"
+
+msgid "No valid URLs to remove!"
+msgstr "¡No hay URLs válidas para eliminar!"
+
+msgid "Captcha code was not valid!"
+msgstr "¡El captcha introducido no era correcto!"
+
+msgid "Put here the URLs you want to remove"
+msgstr "Introduzca aquí las URLs que quiera eliminar"
+
+msgid "Put here the ID you received by email"
+msgstr "Ponga aquí el ID que recibió por email"
+
+msgid "As MC user, you MUST NOT use our service to perform ANY KIND of illegal activity including infringing any copyright or other proprietary rights of any person or entity."
+msgstr "Como usuario de MC, NO te está permitido usar nuestro servicio para llevar a cabo ningún tipo de actividad ilegal incluyendo infringir el copyright (u otros derechos) de ninguna persona o entidad"
+
+msgid "You must agree before"
+msgstr "Tienes que aceptar antes"
+
+msgid "Remember to keep an eye on"
+msgstr "No olvides echar un vistazo de vez en cuando a"
+
+msgid "Q: Why MC shows <span style=\"color:red\">\"Web access was not enabled for this link\"</span> ?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"A: Because that link was created WITHOUT DOMAIN LOCK protection (see advanced options below) and it can be only downloaded using a download manager."
+msgstr "P: ¿Por qué se muestra <span style=\"color:red\">\"El acceso web no fue activado para este enlace\"</span>?</h2>"
+"<div class=\"faq_answer\">"
+"R: Porque ese enlace fue creado <b>SIN USAR la PROTECCIÓN POR DOMINIO</b> (mira más abajo en opciones avanzadas) y sólo se puede descargar usando un gestor de descargas."
+
+msgid "EMERGENCY STOP"
+msgstr "PARADA DE EMERGENCIA"
+
+msgid "We are undergoing maintenance. Please come back later."
+msgstr "Realizando tareas de mantenimiento. Por favor, vuelve más tarde."
+
+msgid "Q: What if Java shows <span style=\"color:red\">\"your security settings have blocked a self-signed application from running\"</span>?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"A: <br /><iframe id=\"how_to_frame\" width=\"500\" height=\"304\" frameborder=\"0\" src=\"//www.youtube.com/embed/hCIt6NSqACg?rel=0\" allowfullscreen /></iframe><br />1) Go to the Java Control Panel (On Windows Click Start and then Configure Java)<br />\n"
+"2) Click on the Security tab<br />\n"
+"3) Click on the Edit Site List button<br />\n"
+"4) Click Add in the Exception Site List window and introduce https://megacrypter.com<br />\n"
+"<img src=\"//www.java.com/en/img/download/add_url.jpg\"><br />More info <a href=\"//www.java.com/en/download/help/java_blocked.xml\" target=\"_blank\">here</a>"
+
+msgstr "P: ¿Y si Java muestra <span style=\"color:red\">\"tus ajustes de seguridad han bloqueado la ejecución de una aplicación auto-firmada\"</span>?</h2>\n"
+"<div class=\"faq_answer\">\n"
+"R: <br /><iframe id=\"how_to_frame\" width=\"500\" height=\"304\" frameborder=\"0\" src=\"//www.youtube.com/embed/hCIt6NSqACg?rel=0\" allowfullscreen /></iframe><br />1) Panel de control de Java (En Windows Inicio > Panel de control > Java)<br />\n"
+"2) Click en la pestaña de seguridad<br />\n"
+"3) Click en Editar Lista de Sitios<br />\n"
+"4) Click en añadir a la lista de excepciones e introducir https://megacrypter.com<br />\n"
+"<img src=\"//www.java.com/en/img/download/add_url.jpg\"><br />Más info <a href=\"//www.java.com/en/download/help/java_blocked.xml\" target=\"_blank\">aquí</a>"
+
+msgid "Remember that protected links will only be downloadable with a manager unless you activate the <em>domain-lock</em> protection (see advanced options)."
+msgstr "Recuerda que los enlaces protegidos sólo serán descargables mediante un gestor a menos que actives la <em>protección por dominio</em> (ver opciones avanzadas)"

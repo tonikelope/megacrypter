@@ -1,0 +1,3 @@
+{% extends "base_warning.html" %}
+{% block icon %}<img class="info_box_icon" src="/images/nedry.gif" alt="warning" />{% endblock %}
+{% block warning_message %}{{message|trans|replace({"\n":"<br>"})|raw}}{% endblock warning_message %}

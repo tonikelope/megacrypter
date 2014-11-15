@@ -1,0 +1,135 @@
+{% extends "base_frame.html" %}
+{% block title %}{% trans "API DOCUMENTATION" %}{% endblock title %}
+{% block content %}
+<body class="fancy_frame" id="api_doc">
+<h1>{% trans "It's coding time, yaba daba doo!" %}</h1>
+<p>{% trans "Are you developing a download manager? Good news, Megacrypter has a (beta) API ;)" %}</p>
+<p>({% trans "<strong>For NOW</strong> without API-KEY" %})</p>
+<h2>{% trans "Let's see how it works" %}...</h2>
+Megacrypter API (version <strong>{{constant('API_VERSION')}}</strong>) {% trans "uses" %} <a href="//en.wikipedia.org/wiki/JSON" target="_blank">JSON</a> {% trans "with" %} <a href="//en.wikipedia.org/wiki/POST_%28HTTP%29" target="_blank">{% trans "HTTP POST requests" %}</a>.
+<pre class="code">
+<div class="api_method"><strong>API URL -> </strong><em>{{constant('URL_BASE')}}/api</em>
+(<strong>Content-Type:</strong> <em>application/json</em>)</div>
+
+<div class="api_method"><strong>{% trans "Crypt-request" %} </strong>({% trans "for protecting a mega link list" %}):
+{"m": "crypt", 
+"links": [<em>"MEGA_LINK_1"</em>, <em>"MEGA_LINK_2"</em> ... <em>"MEGA_LINK_N"</em>],
+*"expire": <em>0-6</em>
+*"tiny_url": <em>true OR false</em>,
+*"app_finfo": <em>true OR false</em>,
+*"hide_name": <em>true OR false</em>,
+*"pass": <em>"PASS"</em>,
+*"referer": <em>"DOMAIN_NAME"</em>,
+*"extra_info": <em>"EXTRA_INFO"</em>,
+*"email": <em>"EMAIL"</em>}
+
+<div class="extra_info"><strong>*{% trans "Optional params" %}:</strong>
+<em>1) {% trans "Expiration values" %}: 0 -> {% trans "never" %} ({% trans "default" %}), 1 -> 10 {% trans "minutes" %}, 2 -> 1 {% trans "hour" %}...</em>
+<em>2) {% trans "Tiny url option is false by default" %}.</em>
+<em>3) {% trans "Append file info option is false by default" %}.</em>
+<em>4) {% trans "Hide name option is false by default" %}.</em>
+<em>5) {% trans "Passwords are case-sensitive" %}.</em>
+<em>6) {% trans "Referer is not required to include" %} 'http://'. {% trans "It's limited to" %} {{constant('Utils_MegaCrypter::MAX_REFERER_BYTES')}} {% trans "chars" %}</em>
+<em>7) {% trans "Extra-info is limited to" %} {{constant('Utils_MegaCrypter::MAX_EXTRA_BYTES')}} {% trans "chars" %}.</em>
+<em>{% trans "Note: link list is limited to " %}{{constant('Controller_ApiController::MAX_LINKS_LIST')}}</em></div>
+<strong>{% trans "Crypt-response" %}:</strong>
+{"links": [<em>"MC_LINK_1"</em>, <em>"MC_LINK_2"</em> ... <em>"MC_LINK_N"</em>]}
+</div>
+
+<div class="api_method">{% trans "<strong>Info-request</strong> (for retrieving some file information)" %}:
+{"m": "info", 
+"link": <em>"MC_LINK"</em>}
+
+<strong>{% trans "Info-response" %}:</strong>
+{"name": <em>"FILE_NAME" OR "CRYPTED_FILE_NAME"</em>, 
+"size": <em>FILE_SIZE</em>, 
+"key": <em>"FILE_KEY" OR "CRYPTED_FILE_KEY"</em>,
+"extra": <em>"EXTRA_INFO" OR "CRYPTED_EXTRA_INFO"</em>,
+"expire": <em>false OR EXPIRE_TIMESTAMP</em>,
+"pass": <em>false OR "ITER_LOG2#KEY_CHECK_HASH#SALT"</em>}
+
+<div class="extra_info"><strong>{% trans "About password protected files" %}</strong>: 
+
+{% trans "File name, file key, and extra-info will be returned crypted using AES CBC (PKCS7) with 256 bits key derivated from pass
+and zero-iv. Moreover, SHA-256 key hash will be returned to allow you checking it" %}.
+
+{% trans "Follow this <strong>algorithm</strong> to decrypt crypted fields" %}:
+
+<em>REPEAT
+        
+    password := read_password()
+    
+    info_key := hmac := hmac_sha256(password, base64_dec(SALT))
+    
+    FOR i=2 : 1 : pow(2, ITER_LOG2)
+        
+        hmac := hmac_sha256(password, hmac)
+    
+        info_key := info_key XOR hmac
+    
+    END
+
+UNTIL sha256(info_key) = base64_dec(KEY_CHECK_HASH)
+
+
+file_name := aes_cbc_dec(base64_dec(CRYPTED_FILE_NAME), info_key, IV(0))
+
+file_key := aes_cbc_dec(base64_dec(CRYPTED_FILE_KEY), info_key, IV(0))
+
+extra_info := aes_cbc_dec(base64_dec(CRYPTED_EXTRA_INFO), info_key, IV(0))
+</em>
+<div class="extra_info">
+<em>{% trans "Note: iteration count is -> " %}pow(2, {{constant('Utils_MegaCrypter::PASS_HASH_ITERATIONS_LOG2')}}) = {{ 2**constant('Utils_MegaCrypter::PASS_HASH_ITERATIONS_LOG2') }}</em></div>
+</div></div>
+
+<div class="api_method">{% trans "<strong>Dl-request</strong> (for getting a temporary url to the (crypted) file)" %}:
+{"m": "dl", 
+"link": <em>"MC_LINK"</em>,
+*"ssl": <em>true OR false</em>}
+
+<div class="extra_info"><strong>*{% trans "Optional params" %}:</strong>
+<em>1) Default is false (better performance in slow machines)</em>
+</div>
+
+<strong>{% trans "Dl-response" %}:</strong>
+{"url": <em>"MEGA_TEMP_URL"</em>}</div>
+
+<div class="api_error">{% trans "<strong>Error-response</strong> (because shit happens...)" %}:
+{"error": <em>ERROR_CODE</em>}
+
+<div class="extra_info"><strong>{% trans "Error codes" %}:</strong>
+MC_EMETHOD({{constant('Controller_ApiController::EMETHOD')}})
+MC_EREQ({{constant('Controller_ApiController::EREQ')}})
+MC_INTERNAL_ERROR({{constant('Utils_MegaCrypter::INTERNAL_ERROR')}})
+MC_LINK_ERROR({{constant('Utils_MegaCrypter::LINK_ERROR')}})
+MC_BLACKLISTED_LINK({{constant('Utils_MegaCrypter::BLACKLISTED_LINK')}})
+MC_EXPIRED_LINK({{constant('Utils_MegaCrypter::EXPIRED_LINK')}})
+MEGA_EINTERNAL(-1)
+MEGA_EARGS(-2)
+MEGA_EAGAIN(-3)
+MEGA_ERATELIMIT(-4)
+MEGA_EFAILED(-5)
+MEGA_ETOOMANY(-6)
+MEGA_ERANGE(-7)
+MEGA_EEXPIRED(-8)
+MEGA_ENOENT(-9)
+MEGA_ECIRCULAR(-10)
+MEGA_EACCESS(-11)
+MEGA_EEXIST(-12)
+MEGA_EINCOMPLETE(-13)
+MEGA_EKEY(-14)
+MEGA_ESID(-15)
+MEGA_EBLOCKED(-16)
+MEGA_EOVERQUOTA(-17)
+MEGA_ETEMPUNAVAIL(-18)
+MEGA_ETOOMANYCONNECTIONS(-19)
+MEGA_EWRITE(-20)
+MEGA_EREAD(-21)
+MEGA_EAPPKEY(-22)
+MEGA_EDLURL({{constant('Utils_MegaApi::EDLURL')}})
+</div></div>
+</pre>
+<div style="text-align: center">( {% trans "You must agree with <a href=\"/tos\">TOS</a> before you can use our API" %} )</div>
+<div id="evil">{% trans "Don't be evil" %} ;)</div>
+</body>
+{% endblock content %}

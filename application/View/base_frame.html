@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="{{constant('HTML_LANG')}}">
+<head>
+{% block head %}
+    <meta charset="UTF-8">
+    <meta name="description" content="{% trans "Protect your MEGA links from prying eyes" %}" lang="{{constant('HTML_LANG')}}" />
+    <meta name="keywords" lang="{{constant('HTML_LANG')}}" content="" />
+    {% block extra_meta %}
+    <meta name="robots" content="noindex" />
+    {% endblock extra_meta %}
+    <title>{% block title %}{% endblock title %} - MegaCrypter</title>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Gochi+Hand" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/frame.css" />
+    {% block extra_css %}{% endblock extra_css %}
+    {% block js %}{% endblock js %}
+{% endblock head %}
+</head>
+{% block content %}
+{% endblock content %}
+</html>

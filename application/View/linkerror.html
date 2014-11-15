@@ -1,0 +1,2 @@
+{% extends "base_error.html" %}
+{% block error_message %}{{message|trans|replace({"\n":"<br>"})|raw}}{% endblock error_message %}
