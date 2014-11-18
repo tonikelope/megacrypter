@@ -14,19 +14,11 @@ What do you need?
 
 4.1) miscellaneous.php
 
--Your custom URL_BASE
-
--Your custom AES-256 key
-
--Your custom generic password 
-
--Etc.
-
 4.2) memcache.php
 
-4.3) database.php (optional)
+4.3) database.php
 
-4.4) gmail.php (optional)
+4.4) gmail.php
 
 
 From here you go alone. Good luck!
