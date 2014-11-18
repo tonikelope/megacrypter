@@ -10,7 +10,7 @@ What do you need?
 
 3) MySQL (optional for blacklist).
 
-4) Edit application/config files with 
+4) Edit application/config files: 
 
 4.1) miscellaneous.php
 
