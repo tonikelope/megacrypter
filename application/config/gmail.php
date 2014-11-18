@@ -1,5 +1,9 @@
 <?php
 
+    /*
+        TAKEDOWN TOOL uses this (emails MUST BE GMAIL!)
+    */
+    
     define('GMAIL_HOST', 'smtp.gmail.com');
     define('GMAIL_PORT', 465);
     define('GMAIL_SMTP_AUTH', true);
