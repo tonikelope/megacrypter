@@ -21,4 +21,4 @@ What do you need?
 4.4) gmail.php
 
 
-From here you go alone. Good luck!
+You're alone from here. Good luck!
