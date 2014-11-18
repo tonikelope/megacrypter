@@ -10,6 +10,19 @@ What do you need?
 
 3) MySQL (optional for blacklist).
 
-4) Edit application/config files
+4) Edit application/config files with 
 
-GL!
+4.1) miscellaneous.php
+
+-Your custom URL_BASE
+-Your custom AES-256 key
+-Your custom generic password 
+
+4.2) memcache.php
+
+4.3) database.php (optional)
+
+4.4) gmail.php (optional)
+
+
+From here you go alone. Good luck!
