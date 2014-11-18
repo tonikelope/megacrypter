@@ -20,6 +20,8 @@ What do you need?
 
 -Your custom generic password 
 
+-Etc.
+
 4.2) memcache.php
 
 4.3) database.php (optional)
