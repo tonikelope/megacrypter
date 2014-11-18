@@ -9,8 +9,8 @@
     define('STOP_IT_ALL', false);
     define('WEB_MAINTENANCE', false);
     define('ERROR_LOG', false);
-    define('TAKEDOWN_TOOL', false);
-    define('BLACKLIST_LEVEL', Utils_MegaCrypter::BLACKLIST_LEVEL_OFF); //Blacklist links
+    define('TAKEDOWN_TOOL', false); //Disabled by default
+    define('BLACKLIST_LEVEL', Utils_MegaCrypter::BLACKLIST_LEVEL_OFF); //Blacklist check disabled by default
     define('BLACKLIST_MEMCACHE_PREFIX', 'BLACKLIST_');
     define('ZOMBIE_LINKS', false);
     define('CURL_USERAGENT', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.137 Safari/537.36');
