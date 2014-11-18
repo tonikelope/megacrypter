@@ -15,7 +15,9 @@ What do you need?
 4.1) miscellaneous.php
 
 -Your custom URL_BASE
+
 -Your custom AES-256 key
+
 -Your custom generic password 
 
 4.2) memcache.php
