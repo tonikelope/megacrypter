@@ -48,7 +48,7 @@ class Controller_TakedownController extends Controller_DefaultController
     
     private function _genRemoveLinkList($links) {
         
-        if(preg_match_all('/(?:https?\:\/\/)?megacrypter\.com\/![\da-z_,-\/]+?![\da-f\/]+?(?=https?\:\/\/|megacrypter\.com|[^\da-z_,-\/]|$)/i', $links, $match) > 0) {
+        if(preg_match_all('/(?:https?\:\/\/)?'.preg_quote(preg_replace('/^https?\:\/\//i', '', trim(URL_BASE)), '/').'\/![\da-z_,-\/]+?![\da-f\/]+?(?=https?\:\/\/|'.preg_quote(preg_replace('/^https?\:\/\//i', '', trim(URL_BASE)), '/').'|[^\da-z_,-\/]|$)/i', $links, $match) > 0) {
             
             $links_to_be_removed = [];
         
