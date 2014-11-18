@@ -2,7 +2,7 @@
 
     /* Note: always BASE64 pass!! */
 
-    define('URL_BASE', 'http://megacrypter.yourdomain.com'); 
+    define('URL_BASE', 'http://megacrypter.yourdomain.com'); //No comment ;)
     define('MASTER_KEY', 'e6f1cb17b81089f6846a93ca6771c13a7e366849e44e239d38918b5c2f9e46c4'); //YOU MUST GENERATE YOUR OWN AES KEY
     define('GENERIC_PASSWORD', 'CgCv8QmhXjbcmdhNFvPuUw=='); //IDEM AS AES KEY
     define('GOOGLE_URL_SHORT_API_KEY', ''); //Required for tiny urls
