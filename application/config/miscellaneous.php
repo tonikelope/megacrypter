@@ -1,7 +1,7 @@
 <?php
 
     define('URL_BASE', 'http://megacrypter.yourdomain.com'); //No comment ;)
-    define('MASTER_KEY', 'e6f1cb17b81089f6846a93ca6771c13a7e366849e44e239d38918b5c2f9e46c4'); //YOU MUST GENERATE YOUR OWN AES KEY
+    define('MASTER_KEY', 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'); //YOU MUST GENERATE YOUR OWN AES KEY
     define('GENERIC_PASSWORD', 'CgCv8QmhXjbcmdhNFvPuUw=='); //IDEM AS AES KEY (base64 is required)
     define('GOOGLE_URL_SHORT_API_KEY', ''); //Required for tiny urls
     define('MEGA_API_KEY', ''); //Not used for now
