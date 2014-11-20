@@ -2,7 +2,7 @@
 
     define('URL_BASE', 'http://megacrypter.yourdomain.com'); //megacrypter subdomain is required (API URL is relative to this) 
     define('MASTER_KEY', 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'); //YOU MUST GENERATE YOUR OWN AES KEY
-    define('GENERIC_PASSWORD', 'CgCv8QmhXjbcmdhNFvPuUw=='); //IDEM AS AES KEY (base64 is required)
+    define('GENERIC_PASSWORD', 'CgCv8QmhXjbcmdhNFvPuUw=='); //IDEM AS AES KEY (min recommeded 16 bytes (coded in base64 is required))
     define('GOOGLE_URL_SHORT_API_KEY', ''); //Required for tiny urls
     define('MEGA_API_KEY', ''); //Not used for now
     define('API_VERSION', '0.7');
