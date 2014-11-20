@@ -20,5 +20,12 @@ What do you need?
 
 4.4) gmail.php
 
+Step 1: upload megacrypter to your server.
+
+Step 2: prepare virtual host (set document root point to megacrypter public dir)
+
+Step 3: php composer install (in megacrypter dir)
+
+Step 4: edit config files
 
 You're alone from here. Good luck!
