@@ -24,7 +24,7 @@ Step 1: upload megacrypter to your server.
 
 Step 2: prepare virtual host (set document root point to megacrypter public dir)
 
-Step 3: php composer.phar install (in megacrypter dir)
+Step 3: php composer.phar install
 
 Step 4: edit config files
 
