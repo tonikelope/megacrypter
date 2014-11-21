@@ -4,7 +4,7 @@ megacrypter
 What do you need?
 
 
-1) Apache (vhost + mod_rewrite + allowoverride)
+1) Apache (mod_rewrite + allowoverride)
 
 2) PHP 5.4 (cURL + mcrypt + memcache)
 
