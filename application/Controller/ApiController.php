@@ -105,7 +105,7 @@ class Controller_ApiController extends Controller_DefaultController
     
     private function _actionCrypt($post_data) {
         
-         if (is_array($post_data->links) && count($post_data->links) > 0 && count($post_data->links) <= self::MAX_LINKS_LIST) {
+         if (is_array($post_data->links) && count($post_data->links) > 0 && (!self::MAX_LINKS_LIST || count($post_data->links) <= self::MAX_LINKS_LIST)) {
                         
             $data = ['links' => Utils_MegaCrypter::encryptLinkList(Utils_CryptTools::decryptMegaDownloaderLinks($post_data->links), ['tiny_url' => $post_data->tiny_url, 'pass' => $post_data->pass, 'extra_info' => $post_data->extra_info, 'hide_name' => $post_data->hide_name, 'expire' => $post_data->expire, 'referer' => $post_data->referer, 'email' => $post_data->email], $post_data->app_finfo)];
                         
