@@ -1,3 +1,4 @@
+![Alt text](/public/images/lock.png?raw=true "MC logo")![Alt text](/public/images/logo.png?raw=true "MC logo")
 megacrypter
 ===========
 
