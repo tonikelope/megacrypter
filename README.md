@@ -10,6 +10,8 @@ What do you need?
 
 3) MySQL (optional for blacklist).
 
+4) Cloudflare (optional but recommended)
+
 Instructions:
 
 Step 1: upload megacrypter to your server.
