@@ -22,6 +22,6 @@ Step 3: php composer.phar install
 
 Step 4: remove ALL /config .sample extension and edit (miscellaneous.php, database.php and gmail.php).
 
-Step 5: ask your favourite download manager developers to recognize your new megacrypter links.
+Step 5: ask your favourite download manager developers to recognize your new megacrypter links (optional).
 
 You're alone from here. Good luck!
