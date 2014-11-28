@@ -22,6 +22,6 @@ Step 3: install composer dependencies -> php composer.phar install
 
 Step 4: remove ALL /config .sample extension and edit miscellaneous.php and any other file you need.
 
-Step 5 (optional): ask your favourite download manager developers to recognize your new megacrypter links.
+Step 5 (optional): ask  developers of your favourite download manager to recognize your new megacrypter links.
 
 You're alone from here. Good luck!
