@@ -18,7 +18,7 @@ Step 1: upload megacrypter to your server.
 
 Step 2: prepare virtual host (set document root point to megacrypter public dir)
 
-Step 3: install project dependencies with $ php composer.phar install
+Step 3: install composer dependencies -> php composer.phar install
 
 Step 4: remove ALL /config .sample extension and edit miscellaneous.php and any other file you need.
 
