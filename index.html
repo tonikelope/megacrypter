@@ -67,58 +67,127 @@ fjs.parentNode.insertBefore(js, fjs);
 <p>You're alone from here. Good luck!</p>
 
 <h2>API DOC</h2>
-<pre>Megacrypter API uses <a href="//en.wikipedia.org/wiki/JSON" target="_blank">JSON</a> with <a href="//en.wikipedia.org/wiki/POST_%28HTTP%29" target="_blank">HTTP POST requests</a>
+<pre class="code">
+<div class="api_method"><strong>API URL -> </strong><em>https://megacrypter.com/api</em>
+(<strong>Content-Type:</strong> <em>application/json</em>)</div>
 
-API URL -> https://megacrypter.com/api
-(Content-Type: application/json)
-
-Crypt-request (for protecting a mega link list):
+<div class="api_method"><strong>Crypt-request </strong>(for protecting a mega link list):
 {"m": "crypt", 
-"links": ["MEGA_LINK_1", "MEGA_LINK_2" ... "MEGA_LINK_N"],
-*"expire": 0-6
-*"tiny_url": true OR false,
-*"app_finfo": true OR false,
-*"hide_name": true OR false,
-*"pass": "PASS",
-*"referer": "DOMAIN_NAME",
-*"extra_info": "EXTRA_INFO",
-*"email": "EMAIL"}
+"links": [<em>"MEGA_LINK_1"</em>, <em>"MEGA_LINK_2"</em> ... <em>"MEGA_LINK_N"</em>],
+*"expire": <em>0-6</em>
+*"tiny_url": <em>true OR false</em>,
+*"app_finfo": <em>true OR false</em>,
+*"hide_name": <em>true OR false</em>,
+*"pass": <em>"PASS"</em>,
+*"referer": <em>"DOMAIN_NAME"</em>,
+*"extra_info": <em>"EXTRA_INFO"</em>,
+*"email": <em>"EMAIL"</em>}
 
-*Optional params: 
-1) Expiration values: 0 -> never (default), 
-1 -> 10 minutes, 
-2 -> 1 hour... 
-2) Tiny url option is false by default. 
-3) Append file info option is false by default.
-4) Hide name option is false by default. 
-5) Passwords are case-sensitive. 
-6) Referer is not required to include 'http://'. It's limited to 64 chars 
-7) Extra-info is limited to 64 chars. Note: link list is limited to 250
+<div class="extra_info"><strong>*Optional params:</strong>
+<em>1) Expiration values: 0 -> never (default), 1 -> 10 minutes, 2 -> 1 hour...</em>
+<em>2) Tiny url option is false by default.</em>
+<em>3) Append file info option is false by default.</em>
+<em>4) Hide name option is false by default.</em>
+<em>5) Passwords are case-sensitive.</em>
+<em>6) Referer is not required to include 'http://'. It's limited to 64 chars</em>
+<em>7) Extra-info is limited to 64 chars.</em>
+<em>Note: link list is limited to 250</em></div>
+<strong>Crypt-response:</strong>
+{"links": [<em>"MC_LINK_1"</em>, <em>"MC_LINK_2"</em> ... <em>"MC_LINK_N"</em>]}
+</div>
 
-Crypt-response:
-{"links": ["MC_LINK_1", "MC_LINK_2" ... "MC_LINK_N"]}
+<div class="api_method"><strong>Info-request</strong> (for retrieving some file information):
+{"m": "info", 
+"link": <em>"MC_LINK"</em>}
 
-Petición info (para obtener diversa información sobre un enlace): 
-{"m": "info", "link": "MC_LINK"} 
+<strong>Info-response:</strong>
+{"name": <em>"FILE_NAME" OR "CRYPTED_FILE_NAME"</em>, 
+"size": <em>FILE_SIZE</em>, 
+"key": <em>"FILE_KEY" OR "CRYPTED_FILE_KEY"</em>,
+"extra": <em>"EXTRA_INFO" OR "CRYPTED_EXTRA_INFO"</em>,
+"expire": <em>false OR EXPIRE_TIMESTAMP</em>,
+"pass": <em>false OR "ITER_LOG2#KEY_CHECK_HASH#SALT"</em>}
 
-Respuesta info: 
-{"name": "FILE_NAME" OR "CRYPTED_FILE_NAME", 
-"size": FILE_SIZE,
-"key": "FILE_KEY" OR "CRYPTED_FILE_KEY", 
-"extra": "EXTRA_INFO" OR "CRYPTED_EXTRA_INFO", 
-"expire": false OR EXPIRE_TIMESTAMP, 
-"pass": false OR "ITER_LOG2#KEY_CHECK_HASH#SALT"}
+<div class="extra_info"><strong>About password protected files</strong>: 
 
-En relación a los enlaces protegidos con contraseña: File name, file key, and extra-info will be returned crypted using AES CBC (PKCS7) with 256 bits key derivated from pass and zero-iv. Moreover, SHA-256 key hash will be returned to allow you checking it. Sigue este algoritmo para descifrar los campos cifrados: REPEAT password := read_password() info_key := hmac := hmac_sha256(password, base64_dec(SALT)) FOR i=2 : 1 : pow(2, ITER_LOG2) hmac := hmac_sha256(password, hmac) info_key := info_key XOR hmac END UNTIL sha256(info_key) = base64_dec(KEY_CHECK_HASH) file_name := aes_cbc_dec(base64_dec(CRYPTED_FILE_NAME), info_key, IV(0)) file_key := aes_cbc_dec(base64_dec(CRYPTED_FILE_KEY), info_key, IV(0)) extra_info := aes_cbc_dec(base64_dec(CRYPTED_EXTRA_INFO), info_key, IV(0))
-Note: iteration count is -> pow(2, 14) = 16384
-  
-Petición Dl (para obtener una URL temporal al archivo (cifrado)): {"m": "dl", "link": "MC_LINK", *"ssl": true OR false}
-*Parámetros opcionales: 1) Default is false (better performance in slow machines)
-Respuesta Dl: {"url": "MEGA_TEMP_URL"}
+File name, file key, and extra-info will be returned crypted using AES CBC (PKCS7) with 256 bits key derivated from pass
+and zero-iv. Moreover, SHA-256 key hash will be returned to allow you checking it.
 
-Respuesta de error: {"error": ERROR_CODE}
-Códigos de error: MC_EMETHOD(1) MC_EREQ(2) MC_INTERNAL_ERROR(21) MC_LINK_ERROR(22) MC_BLACKLISTED_LINK(23) MC_EXPIRED_LINK(24) MEGA_EINTERNAL(-1) MEGA_EARGS(-2) MEGA_EAGAIN(-3) MEGA_ERATELIMIT(-4) MEGA_EFAILED(-5) MEGA_ETOOMANY(-6) MEGA_ERANGE(-7) MEGA_EEXPIRED(-8) MEGA_ENOENT(-9) MEGA_ECIRCULAR(-10) MEGA_EACCESS(-11) MEGA_EEXIST(-12) MEGA_EINCOMPLETE(-13) MEGA_EKEY(-14) MEGA_ESID(-15) MEGA_EBLOCKED(-16) MEGA_EOVERQUOTA(-17) MEGA_ETEMPUNAVAIL(-18) MEGA_ETOOMANYCONNECTIONS(-19) MEGA_EWRITE(-20) MEGA_EREAD(-21) MEGA_EAPPKEY(-22) MEGA_EDLURL(-101) 
+Follow this <strong>algorithm</strong> to decrypt crypted fields:
 
+<em>REPEAT
+        
+    password := read_password()
+    
+    info_key := hmac := hmac_sha256(password, base64_dec(SALT))
+    
+    FOR i=2 : 1 : pow(2, ITER_LOG2)
+        
+        hmac := hmac_sha256(password, hmac)
+    
+        info_key := info_key XOR hmac
+    
+    END
+
+UNTIL sha256(info_key) = base64_dec(KEY_CHECK_HASH)
+
+
+file_name := aes_cbc_dec(base64_dec(CRYPTED_FILE_NAME), info_key, IV(0))
+
+file_key := aes_cbc_dec(base64_dec(CRYPTED_FILE_KEY), info_key, IV(0))
+
+extra_info := aes_cbc_dec(base64_dec(CRYPTED_EXTRA_INFO), info_key, IV(0))
+</em>
+<div class="extra_info">
+<em>Note: iteration count is -> pow(2, 14) = 16384</em></div>
+</div></div>
+
+<div class="api_method"><strong>Dl-request</strong> (for getting a temporary url to the (crypted) file):
+{"m": "dl", 
+"link": <em>"MC_LINK"</em>,
+*"ssl": <em>true OR false</em>}
+
+<div class="extra_info"><strong>*Optional params:</strong>
+<em>1) Default is false (better performance in slow machines)</em>
+</div>
+
+<strong>Dl-response:</strong>
+{"url": <em>"MEGA_TEMP_URL"</em>}</div>
+
+<div class="api_error"><strong>Error-response</strong> (because shit happens...):
+{"error": <em>ERROR_CODE</em>}
+
+<div class="extra_info"><strong>Error codes:</strong>
+MC_EMETHOD(1)
+MC_EREQ(2)
+MC_INTERNAL_ERROR(21)
+MC_LINK_ERROR(22)
+MC_BLACKLISTED_LINK(23)
+MC_EXPIRED_LINK(24)
+MEGA_EINTERNAL(-1)
+MEGA_EARGS(-2)
+MEGA_EAGAIN(-3)
+MEGA_ERATELIMIT(-4)
+MEGA_EFAILED(-5)
+MEGA_ETOOMANY(-6)
+MEGA_ERANGE(-7)
+MEGA_EEXPIRED(-8)
+MEGA_ENOENT(-9)
+MEGA_ECIRCULAR(-10)
+MEGA_EACCESS(-11)
+MEGA_EEXIST(-12)
+MEGA_EINCOMPLETE(-13)
+MEGA_EKEY(-14)
+MEGA_ESID(-15)
+MEGA_EBLOCKED(-16)
+MEGA_EOVERQUOTA(-17)
+MEGA_ETEMPUNAVAIL(-18)
+MEGA_ETOOMANYCONNECTIONS(-19)
+MEGA_EWRITE(-20)
+MEGA_EREAD(-21)
+MEGA_EAPPKEY(-22)
+MEGA_EDLURL(-101)
+</div></div>
 </pre>
         </section>
 
