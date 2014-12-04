@@ -69,10 +69,10 @@ fjs.parentNode.insertBefore(js, fjs);
 <h2>API DOC</h2>
 Megacrypter API uses <a href="//en.wikipedia.org/wiki/JSON" target="_blank">JSON</a> with <a href="//en.wikipedia.org/wiki/POST_%28HTTP%29" target="_blank">HTTP POST requests</a>
 
-<pre>API URL -> https://megacrypter.com/api
-(Content-Type: application/json)</pre>
+API URL -> https://megacrypter.com/api
+(Content-Type: application/json)
 
-<pre>Crypt-request (for protecting a mega link list):
+Crypt-request (for protecting a mega link list):
 {"m": "crypt", 
 "links": ["MEGA_LINK_1", "MEGA_LINK_2" ... "MEGA_LINK_N"],
 *"expire": 0-6
@@ -84,10 +84,33 @@ Megacrypter API uses <a href="//en.wikipedia.org/wiki/JSON" target="_blank">JSON
 *"extra_info": "EXTRA_INFO",
 *"email": "EMAIL"}
 
-*Optional params: 1) Expiration values: 0 -> never (default), 1 -> 10 minutes, 2 -> 1 hour... 2) Tiny url option is false by default. 3) Append file info option is false by default. 4) Hide name option is false by default. 5) Passwords are case-sensitive. 6) Referer is not required to include 'http://'. It's limited to 64 chars 7) Extra-info is limited to 64 chars. Note: link list is limited to 250
+*Optional params: 
+1) Expiration values: 0 -> never (default), 
+1 -> 10 minutes, 
+2 -> 1 hour... 
+2) Tiny url option is false by default. 
+3) Append file info option is false by default.
+4) Hide name option is false by default. 
+5) Passwords are case-sensitive. 
+6) Referer is not required to include 'http://'. It's limited to 64 chars 
+7) Extra-info is limited to 64 chars. Note: link list is limited to 250
 
 Crypt-response:
-{"links": ["MC_LINK_1", "MC_LINK_2" ... "MC_LINK_N"]}</pre>
+{"links": ["MC_LINK_1", "MC_LINK_2" ... "MC_LINK_N"]}
+
+Petición info (para obtener diversa información sobre un enlace): 
+{"m": "info", "link": "MC_LINK"} 
+
+Respuesta info: 
+{"name": "FILE_NAME" OR "CRYPTED_FILE_NAME", 
+"size": FILE_SIZE,
+"key": "FILE_KEY" OR "CRYPTED_FILE_KEY", 
+"extra": "EXTRA_INFO" OR "CRYPTED_EXTRA_INFO", 
+"expire": false OR EXPIRE_TIMESTAMP, 
+"pass": false OR "ITER_LOG2#KEY_CHECK_HASH#SALT"}
+
+En relación a los enlaces protegidos con contraseña: File name, file key, and extra-info will be returned crypted using AES CBC (PKCS7) with 256 bits key derivated from pass and zero-iv. Moreover, SHA-256 key hash will be returned to allow you checking it. Sigue este algoritmo para descifrar los campos cifrados: REPEAT password := read_password() info_key := hmac := hmac_sha256(password, base64_dec(SALT)) FOR i=2 : 1 : pow(2, ITER_LOG2) hmac := hmac_sha256(password, hmac) info_key := info_key XOR hmac END UNTIL sha256(info_key) = base64_dec(KEY_CHECK_HASH) file_name := aes_cbc_dec(base64_dec(CRYPTED_FILE_NAME), info_key, IV(0)) file_key := aes_cbc_dec(base64_dec(CRYPTED_FILE_KEY), info_key, IV(0)) extra_info := aes_cbc_dec(base64_dec(CRYPTED_EXTRA_INFO), info_key, IV(0))
+Note: iteration count is -> pow(2, 14) = 16384
         </section>
 
         <aside id="sidebar">
