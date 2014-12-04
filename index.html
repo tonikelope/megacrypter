@@ -69,7 +69,7 @@ fjs.parentNode.insertBefore(js, fjs);
 <h2>API DOC</h2>
 Megacrypter API uses <a href="//en.wikipedia.org/wiki/JSON" target="_blank">JSON</a> with <a href="//en.wikipedia.org/wiki/POST_%28HTTP%29" target="_blank">HTTP POST requests</a>
 
-API URL -> https://megacrypter.com/api
+<pre>API URL -> https://megacrypter.com/api
 (Content-Type: application/json)
 
 Crypt-request (for protecting a mega link list):
@@ -111,6 +111,15 @@ Respuesta info:
 
 En relación a los enlaces protegidos con contraseña: File name, file key, and extra-info will be returned crypted using AES CBC (PKCS7) with 256 bits key derivated from pass and zero-iv. Moreover, SHA-256 key hash will be returned to allow you checking it. Sigue este algoritmo para descifrar los campos cifrados: REPEAT password := read_password() info_key := hmac := hmac_sha256(password, base64_dec(SALT)) FOR i=2 : 1 : pow(2, ITER_LOG2) hmac := hmac_sha256(password, hmac) info_key := info_key XOR hmac END UNTIL sha256(info_key) = base64_dec(KEY_CHECK_HASH) file_name := aes_cbc_dec(base64_dec(CRYPTED_FILE_NAME), info_key, IV(0)) file_key := aes_cbc_dec(base64_dec(CRYPTED_FILE_KEY), info_key, IV(0)) extra_info := aes_cbc_dec(base64_dec(CRYPTED_EXTRA_INFO), info_key, IV(0))
 Note: iteration count is -> pow(2, 14) = 16384
+  
+Petición Dl (para obtener una URL temporal al archivo (cifrado)): {"m": "dl", "link": "MC_LINK", *"ssl": true OR false}
+*Parámetros opcionales: 1) Default is false (better performance in slow machines)
+Respuesta Dl: {"url": "MEGA_TEMP_URL"}
+
+Respuesta de error: {"error": ERROR_CODE}
+Códigos de error: MC_EMETHOD(1) MC_EREQ(2) MC_INTERNAL_ERROR(21) MC_LINK_ERROR(22) MC_BLACKLISTED_LINK(23) MC_EXPIRED_LINK(24) MEGA_EINTERNAL(-1) MEGA_EARGS(-2) MEGA_EAGAIN(-3) MEGA_ERATELIMIT(-4) MEGA_EFAILED(-5) MEGA_ETOOMANY(-6) MEGA_ERANGE(-7) MEGA_EEXPIRED(-8) MEGA_ENOENT(-9) MEGA_ECIRCULAR(-10) MEGA_EACCESS(-11) MEGA_EEXIST(-12) MEGA_EINCOMPLETE(-13) MEGA_EKEY(-14) MEGA_ESID(-15) MEGA_EBLOCKED(-16) MEGA_EOVERQUOTA(-17) MEGA_ETEMPUNAVAIL(-18) MEGA_ETOOMANYCONNECTIONS(-19) MEGA_EWRITE(-20) MEGA_EREAD(-21) MEGA_EAPPKEY(-22) MEGA_EDLURL(-101) 
+
+</pre>
         </section>
 
         <aside id="sidebar">
