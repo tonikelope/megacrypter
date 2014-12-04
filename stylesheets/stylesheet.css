@@ -877,3 +877,18 @@ footer a:hover {
 /* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
 @media only screen and (max-width: 479px) {}
 
+#button_twitter
+{
+    margin-left: 4px;
+    margin-right: 4px;
+    position:relative;
+    top: 6px;
+}
+
+#button_facebook
+{
+    margin-left: 4px;
+    margin-right: 4px;
+    position:relative;
+    top: 6px;
+}
