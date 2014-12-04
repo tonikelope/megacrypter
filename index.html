@@ -69,10 +69,10 @@ fjs.parentNode.insertBefore(js, fjs);
 <h2>API DOC</h2>
 Megacrypter API uses <a href="//en.wikipedia.org/wiki/JSON" target="_blank">JSON</a> with <a href="//en.wikipedia.org/wiki/POST_%28HTTP%29" target="_blank">HTTP POST requests</a>
 
-<code>API URL -> https://megacrypter.com/api
-(Content-Type: application/json)</code>
+<pre>API URL -> https://megacrypter.com/api
+(Content-Type: application/json)</pre>
 
-<code>Crypt-request (for protecting a mega link list):
+<pre>Crypt-request (for protecting a mega link list):
 {"m": "crypt", 
 "links": ["MEGA_LINK_1", "MEGA_LINK_2" ... "MEGA_LINK_N"],
 *"expire": 0-6
@@ -87,7 +87,7 @@ Megacrypter API uses <a href="//en.wikipedia.org/wiki/JSON" target="_blank">JSON
 *Optional params: 1) Expiration values: 0 -> never (default), 1 -> 10 minutes, 2 -> 1 hour... 2) Tiny url option is false by default. 3) Append file info option is false by default. 4) Hide name option is false by default. 5) Passwords are case-sensitive. 6) Referer is not required to include 'http://'. It's limited to 64 chars 7) Extra-info is limited to 64 chars. Note: link list is limited to 250
 
 Crypt-response:
-{"links": ["MC_LINK_1", "MC_LINK_2" ... "MC_LINK_N"]}</code>
+{"links": ["MC_LINK_1", "MC_LINK_2" ... "MC_LINK_N"]}</pre>
         </section>
 
         <aside id="sidebar">
