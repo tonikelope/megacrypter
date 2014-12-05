@@ -67,7 +67,7 @@ fjs.parentNode.insertBefore(js, fjs);
 <p>You're alone from here. Good luck!</p>
 
 <h2>API DOC</h2>
-<pre class="code">
+<pre>
 <div class="api_method"><strong>API URL -> </strong><em>http://megacrypter.yourdomain/api</em>
 (<strong>Content-Type:</strong> <em>application/json</em>)</div>
 
@@ -94,9 +94,9 @@ fjs.parentNode.insertBefore(js, fjs);
 <em>Note: link list is limited to 250</em></div>
 <strong>Crypt-response:</strong>
 {"links": [<em>"MC_LINK_1"</em>, <em>"MC_LINK_2"</em> ... <em>"MC_LINK_N"</em>]}
-</div>
+</div></pre>
 
-<div class="api_method"><strong>Info-request</strong> (for retrieving some file information):
+<pre><div class="api_method"><strong>Info-request</strong> (for retrieving some file information):
 {"m": "info", 
 "link": <em>"MC_LINK"</em>}
 
@@ -141,9 +141,9 @@ extra_info := aes_cbc_dec(base64_dec(CRYPTED_EXTRA_INFO), info_key, IV(0))
 </em>
 <div class="extra_info">
 <em>Note: iteration count is -> pow(2, 14) = 16384</em></div>
-</div></div>
+</div></div></pre>
 
-<div class="api_method"><strong>Dl-request</strong> (for getting a temporary url to the (crypted) file):
+<pre><div class="api_method"><strong>Dl-request</strong> (for getting a temporary url to the (crypted) file):
 {"m": "dl", 
 "link": <em>"MC_LINK"</em>,
 *"ssl": <em>true OR false</em>}
@@ -154,8 +154,9 @@ extra_info := aes_cbc_dec(base64_dec(CRYPTED_EXTRA_INFO), info_key, IV(0))
 
 <strong>Dl-response:</strong>
 {"url": <em>"MEGA_TEMP_URL"</em>}</div>
+</pre>
 
-<div class="api_error"><strong>Error-response</strong> (because shit happens...):
+<pre><div class="api_error"><strong>Error-response</strong> (because shit happens...):
 {"error": <em>ERROR_CODE</em>}
 
 <div class="extra_info"><strong>Error codes:</strong>
