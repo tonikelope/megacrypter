@@ -111,7 +111,7 @@ fjs.parentNode.insertBefore(js, fjs);
 <div class="extra_info"><strong>About password protected files</strong>: 
 
 File name, file key, and extra-info will be returned crypted using AES CBC (PKCS7) 
-with 256 bits key derivated from passand zero-iv. Moreover, SHA-256 key hash will 
+with 256 bits key (derivated from pass) and zero-iv. Moreover, SHA-256 key hash will 
 be returned to allow you checking it.
 
 Follow this <strong>algorithm</strong> to decrypt crypted fields:
@@ -139,8 +139,6 @@ file_key := aes_cbc_dec(base64_dec(CRYPTED_FILE_KEY), info_key, IV(0))
 
 extra_info := aes_cbc_dec(base64_dec(CRYPTED_EXTRA_INFO), info_key, IV(0))
 </em>
-<div class="extra_info">
-<em>Note: iteration count is -> pow(2, 14) = 16384</em></div>
 </div></div></pre>
 
 <pre><div class="api_method"><strong>Dl-request</strong> (for getting a temporary url to the (crypted) file):
