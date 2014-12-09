@@ -1,7 +1,7 @@
 <?php
 
+error_reporting(0); //Important!
 date_default_timezone_set('Europe/Madrid');
-
 require_once __DIR__ . '/../application/config/paths.php';
 require_once APP_PATH . 'autoload.php';
 require_once CONFIG_PATH . 'miscellaneous.php';
