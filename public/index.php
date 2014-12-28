@@ -1,6 +1,6 @@
 <?php
 
-ini_set('display_errors', 'Off'); //Important!
+ini_set('display_errors', 'stderr'); //Important!
 date_default_timezone_set('Europe/Madrid');
 require_once __DIR__ . '/../application/config/paths.php';
 require_once APP_PATH . 'autoload.php';
