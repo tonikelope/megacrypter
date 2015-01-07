@@ -14,13 +14,13 @@ What do you need?
 
 Instructions:
 
-Step 1: upload megacrypter to your server.
+Step 1: download tarball (or clone repo) and upload to your server.
 
-Step 2: prepare virtual host (set document root point to megacrypter public dir)
+Step 2: install composer dependencies -> php composer.phar install
 
-Step 3: install composer dependencies -> php composer.phar install
+Step 3: remove ALL /config .sample extension and edit miscellaneous.php and any other file you need.
 
-Step 4: remove ALL /config .sample extension and edit miscellaneous.php and any other file you need.
+Step 4: prepare virtual host (set document root point to megacrypter public dir) and restart Apache
 
 Step 5 (optional): ask  developers of your favourite download manager to recognize your new megacrypter links.
 
