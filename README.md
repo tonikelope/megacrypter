@@ -16,7 +16,7 @@ Instructions:
 
 Step 1: download tarball (or clone repo) and upload to your server.
 
-Step 2: install composer dependencies -> php composer.phar install
+Step 2: install composer dependencies -> <code>$ php composer.phar install</code>
 
 Step 3: remove ALL /config .sample extension and edit miscellaneous.php and any other file you need.
 
