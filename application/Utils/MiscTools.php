@@ -30,7 +30,7 @@ class Utils_MiscTools
         return pack('H*', $hex);
     }
 
-    public static function deflateUrl($url, $retry = 3, $https=true, $anti_timeout=true) {
+    public static function deflateUrl($url, $retry = 3, $https=true) {
         
         do {
             
@@ -51,10 +51,6 @@ class Utils_MiscTools
             $tiny_url = trim($resp->id);
 
         } while (($curl_error || !preg_match('/^https?\:\/\//i', $tiny_url)) && --$retry > 0);
-        
-        if($anti_timeout) {
-            echo '<span style="display:none"></span>';
-        }
         
         return $retry > 0 ? ($https?str_ireplace('http://', 'https://', $tiny_url):$tiny_url): $url;
     }
