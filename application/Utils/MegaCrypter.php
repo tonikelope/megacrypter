@@ -93,7 +93,7 @@ class Utils_MegaCrypter
         }
     }
 
-    public static function encryptLinkList(array $links=null, array $options = [], $app_finfo = false, $cook_options=true) {
+    public static function encryptLinkList(array $links=null, array $options = [], $app_finfo = false, $cook_options=true, $anti_timeout=true) {
 
         if (!empty($links)) {
             
@@ -135,6 +135,10 @@ class Utils_MegaCrypter
                     if(isset($c_link)) {
                         
                         $crypt_links[] = $c_link;
+                        
+                        if($anti_timeout) {
+                            echo '<span style="display:none"></span>';
+                        }
                     }
                 }
             }
