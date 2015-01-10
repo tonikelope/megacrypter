@@ -93,7 +93,7 @@ class Utils_MegaCrypter
         }
     }
 
-    public static function encryptLinkList(array $links=null, array $options = [], $app_finfo = false, $cook_options=true, $anti_timeout=true) {
+    public static function encryptLinkList(array $links=null, array $options = [], $app_finfo = false, $cook_options=true, $anti_timeout=false) {
 
         if (!empty($links)) {
             
