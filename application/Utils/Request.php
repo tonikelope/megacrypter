@@ -7,12 +7,8 @@ class Utils_Request
     public function __construct(array $extra = []) {
         
         $this->_extra = $extra;
-
-        if (!is_null($this->getPostVar('jc'))) {
-            $this->_decryptJCPostData();
-        }
     }
-
+    
     public function getVar($id = null) {
         return is_null($id) ? $_GET : (array_key_exists($id, $_GET) ? $_GET[$id] : null);
     }
@@ -44,23 +40,4 @@ class Utils_Request
     public function getExtraVar($id = null) {
         return is_null($id) ? $this->_extra : (array_key_exists($id, $this->_extra) ? $this->_extra[$id] : null);
     }
-
-    private function _decryptJCPostData() {
-
-        session_start();
-
-        if(($data = Utils_CryptTools::opensslDecryptWithPass(base64_decode($this->getPostVar('jc')), 'aes-256-cbc', $this->getSessionVar('key'))) !== false) {
-            
-            parse_str($data, $output);
-
-            $_POST = array_merge($_POST, $output);
-
-            unset($_POST['jc']);
-            
-        } else {
-            
-            throw new Exception(__METHOD__ . ' Bad JC key!');
-        }
-    }
-
 }
