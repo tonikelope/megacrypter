@@ -106,11 +106,11 @@ class Utils_MegaCrypter
 
             foreach ($links as $link) {
 
-                if(($domain=strtolower(Utils_MiscTools::extractHostFromUrl(($link=trim($link)), true)))) {
+                if(($domain=Utils_MiscTools::extractHostFromUrl(($link=trim($link)), true))) {
                     
                     try {
                         
-                        switch(strtr($domain, ['mega.nz' => 'mega.co.nz'])) {
+                        switch(str_replace('mega.nz', 'mega.co.nz', $domain)) {
                             
                             case 'mega.co.nz':
                                 
