@@ -119,7 +119,7 @@ class Controller_ApiController extends Controller_DefaultController
     
     private function _decryptLink($link) {
         
-        if(stripos(($link = trim($link)), 'mega.co.nz')!==false) {
+        if(preg_match('/^(?:https?:\/\/)?mega(?:\.co)?\.nz/i', ($link = trim($link)))) {
                            
             if(preg_match('/^.*?\/#!(?P<file_id>[^!]+)!(?P<file_key>.+)$/i', $link, $match)) {
 
