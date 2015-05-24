@@ -62,7 +62,7 @@ class Controller_ApiController extends Controller_DefaultController
             'size' => $file_info['size'],
             'key' => isset($file_info['key']) ? $file_info['key'] : $dec_link['file_key'],
             'extra' => $dec_link['extra_info'],
-            'expire' => $dec_link['expire']?"{$dec_link['expire']}#".base64_encode(hash('sha256', base64_decode($dec_link['secret']), true)):$dec_link['expire'],
+            'expire' => $dec_link['expire']?$dec_link['expire']}.'#'.base64_encode(hash('sha256', base64_decode($dec_link['secret']), true)):$dec_link['expire'],
             'pass' => $dec_link['pass']
         ];
 
@@ -71,16 +71,16 @@ class Controller_ApiController extends Controller_DefaultController
             list($iterations, $pass, $pass_salt) = explode('#', $dec_link['pass']);
             
             $b64p = base64_decode($pass);
+            
+            $iv = md5(base64_decode($salt),true);
 
-            $data['name'] = $this->_encryptApiField($data['name'], $b64p);
+            $data['name'] = $this->_encryptApiField($data['name'], $b64p, $iv);
             
-            $data['size'] = $this->_encryptApiField($data['size'], $b64p);
-            
-            $data['key'] = $this->_encryptApiField(Utils_MiscTools::urlBase64Decode($data['key']), $b64p);
+            $data['key'] = $this->_encryptApiField(Utils_MiscTools::urlBase64Decode($data['key']), $b64p, $iv);
 
             if (!empty($data['extra'])) {
 
-                $data['extra'] = $this->_encryptApiField($data['extra'], $b64p);
+                $data['extra'] = $this->_encryptApiField($data['extra'], $b64p, $iv);
             }
             
             $data['pass'] = $iterations . '#'. base64_encode(hash('sha256', $b64p, true)) . '#' . $pass_salt;
@@ -122,7 +122,7 @@ class Controller_ApiController extends Controller_DefaultController
 				
 				list($iterations, $pass, $pass_salt) = explode('#', $dec_link['pass']);
 
-				$data['url'] = $this->_encryptApiField($data['url'], base64_decode($pass));
+				$data['url'] = $this->_encryptApiField($data['url'], base64_decode($pass), md5(base64_decode($pass_salt), true));
 			}
             
         } catch (Exception $exception) {
@@ -170,9 +170,9 @@ class Controller_ApiController extends Controller_DefaultController
         return $dec_link;
     }
     
-    private function _encryptApiField($field_value, $pass_sha256) {
+    private function _encryptApiField($field_value, $pass_sha256, $iv) {
         
-        return base64_encode(Utils_CryptTools::aesCbcEncrypt($field_value, $pass_sha256, null, true));
+        return base64_encode(Utils_CryptTools::aesCbcEncrypt($field_value, $pass_sha256, $iv, true));
     }
 
 }

@@ -43,7 +43,7 @@ class Utils_MegaCrypter
                 !empty($options['zombie']) ? $options['zombie'] : null]
             );
 
-            $data = Utils_MiscTools::urlBase64Encode(Utils_CryptTools::aesCbcEncrypt(gzdeflate(implode(self::SEPARATOR, [$secret, $match['file_id'], $match['file_key'], !empty($options['pass']) ? self::PASS_HASH_ITERATIONS_LOG2.'#'.  base64_encode(Utils_CryptTools::passHMAC('sha256', $options['pass'], ($salt=openssl_random_pseudo_bytes(self::PASS_SALT_BYTE_LENGTH)), pow(2, self::PASS_HASH_ITERATIONS_LOG2))) . '#' . base64_encode($salt) : null, $extra, !empty($options['auth'])?$options['auth']:null]), 9), Utils_MiscTools::hex2bin(MASTER_KEY), Utils_MiscTools::hex2bin(md5(MASTER_KEY))));
+            $data = Utils_MiscTools::urlBase64Encode(Utils_CryptTools::aesCbcEncrypt(gzdeflate(implode(self::SEPARATOR, [$secret, $match['file_id'], $match['file_key'], !empty($options['pass']) ? self::PASS_HASH_ITERATIONS_LOG2.'#'.  base64_encode(Utils_CryptTools::passHMAC('sha256', $options['pass'], ($salt=openssl_random_pseudo_bytes(self::PASS_SALT_BYTE_LENGTH)), pow(2, self::PASS_HASH_ITERATIONS_LOG2))) . '#' . base64_encode($salt) : null, $extra, !empty($options['auth'])?$options['auth']:null]), 9), Utils_MiscTools::hex2bin(MASTER_KEY), md5(MASTER_KEY, true)));
 
             $hash = hash_hmac(self::HMAC_ALGO, $data, md5(MASTER_KEY));
 
@@ -67,7 +67,7 @@ class Utils_MegaCrypter
                 throw new Exception_MegaCrypterLinkException(self::BLACKLISTED_LINK);
             } else {
 
-                list($secret, $file_id, $file_key, $pass, $extra, $auth) = explode(self::SEPARATOR, gzinflate(Utils_CryptTools::aesCbcDecrypt(Utils_MiscTools::urlBase64Decode($match['data']), Utils_MiscTools::hex2bin(MASTER_KEY), Utils_MiscTools::hex2bin(md5(MASTER_KEY)))));
+                list($secret, $file_id, $file_key, $pass, $extra, $auth) = explode(self::SEPARATOR, gzinflate(Utils_CryptTools::aesCbcDecrypt(Utils_MiscTools::urlBase64Decode($match['data']), Utils_MiscTools::hex2bin(MASTER_KEY), md5(MASTER_KEY, true))));
 
                 if (!$ignore_exceptions && BLACKLIST_LEVEL == self::BLACKLIST_LEVEL_MEGA && self::isBlacklistedLink($file_id)) {
                     throw new Exception_MegaCrypterLinkException(self::BLACKLISTED_LINK);
