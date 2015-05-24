@@ -72,7 +72,7 @@ class Controller_ApiController extends Controller_DefaultController
             
             $b64p = base64_decode($pass);
             
-            $iv = md5(base64_decode($salt),true);
+            $iv = md5(base64_decode($pass_salt),true);
 
             $data['name'] = $this->_encryptApiField($data['name'], $b64p, $iv);
             
