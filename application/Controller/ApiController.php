@@ -62,22 +62,28 @@ class Controller_ApiController extends Controller_DefaultController
             'size' => $file_info['size'],
             'key' => isset($file_info['key']) ? $file_info['key'] : $dec_link['file_key'],
             'extra' => $dec_link['extra_info'],
-            'expire' => $dec_link['expire'],
-            'pass' => false
+            'expire' => $dec_link['expire']?"{$dec_link['expire']}#".base64_encode(hash('sha256', base64_decode($dec_link['secret']), true)):$dec_link['expire'],
+            'pass' => $dec_link['pass']
         ];
 
         if ($dec_link['pass']) {
 
             list($iterations, $pass, $pass_salt) = explode('#', $dec_link['pass']);
+            
+            $b64p = base64_decode($pass);
 
-            $data['name'] = $this->_encryptApiField($data['name'], $pass);
-            $data['key'] = $this->_encryptApiField(Utils_MiscTools::urlBase64Decode($data['key']), $pass);
-            $data['pass'] = $iterations . '#'. base64_encode(hash('sha256', base64_decode($pass), true)) . '#' . $pass_salt;
+            $data['name'] = $this->_encryptApiField($data['name'], $b64p);
+            
+            $data['size'] = $this->_encryptApiField($data['size'], $b64p);
+            
+            $data['key'] = $this->_encryptApiField(Utils_MiscTools::urlBase64Decode($data['key']), $b64p);
 
             if (!empty($data['extra'])) {
 
-                $data['extra'] = $this->_encryptApiField($data['extra'], $pass);
+                $data['extra'] = $this->_encryptApiField($data['extra'], $b64p);
             }
+            
+            $data['pass'] = $iterations . '#'. base64_encode(hash('sha256', $b64p, true)) . '#' . $pass_salt;
         }
         
         return $data;
@@ -85,14 +91,40 @@ class Controller_ApiController extends Controller_DefaultController
     
     private function _actionDl($post_data) {
         
-        $dec_link = $this->_decryptLink($post_data->link);
-        
+        try
+        {
+			$dec_link = $this->_decryptLink($post_data->link);
+			
+		} catch(Exception_MegaCrypterLinkException $exception) {
+			
+			if($exception->getCode() == Utils_MegaCrypter::EXPIRED_LINK)
+			{
+				$dec_link = Utils_MegaCrypter::decryptLink($post_data->link, true);
+				
+				if($post_data->noexpire != base64_encode(hash('sha256', base64_decode($dec_link['secret']), true)))
+				{
+					throw $exception;
+				}
+				
+			} else {
+				
+				throw $exception;
+			}
+		}
+
         $ma = new Utils_MegaApi(MEGA_API_KEY);
         
         try {
             
             $data = ['url' => $ma->getFileDownloadUrl($dec_link['file_id'], is_bool($post_data->ssl) ? $post_data->ssl : false)];
-           
+            
+            if ($dec_link['pass']) {
+				
+				list($iterations, $pass, $pass_salt) = explode('#', $dec_link['pass']);
+
+				$data['url'] = $this->_encryptApiField($data['url'], base64_decode($pass));
+			}
+            
         } catch (Exception $exception) {
             
             Utils_MemcacheTon::getInstance()->delete($dec_link['file_id'] . $dec_link['file_key']);
@@ -119,9 +151,9 @@ class Controller_ApiController extends Controller_DefaultController
     
     private function _decryptLink($link) {
         
-        if(preg_match('/^(?:https?\:\/\/)?mega(?:\.co)?\.nz/i', ($link = trim($link)))) {
+        if(preg_match('/^(?:https?\:\/\/)?mega(?:\.co)?\.nz(?:\/#!(?P<file_id>[^!]+)!(?P<file_key>.+))?$/i', ($link = trim($link)), $match)) {
                            
-            if(preg_match('/^.*?\/#!(?P<file_id>[^!]+)!(?P<file_key>.+)$/i', $link, $match)) {
+            if(!empty($match['file_id']) && !empty($match['file_key'])) {
 
                 $dec_link=['file_id' => $match['file_id'], 'file_key' => $match['file_key']];
 
@@ -138,9 +170,9 @@ class Controller_ApiController extends Controller_DefaultController
         return $dec_link;
     }
     
-    private function _encryptApiField($field_value, $pass_sha256_b64) {
+    private function _encryptApiField($field_value, $pass_sha256) {
         
-        return base64_encode(Utils_CryptTools::aesCbcEncrypt($field_value, base64_decode($pass_sha256_b64), null, true));
+        return base64_encode(Utils_CryptTools::aesCbcEncrypt($field_value, $pass_sha256, null, true));
     }
 
 }

@@ -32,7 +32,7 @@ class Controller_LinkInfoController extends Controller_DefaultController
 
             $file_info = $ma->getFileInfo($dec_link['file_id'], $dec_link['file_key']);
 
-            $view_data = array_merge($file_info, ['size' => $file_info['size'] > 0 ? Utils_MiscTools::formatBytes($file_info['size']) : false]);
+            $view_data = array_merge($file_info, ['size' => $file_info['size'] > 0 ? ($dec_link['pass']?'**********':Utils_MiscTools::formatBytes($file_info['size'])) : false]);
 
             if (Utils_MiscTools::isStreameableFile($view_data['name'])) {
 

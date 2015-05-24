@@ -57,26 +57,26 @@ class Utils_MegaCrypter
         }
     }
 
-    public static function decryptLink($link, $ignore_blacklist = false) {
+    public static function decryptLink($link, $ignore_exceptions = false) {
 
         if (preg_match('/^.*?!(?P<data>[0-9a-z_-]+)!(?P<hash>[0-9a-f]+)/i', trim(str_replace('/', '', $link)), $match)) {
 
             if (hash_hmac(self::HMAC_ALGO, $match['data'], md5(MASTER_KEY)) != $match['hash']) {
                 throw new Exception_MegaCrypterLinkException(self::LINK_ERROR);
-            } else if (!$ignore_blacklist && BLACKLIST_LEVEL >= self::BLACKLIST_LEVEL_MC && self::isBlacklistedLink($match['data'])) {
+            } else if (!$ignore_exceptions && BLACKLIST_LEVEL >= self::BLACKLIST_LEVEL_MC && self::isBlacklistedLink($match['data'])) {
                 throw new Exception_MegaCrypterLinkException(self::BLACKLISTED_LINK);
             } else {
 
                 list($secret, $file_id, $file_key, $pass, $extra, $auth) = explode(self::SEPARATOR, gzinflate(Utils_CryptTools::aesCbcDecrypt(Utils_MiscTools::urlBase64Decode($match['data']), Utils_MiscTools::hex2bin(MASTER_KEY), Utils_MiscTools::hex2bin(md5(MASTER_KEY)))));
 
-                if (!$ignore_blacklist && BLACKLIST_LEVEL == self::BLACKLIST_LEVEL_MEGA && self::isBlacklistedLink($file_id)) {
+                if (!$ignore_exceptions && BLACKLIST_LEVEL == self::BLACKLIST_LEVEL_MEGA && self::isBlacklistedLink($file_id)) {
                     throw new Exception_MegaCrypterLinkException(self::BLACKLISTED_LINK);
                 } else {
 
                     if ($extra) {
                         list($extra_info, $hide_name, $expire, $referer, $email, $zombie) = explode(self::SEPARATOR_EXTRA, $extra);
 
-                        if (!empty($expire) && time() >= $expire) {
+                        if (!$ignore_exceptions && !empty($expire) && time() >= $expire) {
                             throw new Exception_MegaCrypterLinkException(self::EXPIRED_LINK);
                         }
 

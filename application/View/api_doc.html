@@ -42,15 +42,15 @@ Megacrypter API (version <strong>{{constant('API_VERSION')}}</strong>) {% trans 
 
 <strong>{% trans "Info-response" %}:</strong>
 {"name": <em>"FILE_NAME" OR "CRYPTED_FILE_NAME"</em>, 
-"size": <em>FILE_SIZE</em>, 
+"size": <em>FILE_SIZE OR "CRYPTED_FILE_SIZE"</em>, 
 "key": <em>"FILE_KEY" OR "CRYPTED_FILE_KEY"</em>,
 "extra": <em>"EXTRA_INFO" OR "CRYPTED_EXTRA_INFO"</em>,
-"expire": <em>false OR EXPIRE_TIMESTAMP</em>,
+"expire": <em>false OR "EXPIRE_TIMESTAMP#NOEXPIRE_TOKEN"</em>,
 "pass": <em>false OR "ITER_LOG2#KEY_CHECK_HASH#SALT"</em>}
 
 <div class="extra_info"><strong>{% trans "About password protected files" %}</strong>: 
 
-{% trans "File name, file key, and extra-info will be returned crypted using AES CBC (PKCS7) with 256 bits key derivated from pass
+{% trans "File name, file_size, file key, and extra-info will be returned crypted using AES CBC (PKCS7) with 256 bits key derivated from pass
 and zero-iv. Moreover, SHA-256 key hash will be returned to allow you checking it" %}.
 
 {% trans "Follow this <strong>algorithm</strong> to decrypt crypted fields" %}:
@@ -74,6 +74,8 @@ UNTIL sha256(info_key) = base64_dec(KEY_CHECK_HASH)
 
 file_name := aes_cbc_dec(base64_dec(CRYPTED_FILE_NAME), info_key, IV(0))
 
+file_size := aes_cbc_dec(base64_dec(CRYPTED_FILE_SIZE), info_key, IV(0))
+
 file_key := aes_cbc_dec(base64_dec(CRYPTED_FILE_KEY), info_key, IV(0))
 
 extra_info := aes_cbc_dec(base64_dec(CRYPTED_EXTRA_INFO), info_key, IV(0))
@@ -85,14 +87,20 @@ extra_info := aes_cbc_dec(base64_dec(CRYPTED_EXTRA_INFO), info_key, IV(0))
 <div class="api_method">{% trans "<strong>Dl-request</strong> (for getting a temporary url to the (crypted) file)" %}:
 {"m": "dl", 
 "link": <em>"MC_LINK"</em>,
-*"ssl": <em>true OR false</em>}
+*"ssl": <em>true OR false</em>,
+*"noexpire": <em>"NOEXPIRE_TOKEN"</em>
+}
 
 <div class="extra_info"><strong>*{% trans "Optional params" %}:</strong>
 <em>1) Default is false (better performance in slow machines)</em>
+<em>2) If link has expired you can use NOEXPIRE_TOKEN (previously cached) to get the link</em>
 </div>
 
 <strong>{% trans "Dl-response" %}:</strong>
-{"url": <em>"MEGA_TEMP_URL"</em>}</div>
+{"url": <em>"MEGA_TEMP_URL" OR "CRYPTED_MEGA_TEMP_URL"</em>}
+
+<div class="extra_info"><em>Note: use the same algorithm described above to decrypt temp url (if password protected)</em></div>
+</div>
 
 <div class="api_error">{% trans "<strong>Error-response</strong> (because shit happens...)" %}:
 {"error": <em>ERROR_CODE</em>}

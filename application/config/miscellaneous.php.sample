@@ -9,7 +9,7 @@
     define('STOP_IT_ALL', false);
     define('WEB_MAINTENANCE', false);
     define('ERROR_LOG', false);
-    define('API_VERSION', '0.7');
+    define('API_VERSION', '0.8');
     
     define('BLACKLIST_LEVEL', Utils_MegaCrypter::BLACKLIST_LEVEL_OFF); //Disabled by default (ensure memcache is installed and running for optimal blacklist performance)
     define('BLACKLIST_MEMCACHE_PREFIX', 'BLACKLIST_');
