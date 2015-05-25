@@ -105,13 +105,13 @@ fjs.parentNode.insertBefore(js, fjs);
 "size": <em>FILE_SIZE</em>, 
 "key": <em>"FILE_KEY" OR "CRYPTED_FILE_KEY"</em>,
 "extra": <em>"EXTRA_INFO" OR "CRYPTED_EXTRA_INFO"</em>,
-"expire": <em>false OR EXPIRE_TIMESTAMP</em>,
+"expire": <em>false OR "EXPIRE_TIMESTAMP#NOEXPIRE_TOKEN"</em>,
 "pass": <em>false OR "ITER_LOG2#KEY_CHECK_HASH#SALT"</em>}
 
 <div class="extra_info"><strong>About password protected files</strong>: 
 
 File name, file key, and extra-info will be returned crypted using AES CBC (PKCS7) 
-with 256 bits key (derivated from pass) and zero-iv. Moreover, SHA-256 key hash 
+with 256 bits key (derivated from pass) and md5(SALT) as IV. Moreover, SHA-256 key hash 
 will be returned to allow you checking it.
 
 Follow this <strong>algorithm</strong> to decrypt crypted fields:
@@ -133,25 +133,30 @@ Follow this <strong>algorithm</strong> to decrypt crypted fields:
 UNTIL sha256(info_key) = base64_dec(KEY_CHECK_HASH)
 
 
-file_name := aes_cbc_dec(base64_dec(CRYPTED_FILE_NAME), info_key, IV(0))
+file_name := aes_cbc_dec(base64_dec(CRYPTED_FILE_NAME), info_key, IV(md5(base64_dec(SALT))))
 
-file_key := aes_cbc_dec(base64_dec(CRYPTED_FILE_KEY), info_key, IV(0))
+file_key := aes_cbc_dec(base64_dec(CRYPTED_FILE_KEY), info_key, IV(md5(base64_dec(SALT))))
 
-extra_info := aes_cbc_dec(base64_dec(CRYPTED_EXTRA_INFO), info_key, IV(0))
+extra_info := aes_cbc_dec(base64_dec(CRYPTED_EXTRA_INFO), info_key, IV(md5(base64_dec(SALT))))
 </em>
 </div></div></pre>
 
 <pre><div class="api_method"><strong>Dl-request</strong> (for getting a temporary url to the (crypted) file):
 {"m": "dl", 
 "link": <em>"MC_LINK"</em>,
-*"ssl": <em>true OR false</em>}
+*"ssl": <em>true OR false</em>,
+*"noexpire": <em>"NOEXPIRE_TOKEN"</em>}
 
 <div class="extra_info"><strong>*Optional params:</strong>
 <em>1) Default is false (better performance in slow machines)</em>
+<em>2) If link has expired you can use NOEXPIRE_TOKEN (previously cached) to get the link</em>
 </div>
 
 <strong>Dl-response:</strong>
-{"url": <em>"MEGA_TEMP_URL"</em>}</div>
+{"url": <em>"MEGA_TEMP_URL"</em>}
+
+<div class="extra_info"><em>Note: use the same algorithm described above to decrypt temp url (if password protected)</em></div>
+</div>
 </pre>
 
 <pre><div class="api_error"><strong>Error-response</strong> (because shit happens...):
