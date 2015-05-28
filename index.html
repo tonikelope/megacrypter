@@ -129,7 +129,7 @@ Follow this <strong>algorithm</strong> to decrypt crypted fields:
     
     END
 
-UNTIL hmac_sha256(IV, info_key) = base64_dec(KEY_CHECK_HMAC)
+UNTIL hmac_sha256(base64_dec(IV), info_key) = base64_dec(KEY_CHECK_HMAC)
 
 
 file_name := aes_cbc_dec(base64_dec(CRYPTED_FILE_NAME), info_key, base64_dec(IV))
