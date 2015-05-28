@@ -82,8 +82,8 @@ class Controller_ApiController extends Controller_DefaultController
 				$data['extra'] = $this->_encryptApiField($data['extra'], $b64p, $iv);
 			}
 		
-			$data['pass'] = $iterations . '#'. base64_encode(hash('sha256', $b64p, true)) . '#' . $pass_salt . '#' . base64_encode($iv);
-        
+			$data['pass'] = $iterations . '#'. base64_encode(hash_hmac('sha256', $b64p, $iv, true)) . '#' . $pass_salt . '#' . base64_encode($iv);
+			
         } else {
 			
 			$data['pass'] = false;
@@ -129,7 +129,7 @@ class Controller_ApiController extends Controller_DefaultController
 
 				$data['url'] = $this->_encryptApiField($data['url'], base64_decode($pass), $iv);
 				
-				$data['pass'] = $iterations . '#'. base64_encode(hash('sha256', $b64p, true)) . '#' . $pass_salt . '#' . base64_encode($iv);
+				$data['pass'] = $iterations . '#'. base64_encode(hash_hmac('sha256', $b64p, $iv, true)) . '#' . $pass_salt . '#' . base64_encode($iv);
 				
 			} else {
 				
