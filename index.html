@@ -106,13 +106,12 @@ fjs.parentNode.insertBefore(js, fjs);
 "key": <em>"FILE_KEY" OR "CRYPTED_FILE_KEY"</em>,
 "extra": <em>"EXTRA_INFO" OR "CRYPTED_EXTRA_INFO"</em>,
 "expire": <em>false OR "EXPIRE_TIMESTAMP#NOEXPIRE_TOKEN"</em>,
-"pass": <em>false OR "ITER_LOG2#KEY_CHECK_HASH#SALT"</em>}
+"pass": <em>false OR "ITER_LOG2#KEY_CHECK_HMAC#SALT#IV"</em>}
 
 <div class="extra_info"><strong>About password protected files</strong>: 
 
 File name, file key, and extra-info will be returned crypted using AES CBC (PKCS7) 
-with 256 bits key (derivated from pass) and md5(SALT) as IV. Moreover, SHA-256 key hash 
-will be returned to allow you checking it.
+with 256 bits key (derivated from pass).
 
 Follow this <strong>algorithm</strong> to decrypt crypted fields:
 
@@ -130,14 +129,14 @@ Follow this <strong>algorithm</strong> to decrypt crypted fields:
     
     END
 
-UNTIL sha256(info_key) = base64_dec(KEY_CHECK_HASH)
+UNTIL hmac_sha256(IV, info_key) = base64_dec(KEY_CHECK_HMAC)
 
 
-file_name := aes_cbc_dec(base64_dec(CRYPTED_FILE_NAME), info_key, IV(md5(base64_dec(SALT))))
+file_name := aes_cbc_dec(base64_dec(CRYPTED_FILE_NAME), info_key, base64_dec(IV))
 
-file_key := aes_cbc_dec(base64_dec(CRYPTED_FILE_KEY), info_key, IV(md5(base64_dec(SALT))))
+file_key := aes_cbc_dec(base64_dec(CRYPTED_FILE_KEY), info_key, base64_dec(IV))
 
-extra_info := aes_cbc_dec(base64_dec(CRYPTED_EXTRA_INFO), info_key, IV(md5(base64_dec(SALT))))
+extra_info := aes_cbc_dec(base64_dec(CRYPTED_EXTRA_INFO), info_key, base64_dec(IV))
 </em>
 </div></div></pre>
 
@@ -153,7 +152,8 @@ extra_info := aes_cbc_dec(base64_dec(CRYPTED_EXTRA_INFO), info_key, IV(md5(base6
 </div>
 
 <strong>Dl-response:</strong>
-{"url": <em>"MEGA_TEMP_URL" OR "CRYPTED_MEGA_TEMP_URL"</em>}
+{"url": <em>"MEGA_TEMP_URL" OR "CRYPTED_MEGA_TEMP_URL"</em>,
+"pass": <em>false OR "IV"</em>}
 
 <div class="extra_info"><em>Note: use the same algorithm described above to decrypt temp url (if password protected)</em></div>
 </div>
