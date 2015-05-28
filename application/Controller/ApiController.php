@@ -62,29 +62,32 @@ class Controller_ApiController extends Controller_DefaultController
 		'size' => $file_info['size'],
 		'key' => isset($file_info['key']) ? $file_info['key'] : $dec_link['file_key'],
 		'extra' => $dec_link['extra_info'],
-		'expire' => $dec_link['expire']?$dec_link['expire'].'#'.base64_encode(hash('sha256', base64_decode($dec_link['secret']), true)):$dec_link['expire'],
-		'pass' => $dec_link['pass']
+		'expire' => $dec_link['expire']?$dec_link['expire'].'#'.base64_encode(hash('sha256', base64_decode($dec_link['secret']), true)):$dec_link['expire']
         ];
 
         if ($dec_link['pass']) {
 
-		list($iterations, $pass, $pass_salt) = explode('#', $dec_link['pass']);
+			list($iterations, $pass, $pass_salt) = explode('#', $dec_link['pass']);
             
-            	$b64p = base64_decode($pass);
-            
-            	$iv = md5(base64_decode($pass_salt),true);
+			$b64p = base64_decode($pass);
+		
+			$iv = openssl_random_pseudo_bytes(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
 
-            	$data['name'] = $this->_encryptApiField($data['name'], $b64p, $iv);
-            
-            	$data['key'] = $this->_encryptApiField(Utils_MiscTools::urlBase64Decode($data['key']), $b64p, $iv);
+			$data['name'] = $this->_encryptApiField($data['name'], $b64p, $iv);
+		
+			$data['key'] = $this->_encryptApiField(Utils_MiscTools::urlBase64Decode($data['key']), $b64p, $iv);
 
-            	if (!empty($data['extra'])) {
+			if (!empty($data['extra'])) {
 
-			$data['extra'] = $this->_encryptApiField($data['extra'], $b64p, $iv);
-            	}
-            
-            	$data['pass'] = $iterations . '#'. base64_encode(hash('sha256', $b64p, true)) . '#' . $pass_salt;
-        }
+				$data['extra'] = $this->_encryptApiField($data['extra'], $b64p, $iv);
+			}
+		
+			$data['pass'] = $iterations . '#'. base64_encode(hash('sha256', $b64p, true)) . '#' . $pass_salt . '#' . base64_encode($iv);
+        
+        } else {
+			
+			$data['pass'] = false;
+		}
         
         return $data;
     }
@@ -93,37 +96,45 @@ class Controller_ApiController extends Controller_DefaultController
         
         try
         {
-		$dec_link = $this->_decryptLink($post_data->link);
+			$dec_link = $this->_decryptLink($post_data->link);
 			
-	} catch(Exception_MegaCrypterLinkException $exception) {
+		} catch(Exception_MegaCrypterLinkException $exception) {
 			
-		if($exception->getCode() == Utils_MegaCrypter::EXPIRED_LINK) {
-			
-			$dec_link = Utils_MegaCrypter::decryptLink($post_data->link, true);
+			if($exception->getCode() == Utils_MegaCrypter::EXPIRED_LINK) {
 				
-			if($post_data->noexpire != base64_encode(hash('sha256', base64_decode($dec_link['secret']), true))) {
-			
+				$dec_link = Utils_MegaCrypter::decryptLink($post_data->link, true);
+					
+				if($post_data->noexpire != base64_encode(hash('sha256', base64_decode($dec_link['secret']), true))) {
+				
+					throw $exception;
+				}
+					
+			} else {
+					
 				throw $exception;
 			}
-				
-		} else {
-				
-			throw $exception;
 		}
-	}
 
         $ma = new Utils_MegaApi(MEGA_API_KEY);
         
         try {
             
-   		$data = ['url' => $ma->getFileDownloadUrl($dec_link['file_id'], is_bool($post_data->ssl) ? $post_data->ssl : false)];
-            
-   		if ($dec_link['pass']) {
+			$data = ['url' => $ma->getFileDownloadUrl($dec_link['file_id'], is_bool($post_data->ssl) ? $post_data->ssl : false)];
 				
-			list($iterations, $pass, $pass_salt) = explode('#', $dec_link['pass']);
+			if ($dec_link['pass']) {
+					
+				list($iterations, $pass, $pass_salt) = explode('#', $dec_link['pass']);
+				
+				$iv = openssl_random_pseudo_bytes(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
 
-			$data['url'] = $this->_encryptApiField($data['url'], base64_decode($pass), md5(base64_decode($pass_salt), true));
-		}
+				$data['url'] = $this->_encryptApiField($data['url'], base64_decode($pass), $iv);
+				
+				$data['pass'] = $iterations . '#'. base64_encode(hash('sha256', $b64p, true)) . '#' . $pass_salt . '#' . base64_encode($iv);
+				
+			} else {
+				
+				$data['pass'] = false;
+			}
             
         } catch (Exception $exception) {
             
@@ -153,18 +164,18 @@ class Controller_ApiController extends Controller_DefaultController
         
         if(preg_match('/^(?:https?\:\/\/)?mega(?:\.co)?\.nz(?:\/#!(?P<file_id>[^!]+)!(?P<file_key>.+))?$/i', ($link = trim($link)), $match)) {
                            
-		if(!empty($match['file_id']) && !empty($match['file_key'])) {
+			if(!empty($match['file_id']) && !empty($match['file_key'])) {
 
-                	$dec_link=['file_id' => $match['file_id'], 'file_key' => $match['file_key']];
+				$dec_link=['file_id' => $match['file_id'], 'file_key' => $match['file_key']];
 
-		} else {
-
-                	throw new Exception_MegaCrypterAPIException(Utils_MegaCrypter::LINK_ERROR);
-		}
+			} else {
+				
+				throw new Exception_MegaCrypterAPIException(Utils_MegaCrypter::LINK_ERROR);
+			}
 
         } else {
 
-		$dec_link = Utils_MegaCrypter::decryptLink($link);
+			$dec_link = Utils_MegaCrypter::decryptLink($link);
         }
         
         return $dec_link;
