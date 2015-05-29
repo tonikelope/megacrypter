@@ -85,7 +85,19 @@ class Utils_MegaCrypter
                         }
                     }
 
-                    return ['file_id' => $file_id, 'file_key' => $file_key, 'extra_info' => !empty($extra_info) ? base64_decode($extra_info) : null, 'pass' => !empty($pass) ? $pass : false, 'auth' => !empty($auth) ? base64_decode($auth) : false, 'hide_name' => !empty($hide_name), 'expire' => !empty($expire) ? $expire : false, 'referer' => !empty($referer) ? base64_decode($referer) : null, 'email' => !empty($email) ? base64_decode($email) : null, 'zombie' => !empty($zombie) ? $zombie : false, 'secret' => $secret];
+                    return [
+                        'file_id' => $file_id, 
+                        'file_key' => $file_key, 
+                        'extra_info' => !empty($extra_info) ? base64_decode($extra_info) : false, 
+                        'pass' => !empty($pass) ? $pass : false, 
+                        'auth' => !empty($auth) ? base64_decode($auth) : false, 
+                        'hide_name' => !empty($hide_name), 
+                        'expire' => !empty($expire) ? $expire : false,
+                        'referer' => !empty($referer) ? base64_decode($referer) : false, 
+                        'email' => !empty($email) ? base64_decode($email) : false, 
+                        'zombie' => !empty($zombie) ? $zombie : false, 
+                        'secret' => $secret
+                        ];
                 }
             }
         } else {
