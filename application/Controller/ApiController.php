@@ -62,7 +62,7 @@ class Controller_ApiController extends Controller_DefaultController
 		'size' => $file_info['size'],
 		'key' => isset($file_info['key']) ? $file_info['key'] : $dec_link['file_key'],
 		'extra' => $dec_link['extra_info'],
-		'expire' => $dec_link['expire']?$dec_link['expire'].'#'.base64_encode(hash('sha256', base64_decode($dec_link['secret']), true)):$dec_link['expire']
+		'expire' => $dec_link['expire']?$dec_link['expire'].'#'.base64_encode(hash('sha256', base64_decode($dec_link['secret']), true)):false
         ];
 
         if ($dec_link['pass']) {
