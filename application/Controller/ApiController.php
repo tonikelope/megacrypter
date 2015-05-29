@@ -77,7 +77,7 @@ class Controller_ApiController extends Controller_DefaultController
 		
 			$data['key'] = $this->_encryptApiField(Utils_MiscTools::urlBase64Decode($data['key']), $b64p, $iv);
 
-			if (!empty($data['extra'])) {
+			if ($data['extra']) {
 
 				$data['extra'] = $this->_encryptApiField($data['extra'], $b64p, $iv);
 			}
