@@ -39,7 +39,7 @@ class Controller_LinkInfoController extends Controller_DefaultController
                 $view_data['stream'] = true;
             }
 
-            if (!empty($dec_link['extra_info'])) {
+            if ($dec_link['extra_info']) {
 
                 $view_data['extra'] = $dec_link['extra_info'];
             }
