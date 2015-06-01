@@ -148,7 +148,8 @@ extra_info := aes_cbc_dec(base64_dec(CRYPTED_EXTRA_INFO), info_key, base64_dec(I
 
 <div class="extra_info"><strong>*Optional params:</strong>
 <em>1) Default is false (better performance in slow machines)</em>
-<em>2) If link has expired you can use NOEXPIRE_TOKEN (previously cached) to get the link</em>
+<em>2) If link has expiration time you can use NOEXPIRE_TOKEN (cached from a previous "info-request") to bypass it 
+and get the download url.</em>
 </div>
 
 <strong>Dl-response:</strong>
