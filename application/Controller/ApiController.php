@@ -2,9 +2,10 @@
 
 class Controller_ApiController extends Controller_DefaultController
 {
-    const MAX_LINKS_LIST = 250;
+    const MAX_LINKS_LIST = 500;
     const EMETHOD = 1;
     const EREQ = 2;
+    const ETOOMUCHLINKS = 3;
 
     protected function preDispatch() {
         
@@ -148,10 +149,17 @@ class Controller_ApiController extends Controller_DefaultController
     
     private function _actionCrypt($post_data) {
         
-	if (is_array($post_data->links) && !empty($post_data->links) && (!self::MAX_LINKS_LIST || count($post_data->links) <= self::MAX_LINKS_LIST)) {
-                        
-		$data = ['links' => Utils_MegaCrypter::encryptLinkList(Utils_CryptTools::decryptMegaDownloaderLinks($post_data->links), ['tiny_url' => $post_data->tiny_url, 'pass' => $post_data->pass, 'extra_info' => $post_data->extra_info, 'hide_name' => $post_data->hide_name, 'expire' => $post_data->expire, 'referer' => $post_data->referer, 'email' => $post_data->email], $post_data->app_finfo)];
-                        
+	if (is_array($post_data->links) && !empty($post_data->links)) {
+                
+                if(!self::MAX_LINKS_LIST || count($post_data->links) <= self::MAX_LINKS_LIST) {
+                	
+                	$data = ['links' => Utils_MegaCrypter::encryptLinkList(Utils_CryptTools::decryptMegaDownloaderLinks($post_data->links), ['tiny_url' => $post_data->tiny_url, 'pass' => $post_data->pass, 'extra_info' => $post_data->extra_info, 'hide_name' => $post_data->hide_name, 'expire' => $post_data->expire, 'referer' => $post_data->referer, 'email' => $post_data->email], $post_data->app_finfo)];
+     
+                } else {
+                	
+                	throw new Exception_MegaCrypterAPIException(self::ETOOMUCHLINKS);
+                }
+                
         } else {
 
             throw new Exception_MegaCrypterAPIException(self::EMETHOD);
