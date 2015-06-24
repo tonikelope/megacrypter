@@ -6,6 +6,7 @@ class Controller_ApiController extends Controller_DefaultController
     const EMETHOD = 1;
     const EREQ = 2;
     const ETOOMUCHLINKS = 3;
+    const ENOLINKS = 4;
 
     protected function preDispatch() {
         
@@ -162,7 +163,7 @@ class Controller_ApiController extends Controller_DefaultController
                 
         } else {
 
-            throw new Exception_MegaCrypterAPIException(self::EMETHOD);
+            throw new Exception_MegaCrypterAPIException(self::ENOLINKS);
         }
         
         return $data;

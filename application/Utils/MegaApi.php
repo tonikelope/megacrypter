@@ -275,7 +275,7 @@ class Utils_MegaApi
     
     private function _sanitizeAt($at) {
         
-        $at->n = preg_replace('/[\x00-\x1F\x80-\xFF]+/', '', $at->n);
+        $at->n = preg_replace('/[\x00-\x1F\x80-\x9F]/u', '', $at->n);
         
         return $at;
     }
