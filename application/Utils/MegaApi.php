@@ -156,7 +156,7 @@ class Utils_MegaApi
                 $file_info = $cached_file_info;
             }
 
-            if ($this->_cache && !empty($file_info['name']) && $file_info['size'] != 0 ) {
+            if ($this->_cache && $file_info['size'] > 0 ) {
                 Utils_MemcacheTon::getInstance()->set((isset($file_id) ? $file_id : $fid) . $fkey, $file_info, MEMCACHE_COMPRESSED, self::CACHE_FILEINFO_TTL);
             }
         } catch (Exception_MegaLinkException $exception) {
