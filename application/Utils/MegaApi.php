@@ -206,32 +206,70 @@ class Utils_MegaApi
         $folder = $this->rawAPIRequest(['a' => 'f', 'c' => 1, 'r' => 1], $folder_id);
 
         $file_nodes = [];
-
+        
         foreach ($folder->f as $node) {
-            if ($node->t == 0) {
-                list(, $node_k) = explode(':', $node->k);
+            
+            list(, $node_k) = explode(':', $node->k);
 
-                $k = $this->_decryptB64NodeKey($node_k, $folder_key);
+            $k = $this->_decryptB64NodeKey($node_k, $folder_key);
 
-                $aux_node = ['id' => $node->h, 'key' => $k, 'size' => $node->s, 'name' => $this->_decryptAt($node->a, $k)->n];
+            $file_nodes[$node->h] = ['type' => $node->t, 'parent'=>$node->p, 'key' => $k, 'size' => $node->s, 'name' => $this->_decryptAt($node->a, $k)->n];
+        }
+        
+        $fnodes = [];
+        
+        $paths = [];
 
-                if ($aux_node['id'] == $node_id) {
+        foreach ($file_nodes as $id => $node) {
+            
+            if ($node['type'] == 0) {
+                
+                $aux_node = $node;
+                
+                if(!isset($paths[$id])) {
+                    
+                    $paths[$id] = $this->_calculatePath($file_nodes, $id);
+                }
+                
+                $aux_node['path'] = $paths[$id];
+                
+                unset($aux_node['type']);
+                
+                unset($aux_node['parent']);
+                
+                if ($id == $node_id) {
                     return $aux_node;
                 } else {
-                    $file_nodes[] = $aux_node;
+                    $fnodes[] = $aux_node;
                 }
             }
         }
 
         if ($name_sorted) {
-            usort($file_nodes, function($a, $b) {
-                        return strnatcasecmp($a['name'], $b['name']);
+            usort($fnodes, function($a, $b) {
+                        return strnatcasecmp($a['path'].$a['name'], $b['path'].$b['name']);
                     });
         }
-
-        return $file_nodes;
+        
+        return $fnodes;
     }
-
+    
+    private function _calculatePath($file_nodes, $id) {
+        
+        $path = '';
+        
+        $parent_id = $file_nodes[$id]['parent'];
+        
+        while(isset($file_nodes[$parent_id]))
+        {
+            $path="{$file_nodes[$parent_id]['name']}/$path";
+            
+            $parent_id = $file_nodes[$parent_id]['parent']; 
+        }
+        
+        return $path;
+    }
+    
     private function _urlBase64KeyDecode($key) {
 
         $key_bin = Utils_MiscTools::urlBase64Decode($key);
