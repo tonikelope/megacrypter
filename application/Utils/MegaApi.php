@@ -137,7 +137,7 @@ class Utils_MegaApi
         try {
             if (!$this->_cache || $cached_file_info === false) {
                 if (isset($folder_id)) {
-                    $child_node = $this->getFolderChildFileNodes($folder_id, $fkey, $file_id);
+                    $child_node = $this->getFolderChildFileNode($folder_id, $fkey, $file_id);
 
                     $file_info = ['name' => $child_node['name'], 'path'=> $child_node['path'], 'size' => $child_node['size'], 'key' => $child_node['key']];
                 } else {
@@ -201,7 +201,7 @@ class Utils_MegaApi
         return $verify?$this->_verifyDownloadUrl($url):$url;
     }
 
-    public function getFolderChildFileNodes($folder_id, $folder_key, $node_id = null, $name_sorted = true) {
+    public function getFolderChildFileNodes($folder_id, $folder_key, $name_sorted = true) {
 
         $folder = $this->rawAPIRequest(['a' => 'f', 'c' => 1, 'r' => 1], $folder_id);
 
@@ -239,14 +239,7 @@ class Utils_MegaApi
                 
                 unset($aux_node['parent']);
                 
-                if ($id == $node_id) {
-                    
-                    return $aux_node;
-                    
-                } else {
-                    
-                    $fnodes[] = $aux_node;
-                }
+                $fnodes[] = $aux_node;
             }
         }
 
@@ -257,6 +250,40 @@ class Utils_MegaApi
         }
         
         return $fnodes;
+    }
+    
+    public function getFolderChildFileNode($folder_id, $folder_key, $node_id) {
+
+        $folder = $this->rawAPIRequest(['a' => 'f', 'c' => 1, 'r' => 1], $folder_id);
+
+        $file_nodes = [];
+        
+        foreach ($folder->f as $node) {
+            
+            list(, $node_k) = explode(':', $node->k);
+
+            $k = $this->_decryptB64NodeKey($node_k, $folder_key);
+
+            $file_nodes[$node->h] = ['type' => $node->t, 'parent' => $node->p, 'key' => $k, 'size' => $node->s, 'name' => $this->_decryptAt($node->a, $k)->n];
+        }
+
+        foreach ($file_nodes as $id => $node) {
+            
+            if ($node['type'] == 0 && $id == $node_id) {
+                
+                $aux_node = $node;
+                
+                $aux_node['id'] = $id;
+                
+                $aux_node['path'] = $this->_calculatePath($file_nodes, $id);
+                
+                unset($aux_node['type']);
+                
+                unset($aux_node['parent']);
+                  
+                return $aux_node;
+            }
+        }
     }
     
     private function _calculatePath($file_nodes, $id) {
