@@ -197,12 +197,26 @@ class Utils_MegaCrypter
                 $clinks=[];
 
                 foreach($mega_links as $mlink) {
-
-                    $clinks[] = "{$mlink['name']} [" . Utils_MiscTools::formatBytes($mlink['size']) . "] ". self::_encryptLink($mlink['url'], $options)['link'];
+                    
+                    Utils_MemcacheTon::getInstance()->delete($mlink['node_id'].$mlink['folder_key']);
+                    
+                    $url = Utils_MegaApi::MEGA_HOST . "/#!{$mlink['node_id']}*{$mlink['folder_id']}!{$mlink['folder_key']}";
+                    
+                    $clinks[] = "{$mlink['name']} [" . Utils_MiscTools::formatBytes($mlink['size']) . "] ". self::_encryptLink($url, $options)['link'];
                 }
 
             } else {
-                $clinks = self::encryptLinkList(array_column($mega_links, 'url'), $options, false, false);
+                
+                $urls = [];
+                
+                foreach($mega_links as $mlink) {
+                    
+                    Utils_MemcacheTon::getInstance()->delete($mlink['node_id'].$mlink['folder_key']);
+                    
+                    $urls[] = Utils_MegaApi::MEGA_HOST . "/#!{$mlink['node_id']}*{$mlink['folder_id']}!{$mlink['folder_key']}";
+                }
+                            
+                $clinks = self::encryptLinkList($urls, $options, false, false);
             }
 
             $c_link = $clinks;
@@ -252,7 +266,7 @@ class Utils_MegaCrypter
         $mega_links = [];
         
         foreach ($child_nodes as $node) {
-            $mega_links[] = ['name' => $node['name'], 'size' => $node['size'], 'url' => Utils_MegaApi::MEGA_HOST . "/#!{$node['id']}*{$folder_id}!{$folder_key}", 'path' => $node['path']];
+            $mega_links[] = ['name' => $node['name'], 'size' => $node['size'], 'node_id' => $node['id'], 'folder_id' => $folder_id, 'folder_key' => $folder_key, 'path' => $node['path']];
         }
 
         return $mega_links;
