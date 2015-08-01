@@ -228,20 +228,23 @@ class Utils_MegaApi
                 
                 $aux_node['id'] = $id;
                 
-                if(!isset($paths[$id])) {
+                if(!isset($paths[$node['parent']])) {
                     
-                    $paths[$id] = $this->_calculatePath($file_nodes, $id);
+                    $paths[$node['parent']] = $this->_calculatePath($file_nodes, $id);
                 }
                 
-                $aux_node['path'] = $paths[$id];
+                $aux_node['path'] = $paths[$node['parent']];
                 
                 unset($aux_node['type']);
                 
                 unset($aux_node['parent']);
                 
                 if ($id == $node_id) {
+                    
                     return $aux_node;
+                    
                 } else {
+                    
                     $fnodes[] = $aux_node;
                 }
             }
