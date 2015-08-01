@@ -177,7 +177,7 @@ class Utils_MegaCrypter
                 $info = "{$file_info['name']} [" . Utils_MiscTools::formatBytes($file_info['size']) . "]";
 
             } catch (Exception_MegaLinkException $exception) {
-                $info = '------';
+                $info = '---['.$exception->getMessage().']---';
             }
 
             $c_link = "{$info} {$c_link}";
