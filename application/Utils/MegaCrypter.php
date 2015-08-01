@@ -188,7 +188,9 @@ class Utils_MegaCrypter
 
     private static function _encryptMegaFolderLink($link, array $options=[], $app_finfo=false) {
 
-        $mega_links = self::_getFolderMegaLinks($link);
+        list(, $folder_id, $folder_key) = explode('!', $link);
+        
+        $mega_links = self::_getFolderMegaLinks($folder_id, $folder_key);
 
         if (!empty($mega_links)) {
             
@@ -198,9 +200,9 @@ class Utils_MegaCrypter
 
                 foreach($mega_links as $mlink) {
                     
-                    Utils_MemcacheTon::getInstance()->delete($mlink['node_id'].$mlink['folder_key']);
+                    Utils_MemcacheTon::getInstance()->delete($mlink['node_id'].$folder_key);
  
-                    $clinks[] = "{$mlink['name']} [" . Utils_MiscTools::formatBytes($mlink['size']) . "] ". self::_encryptLink(Utils_MegaApi::MEGA_HOST . "/#!{$mlink['node_id']}*{$mlink['folder_id']}!{$mlink['folder_key']}", $options)['link'];
+                    $clinks[] = "{$mlink['name']} [" . Utils_MiscTools::formatBytes($mlink['size']) . "] ". self::_encryptLink(Utils_MegaApi::MEGA_HOST . "/#!{$mlink['node_id']}*{$folder_id}!{$folder_key}", $options)['link'];
                 }
 
             } else {
@@ -209,9 +211,9 @@ class Utils_MegaCrypter
                 
                 foreach($mega_links as $mlink) {
                     
-                    Utils_MemcacheTon::getInstance()->delete($mlink['node_id'].$mlink['folder_key']);
+                    Utils_MemcacheTon::getInstance()->delete($mlink['node_id'].$folder_key);
                     
-                    $urls[] = Utils_MegaApi::MEGA_HOST . "/#!{$mlink['node_id']}*{$mlink['folder_id']}!{$mlink['folder_key']}";
+                    $urls[] = Utils_MegaApi::MEGA_HOST . "/#!{$mlink['node_id']}*{$folder_id}!{$folder_key}";
                 }
                             
                 $clinks = self::encryptLinkList($urls, $options, false, false);
@@ -253,18 +255,16 @@ class Utils_MegaCrypter
         return self::_encryptLink("!{$dec_link['file_id']}!{$dec_link['file_key']}", array_merge($options, $dec_link))['link'];
     }
 
-    private static function _getFolderMegaLinks($folder_link) {
+    private static function _getFolderMegaLinks($folder_id, $folder_key) {
 
         $ma = new Utils_MegaApi(MEGA_API_KEY, false);
-
-        list(, $folder_id, $folder_key) = explode('!', $folder_link);
 
         $child_nodes = $ma->getFolderChildFileNodes($folder_id, $folder_key);
         
         $mega_links = [];
         
         foreach ($child_nodes as $node) {
-            $mega_links[] = ['name' => $node['name'], 'size' => $node['size'], 'node_id' => $node['id'], 'folder_id' => $folder_id, 'folder_key' => $folder_key];
+            $mega_links[] = ['name' => $node['name'], 'size' => $node['size'], 'node_id' => $node['id']];
         }
 
         return $mega_links;
