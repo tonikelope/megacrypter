@@ -61,6 +61,7 @@ class Controller_ApiController extends Controller_DefaultController
 
         $data = [
 		'name' => $dec_link['hide_name'] ? Utils_MiscTools::hideFileName($file_info['name'], ($dec_link['zombie'] ? $dec_link['zombie'] : null) . base64_decode(GENERIC_PASSWORD)) : $file_info['name'],
+                'path' => isset($file_info['path'])?$file_info['path']:false,
 		'size' => $file_info['size'],
 		'key' => isset($file_info['key']) ? $file_info['key'] : $dec_link['file_key'],
 		'extra' => $dec_link['extra_info'],
@@ -76,6 +77,10 @@ class Controller_ApiController extends Controller_DefaultController
 			$iv = openssl_random_pseudo_bytes(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
 
 			$data['name'] = $this->_encryptApiField($data['name'], $b64p, $iv);
+                        
+                        if($data['path']) {
+                            $data['path'] = $this->_encryptApiField($data['path'], $b64p, $iv);
+                        }
 		
 			$data['key'] = $this->_encryptApiField(Utils_MiscTools::urlBase64Decode($data['key']), $b64p, $iv);
 

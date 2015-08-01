@@ -139,7 +139,7 @@ class Utils_MegaApi
                 if (isset($folder_id)) {
                     $child_node = $this->getFolderChildFileNodes($folder_id, $fkey, $file_id);
 
-                    $file_info = ['name' => $child_node['name'], 'size' => $child_node['size'], 'key' => $child_node['key']];
+                    $file_info = ['name' => $child_node['name'], 'path'=> $child_node['path'], 'size' => $child_node['size'], 'key' => $child_node['key']];
                 } else {
                     $response = $this->rawAPIRequest(['a' => 'g', 'p' => $fid]);
 
@@ -213,7 +213,7 @@ class Utils_MegaApi
 
             $k = $this->_decryptB64NodeKey($node_k, $folder_key);
 
-            $file_nodes[$node->h] = ['type' => $node->t, 'parent'=>$node->p, 'key' => $k, 'size' => $node->s, 'name' => $this->_decryptAt($node->a, $k)->n];
+            $file_nodes[$node->h] = ['type' => $node->t, 'parent' => $node->p, 'key' => $k, 'size' => $node->s, 'name' => $this->_decryptAt($node->a, $k)->n];
         }
         
         $fnodes = [];
@@ -225,6 +225,8 @@ class Utils_MegaApi
             if ($node['type'] == 0) {
                 
                 $aux_node = $node;
+                
+                $aux_node['id'] = $id;
                 
                 if(!isset($paths[$id])) {
                     

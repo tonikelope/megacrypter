@@ -252,7 +252,7 @@ class Utils_MegaCrypter
         $mega_links = [];
         
         foreach ($child_nodes as $node) {
-            $mega_links[] = ['name' => $node['name'], 'size' => $node['size'], 'url' => Utils_MegaApi::MEGA_HOST . "/#!{$node['id']}*{$folder_id}!{$folder_key}"];
+            $mega_links[] = ['name' => $node['name'], 'size' => $node['size'], 'url' => Utils_MegaApi::MEGA_HOST . "/#!{$node['id']}*{$folder_id}!{$folder_key}", 'path' => $node['path']];
         }
 
         return $mega_links;
