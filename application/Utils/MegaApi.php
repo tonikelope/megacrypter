@@ -203,18 +203,7 @@ class Utils_MegaApi
 
     public function getFolderChildFileNodes($folder_id, $folder_key, $name_sorted = true) {
 
-        $folder = $this->rawAPIRequest(['a' => 'f', 'c' => 1, 'r' => 1], $folder_id);
-
-        $file_nodes = [];
-        
-        foreach ($folder->f as $node) {
-            
-            list(, $node_k) = explode(':', $node->k);
-
-            $k = $this->_decryptB64NodeKey($node_k, $folder_key);
-
-            $file_nodes[$node->h] = ['type' => $node->t, 'parent' => $node->p, 'key' => $k, 'size' => $node->s, 'name' => $this->_decryptAt($node->a, $k)->n];
-        }
+        $file_nodes = $this->_getFolderRawNodes($folder_id, $folder_key);
         
         $fnodes = [];
         
@@ -254,18 +243,7 @@ class Utils_MegaApi
     
     public function getFolderChildFileNode($folder_id, $folder_key, $node_id) {
 
-        $folder = $this->rawAPIRequest(['a' => 'f', 'c' => 1, 'r' => 1], $folder_id);
-
-        $file_nodes = [];
-        
-        foreach ($folder->f as $node) {
-            
-            list(, $node_k) = explode(':', $node->k);
-
-            $k = $this->_decryptB64NodeKey($node_k, $folder_key);
-
-            $file_nodes[$node->h] = ['type' => $node->t, 'parent' => $node->p, 'key' => $k, 'size' => $node->s, 'name' => $this->_decryptAt($node->a, $k)->n];
-        }
+        $file_nodes = $this->_getFolderRawNodes($folder_id, $folder_key);
 
         foreach ($file_nodes as $id => $node) {
             
@@ -285,6 +263,24 @@ class Utils_MegaApi
             }
         }
     }
+    
+    private function _getFolderRawNodes($folder_id, $folder_key) {
+		
+		$folder = $this->rawAPIRequest(['a' => 'f', 'c' => 1, 'r' => 1], $folder_id);
+
+        $file_nodes = [];
+        
+        foreach ($folder->f as $node) {
+            
+            list(, $node_k) = explode(':', $node->k);
+
+            $k = $this->_decryptB64NodeKey($node_k, $folder_key);
+
+            $file_nodes[$node->h] = ['type' => $node->t, 'parent' => $node->p, 'key' => $k, 'size' => $node->s, 'name' => $this->_decryptAt($node->a, $k)->n];
+        }
+		
+		return $file_nodes;
+	}
     
     private function _calculatePath($file_nodes, $id) {
         
