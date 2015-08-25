@@ -10,8 +10,6 @@ What do you need?
 
 3) MySQL (optional for blacklist).
 
-4) CloudFlare (optional but highly recommended)
-
 Instructions:
 
 Step 1: download tarball (or clone repo) and upload to your server.
