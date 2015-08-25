@@ -6,7 +6,7 @@ What do you need?
 
 1) Apache (mod_rewrite + allowoverride)
 
-2) PHP 5.5 (cURL + mcrypt + memcache + mbstring)
+2) PHP >= 5.5 (cURL + mcrypt + memcache + mbstring)
 
 3) MySQL (optional for blacklist).
 
