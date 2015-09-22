@@ -2,8 +2,8 @@
 
 class Utils_MegaApi
 {
-    const MEGA_HOST = 'https://mega.co.nz';
-    const MEGA_API_HOST = 'https://g.api.mega.co.nz';
+    const MEGA_HOST = 'https://mega.nz';
+    const MEGA_API_HOST = 'https://g.api.mega.nz';
     const CONNECT_TIMEOUT = 15;
     const FILE_KEY_BYTE_LENGTH = 32;
     const FOLDER_KEY_BYTE_LENGTH = 16;

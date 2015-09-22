@@ -122,9 +122,9 @@ class Utils_MegaCrypter
                     
                     try {
                         
-                        switch(str_replace('mega.nz', 'mega.co.nz', $domain)) {
+                        switch(str_replace('mega.co.nz', 'mega.nz', $domain)) {
                             
-                            case 'mega.co.nz':
+                            case 'mega.nz':
                                 
                                 $crypter = '_encryptMega'.(stripos($link, '/#F!') !== false?'Folder':'Single').'Link';
 
