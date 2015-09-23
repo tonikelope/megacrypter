@@ -54,9 +54,9 @@ class Utils_MegaApi
         $this->_tor = $use_tor;
     }
 
-    public function rawAPIRequest(array $request, $folder_id = null) {
+    public function rawAPIRequest(array $request, $param_n = null) {
 
-        $ch = curl_init(self::MEGA_API_HOST . '/cs?id=' . ($this->_seqno++) . "&ak={$this->_api_key}" . ($folder_id ? "&n={$folder_id}" : ''));
+        $ch = curl_init(self::MEGA_API_HOST . '/cs?id=' . ($this->_seqno++) . "&ak={$this->_api_key}" . ($param_n ? "&n={$param_n}" : ''));
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, self::CONNECT_TIMEOUT);
@@ -173,25 +173,30 @@ class Utils_MegaApi
 
     public function getFileDownloadUrl($fid, $ssl = false, $verify=true) {
 
+		$request = ['a' => 'g', 'g' => 1];
+
         if (strpos($fid, '*') !== false) {
+			
             list($file_id, $folder_id) = explode('*', $fid);
 
             if (empty($file_id) || empty($folder_id)) {
                 throw new Exception_MegaLinkException(self::ENOENT);
             }
-
-            $params = [['a' => 'g', 'g' => 1, 'n' => $file_id], $folder_id];
+            
+            $request['n'] = $file_id;
+            
         } else {
-            $params = [['a' => 'g', 'g' => 1, 'p' => $fid]];
+			
+			$request['p'] = $fid;
         }
 
         if ($ssl) {
-            $params[0]['ssl'] = 2;
+            $request['ssl'] = 2;
         }
         
         try
         {
-            $url = call_user_func_array([$this, 'rawAPIRequest'], $params)->g;
+            $url = $this->rawAPIRequest($request)->g;
         
         } catch (Exception_MegaLinkException $exception) {
             
