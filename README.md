@@ -20,17 +20,29 @@ Step 3: remove ALL /config .sample extension and edit miscellaneous.php and any 
 
 Step 4: prepare virtual host
 
+
 <VirtualHost *:80>
+
   Servername supermegacrypter.net
+  
   DocumentRoot /var/www/supermegacrypter/public
+  
   RewriteEngine On
+  
   <directory /var/www/supermegacrypter/public>
+  
     AllowOverride None
+    
   </directory>
+  
   <directory /var/www/supermegacrypter/public>
+  
     Include /var/www/supermegacrypter/public/.htaccess
+    
   </directory>
+  
 </VirtualHost>
+
 
 Step 5 (optional): ask  developers of your favourite download manager to recognize your new megacrypter links.
 
