@@ -18,31 +18,7 @@ Step 2: install composer dependencies -> <code>$ php composer.phar install</code
 
 Step 3: remove ALL /config .sample extension and edit miscellaneous.php and any other file you need.
 
-Step 4: prepare virtual host
-
-<code>
-<VirtualHost *:80>
-
-  Servername supermegacrypter.net
-  
-  DocumentRoot /var/www/supermegacrypter/public
-  
-  RewriteEngine On
-  
-  <directory /var/www/supermegacrypter/public>
-  
-    AllowOverride None
-    
-  </directory>
-  
-  <directory /var/www/supermegacrypter/public>
-  
-    Include /var/www/supermegacrypter/public/.htaccess
-    
-  </directory>
-  
-</VirtualHost>
-</code>
+Step 4: prepare virtual host and point document root to megacrypter public dir.
 
 Step 5 (optional): ask  developers of your favourite download manager to recognize your new megacrypter links.
 
