@@ -20,7 +20,7 @@ Step 3: remove ALL /config .sample extension and edit miscellaneous.php and any 
 
 Step 4: prepare virtual host
 
-
+<code>
 <VirtualHost *:80>
 
   Servername supermegacrypter.net
@@ -42,7 +42,7 @@ Step 4: prepare virtual host
   </directory>
   
 </VirtualHost>
-
+</code>
 
 Step 5 (optional): ask  developers of your favourite download manager to recognize your new megacrypter links.
 
