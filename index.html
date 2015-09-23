@@ -61,15 +61,15 @@ fjs.parentNode.insertBefore(js, fjs);
 <p>Step 4: prepare virtual host:
 
 <pre>
-  &lt;VirtualHost *:80&gt; 
-    Servername supermegacrypter.net
-    DocumentRoot /var/www/supermegacrypter/public 
-    RewriteEngine On 
-    &lt;directory /var/www/supermegacrypter/public&gt; 
+  &lt;VirtualHost *:80&gt;
+    Servername mymegacrypter.net
+    DocumentRoot /var/www/megacrypter/public
+    RewriteEngine On
+    &lt;directory /var/www/megacrypter/public&gt;
       AllowOverride None
-    &lt;/directory&gt; 
-    &lt;directory /var/www/supermegacrypter/public&gt; 
-      Include /var/www/supermegacrypter/public/.htaccess 
+    &lt;/directory&gt;
+    &lt;directory /var/www/megacrypter/public&gt; 
+      Include /var/www/megacrypter/public/.htaccess
     &lt;/directory&gt; 
   &lt;/VirtualHost&gt;
 </pre>
