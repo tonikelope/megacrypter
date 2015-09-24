@@ -166,6 +166,7 @@ class Utils_MegaCrypter
         if(stripos($link, '/#N') !== false) {
 			
 			$link = str_replace("!{$file_id}!", "!{$file_id}*!", $link);
+			$file_id.='*';
 		}
 		
         Utils_MemcacheTon::getInstance()->delete($file_id . $file_key);
