@@ -121,9 +121,10 @@ class Utils_MegaApi
         if (strpos($fid, '*') !== false) {
             list($file_id, $folder_id) = explode('*', $fid);
 
-            if (empty($file_id) || empty($folder_id)) {
+            if (empty($file_id)) {
                 throw new Exception_MegaLinkException(self::ENOENT);
             }
+ 
         }
 
         if ($this->_cache) {
@@ -136,12 +137,22 @@ class Utils_MegaApi
 
         try {
             if (!$this->_cache || $cached_file_info === false) {
-                if (isset($folder_id)) {
+				
+                if (isset($file_id) && !empty($folder_id)) {
+					
                     $child_node = $this->getFolderChildFileNode($folder_id, $fkey, $file_id);
 
                     $file_info = ['name' => $child_node['name'], 'path'=> $child_node['path'], 'size' => $child_node['size'], 'key' => $child_node['key']];
                 } else {
-                    $response = $this->rawAPIRequest(['a' => 'g', 'p' => $fid]);
+					
+					if(isset($file_id)) {
+					
+						$response = $this->rawAPIRequest(['a' => 'g', 'n' => $file_id]);
+					
+					} else {
+					
+						$response = $this->rawAPIRequest(['a' => 'g', 'p' => $fid]);
+					}
 
                     $at = $this->_decryptAt($response->at, $fkey);
 
@@ -179,7 +190,7 @@ class Utils_MegaApi
 			
             list($file_id, $folder_id) = explode('*', $fid);
 
-            if (empty($file_id) || empty($folder_id)) {
+            if (empty($file_id)) {
                 throw new Exception_MegaLinkException(self::ENOENT);
             }
             
