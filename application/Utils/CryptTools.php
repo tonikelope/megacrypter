@@ -52,15 +52,16 @@ class Utils_CryptTools
 
     public static function decryptMegaDownloaderLinks($data) {
         
-        return preg_replace_callback('/mega\:\/\/(?P<folder>f)?enc\?(?P<linkdata>[\da-z_,-]*?)(?=https?\:|mega\:|[^\da-z_,-]|$)/i', 
+        return preg_replace_callback('/mega\:\/\/(?P<folder>f)?(?P<enc>enc\d*?)\?(?P<linkdata>[\da-z_,-]*?)(?=https?\:|mega\:|[^\da-z_,-]|$)/i', 
                 
             function($match) {
-            
-                $key = '6B316F36416C2D316B7A3F217A30357958585858585858585858585858585858';
+				
+                $key = ['enc' => '6B316F36416C2D316B7A3F217A30357958585858585858585858585858585858', 
+						'enc2' => 'ED1F4C200B35139806B260563B3D3876F011B4750F3A1A4A5EFD0BBE67554B44'];
 
                 $iv = '79F10A01844A0B27FF5B2D4E0ED3163E';
 
-                return Utils_MegaApi::MEGA_HOST . '/#' . strtoupper($match['folder']) . Utils_CryptTools::aesCbcDecrypt(Utils_MiscTools::urlBase64Decode($match['linkdata']), Utils_MiscTools::hex2bin($key), Utils_MiscTools::hex2bin($iv), true); }, 
+                return Utils_MegaApi::MEGA_HOST . '/#' . strtoupper($match['folder']) . Utils_CryptTools::aesCbcDecrypt(Utils_MiscTools::urlBase64Decode($match['linkdata']), Utils_MiscTools::hex2bin($key[$match['enc']]), Utils_MiscTools::hex2bin($iv), true); }, 
                 
             $data);
     }
