@@ -163,8 +163,7 @@ class Utils_MegaCrypter
         
         list(, $file_id, $file_key) = explode('!', $link);
         
-        if(stripos($link, '/#N') !== false?)
-        {
+        if(stripos($link, '/#N') !== false) {
 			$file_id.='*';
 		}
 
