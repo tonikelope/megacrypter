@@ -161,13 +161,13 @@ class Utils_MegaCrypter
 
     private static function _encryptMegaSingleLink($link, array $options=[], $app_finfo=false) {
 
+		list(, $file_id, $file_key) = explode('!', $link);
+
         if(stripos($link, '/#N') !== false) {
 			
 			$link = str_replace("!{$file_id}!", "!{$file_id}*!", $link);
 		}
 		
-		list(, $file_id, $file_key) = explode('!', $link);
-
         Utils_MemcacheTon::getInstance()->delete($file_id . $file_key);
 
         $c_link = self::_encryptLink($link, $options)['link'];
