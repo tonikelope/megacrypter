@@ -119,6 +119,7 @@ class Utils_MegaApi
     public function getFileInfo($fid, $fkey) {
 
         if (strpos($fid, '*') !== false) {
+			
             list($file_id, $folder_id) = explode('*', $fid);
 
             if (empty($file_id)) {
@@ -128,9 +129,11 @@ class Utils_MegaApi
         }
 
         if ($this->_cache) {
+			
             $cached_file_info = Utils_MemcacheTon::getInstance()->get((isset($file_id) ? $file_id : $fid) . $fkey);
 
             if (is_int($cached_file_info)) {
+				
                 throw new Exception_MegaLinkException($cached_file_info);
             }
         }
@@ -143,36 +146,34 @@ class Utils_MegaApi
                     $child_node = $this->getFolderChildFileNode($folder_id, $fkey, $file_id);
 
                     $file_info = ['name' => $child_node['name'], 'path'=> $child_node['path'], 'size' => $child_node['size'], 'key' => $child_node['key']];
+                    
                 } else {
+				
+					$response = isset($file_id)?$this->rawAPIRequest(['a' => 'g', 'n' => $file_id]):$this->rawAPIRequest(['a' => 'g', 'p' => $fid]);
 					
-					if(isset($file_id)) {
-					
-						$response = $this->rawAPIRequest(['a' => 'g', 'n' => $file_id]);
-					
-					} else {
-					
-						$response = $this->rawAPIRequest(['a' => 'g', 'p' => $fid]);
-					}
-
                     $at = $this->_decryptAt($response->at, $fkey);
 
                     $file_info = ['name' => $at->n, 'size' => $response->s];
                 }
                 
                 if(empty($file_info['name'])) {
+					
                     $file_info['name'] = md5((isset($file_id) ? $file_id . $file_info['key'] : $fid . $fkey) . base64_decode(GENERIC_PASSWORD));
                 }
                 
             } else {
+				
                 $file_info = $cached_file_info;
             }
 
             if ($this->_cache && $file_info['size'] > 0 ) {
+				
                 Utils_MemcacheTon::getInstance()->set((isset($file_id) ? $file_id : $fid) . $fkey, $file_info, MEMCACHE_COMPRESSED, self::CACHE_FILEINFO_TTL);
             }
         } catch (Exception_MegaLinkException $exception) {
            
             if ($this->_cache && Utils_MiscTools::isCacheableError($exception->getCode())) {
+				
                 Utils_MemcacheTon::getInstance()->set((isset($file_id) ? $file_id : $fid) . $fkey, $exception->getCode(), MEMCACHE_COMPRESSED, self::CACHE_FILEINFO_TTL);
             }
             
@@ -191,6 +192,7 @@ class Utils_MegaApi
             list($file_id, $folder_id) = explode('*', $fid);
 
             if (empty($file_id)) {
+				
                 throw new Exception_MegaLinkException(self::ENOENT);
             }
             
@@ -249,6 +251,7 @@ class Utils_MegaApi
         }
 
         if ($name_sorted) {
+			
             usort($fnodes, function($a, $b) {
                         return strnatcasecmp($a['path'].$a['name'], $b['path'].$b['name']);
                     });
