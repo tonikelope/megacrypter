@@ -7,6 +7,7 @@ class Controller_ApiController extends Controller_DefaultController
     const EREQ = 2;
     const ETOOMUCHLINKS = 3;
     const ENOLINKS = 4;
+    const NO_EXP_TOK_NOT_ALLOWED = 'bm8tZXhwaXJlIHRva2VuIGlzIG5vdCBhbGxvd2Vk';
 
     protected function preDispatch() {
         
@@ -65,7 +66,7 @@ class Controller_ApiController extends Controller_DefaultController
 		'size' => $file_info['size'],
 		'key' => isset($file_info['key']) ? $file_info['key'] : $dec_link['file_key'],
 		'extra' => $dec_link['extra_info'],
-		'expire' => $dec_link['expire']?$dec_link['expire'].'#'.base64_encode(hash('sha256', base64_decode($dec_link['secret']), true)):false
+		'expire' => $dec_link['expire']?$dec_link['expire'].'#'.($dec_link['no_expire_token']?base64_encode(hash('sha256', base64_decode($dec_link['secret']), true)):self::NO_EXP_TOK_NOT_ALLOWED):false
         ];
 
         if ($dec_link['pass']) {
@@ -155,11 +156,23 @@ class Controller_ApiController extends Controller_DefaultController
     
     private function _actionCrypt($post_data) {
         
-	if (is_array($post_data->links) && !empty($post_data->links)) {
+		if (is_array($post_data->links) && !empty($post_data->links)) {
                 
                 if(!self::MAX_LINKS_LIST || count($post_data->links) <= self::MAX_LINKS_LIST) {
+					
+					$options = [];
+					
+					$opts = ['tiny_url', 'pass', 'extra_info', 'hide_name', 'expire', 'no_expire_token', 'referer', 'email'];
+					
+					foreach($opts as $opt)
+					{
+						if(isset($post_data->$opt)) {
+						
+							$options[$opt]=$post_data->$opt;
+						}
+					}
                 	
-                	$data = ['links' => Utils_MegaCrypter::encryptLinkList(Utils_CryptTools::decryptMegaDownloaderLinks($post_data->links), ['tiny_url' => $post_data->tiny_url, 'pass' => $post_data->pass, 'extra_info' => $post_data->extra_info, 'hide_name' => $post_data->hide_name, 'expire' => $post_data->expire, 'referer' => $post_data->referer, 'email' => $post_data->email], $post_data->app_finfo)];
+                	$data = ['links' => Utils_MegaCrypter::encryptLinkList(Utils_CryptTools::decryptMegaDownloaderLinks($post_data->links), $options, $post_data->app_finfo)];
      
                 } else {
                 	

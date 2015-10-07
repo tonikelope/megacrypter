@@ -40,7 +40,8 @@ class Utils_MegaCrypter
                 (is_numeric($options['expire']) && time() < (int) $options['expire']) ? (int) $options['expire'] : null,
                 !empty($options['referer']) ? base64_encode(substr($options['referer'], 0, self::MAX_REFERER_BYTES)) : null,
                 !empty($options['email']) ? base64_encode(substr($options['email'], 0, self::MAX_EMAIL_BYTES)) : null,
-                !empty($options['zombie']) ? $options['zombie'] : null]
+                !empty($options['zombie']) ? $options['zombie'] : null,
+                $options['no_expire_token'] ? self::EXTRA_TRUE_CHAR : null]
             );
 
             $data = Utils_MiscTools::urlBase64Encode(Utils_CryptTools::aesCbcEncrypt(gzdeflate(implode(self::SEPARATOR, [$secret, $match['file_id'], $match['file_key'], !empty($options['pass']) ? self::PASS_HASH_ITERATIONS_LOG2.'#'.  base64_encode(Utils_CryptTools::passHMAC('sha256', $options['pass'], ($salt=openssl_random_pseudo_bytes(self::PASS_SALT_BYTE_LENGTH)), pow(2, self::PASS_HASH_ITERATIONS_LOG2))) . '#' . base64_encode($salt) : null, $extra, !empty($options['auth'])?$options['auth']:null]), 9), Utils_MiscTools::hex2bin(MASTER_KEY), md5(MASTER_KEY, true)));
@@ -74,7 +75,7 @@ class Utils_MegaCrypter
                 } else {
 
                     if ($extra) {
-                        list($extra_info, $hide_name, $expire, $referer, $email, $zombie) = explode(self::SEPARATOR_EXTRA, $extra);
+                        list($extra_info, $hide_name, $expire, $referer, $email, $zombie, $no_expire_token) = explode(self::SEPARATOR_EXTRA, $extra);
 
                         if (!$ignore_exceptions && !empty($expire) && time() >= $expire) {
                             throw new Exception_MegaCrypterLinkException(self::EXPIRED_LINK);
@@ -93,6 +94,7 @@ class Utils_MegaCrypter
                         'auth' => !empty($auth) ? base64_decode($auth) : false, 
                         'hide_name' => !empty($hide_name), 
                         'expire' => !empty($expire) ? $expire : false,
+                        'no_expire_token' => !empty($no_expire_token),
                         'referer' => !empty($referer) ? base64_decode($referer) : false, 
                         'email' => !empty($email) ? base64_decode($email) : false, 
                         'zombie' => !empty($zombie) ? $zombie : false, 
@@ -276,7 +278,7 @@ class Utils_MegaCrypter
         
         $EXPIRE_SECS = [600, 3600, 86400, 604800, 1209600, 2592000, 7776000, 15552000, 31536000];
         
-        $cooked_options = array_merge(['tiny_url' => false, 'pass' => null, 'extra_info' => null, 'hide_name' => false, 'expire' => false, 'referer' => null, 'email' => null, 'zombie' => null, 'auth' => null], array_change_key_case($options));
+        $cooked_options = array_merge(['tiny_url' => false, 'pass' => null, 'extra_info' => null, 'hide_name' => false, 'expire' => false, 'no_expire_token' => true, 'referer' => null, 'email' => null, 'zombie' => null, 'auth' => null], array_change_key_case($options));
                 
         $cooked_options['expire'] = (!is_numeric($options['expire']) || !isset($EXPIRE_SECS[(int)$options['expire'] - 1])) ? false : time() + $EXPIRE_SECS[(int) $options['expire'] - 1];
         

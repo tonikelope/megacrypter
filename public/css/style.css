@@ -575,6 +575,11 @@ label
     display:none;    
 }
 
+#no_exp_tok
+{
+    display:none;    
+}
+
 #button_twitter
 {
     margin-left: 4px;

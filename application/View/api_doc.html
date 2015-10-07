@@ -14,7 +14,8 @@ Megacrypter API (version <strong>{{constant('API_VERSION')}}</strong>) {% trans 
 <div class="api_method"><strong>{% trans "Crypt-request" %} </strong>({% trans "for protecting a mega link list" %}):
 {"m": "crypt", 
 "links": [<em>"MEGA_LINK_1"</em>, <em>"MEGA_LINK_2"</em> ... <em>"MEGA_LINK_N"</em>],
-*"expire": <em>0-6</em>
+*"expire": <em>0-6</em>,
+*"no_expire_token": <em>true OR false</em>,
 *"tiny_url": <em>true OR false</em>,
 *"app_finfo": <em>true OR false</em>,
 *"hide_name": <em>true OR false</em>,
@@ -25,12 +26,13 @@ Megacrypter API (version <strong>{{constant('API_VERSION')}}</strong>) {% trans 
 
 <div class="extra_info"><strong>*{% trans "Optional params" %}:</strong>
 <em>1) {% trans "Expiration values" %}: 0 -> {% trans "never" %} ({% trans "default" %}), 1 -> 10 {% trans "minutes" %}, 2 -> 1 {% trans "hour" %}...</em>
-<em>2) {% trans "Tiny url option is false by default" %}.</em>
-<em>3) {% trans "Append file info option is false by default" %}.</em>
-<em>4) {% trans "Hide name option is false by default" %}.</em>
-<em>5) {% trans "Passwords are case-sensitive" %}.</em>
-<em>6) {% trans "Referer is not required to include" %} 'http://'. {% trans "It's limited to" %} {{constant('Utils_MegaCrypter::MAX_REFERER_BYTES')}} {% trans "chars" %}</em>
-<em>7) {% trans "Extra-info is limited to" %} {{constant('Utils_MegaCrypter::MAX_EXTRA_BYTES')}} {% trans "chars" %}.</em>
+<em>2) {% trans "Allow no-expire token (true by default)" %}.</em>
+<em>3) {% trans "Tiny url option is false by default" %}.</em>
+<em>4) {% trans "Append file info option is false by default" %}.</em>
+<em>5) {% trans "Hide name option is false by default" %}.</em>
+<em>6) {% trans "Passwords are case-sensitive" %}.</em>
+<em>7) {% trans "Referer is not required to include" %} 'http://'. {% trans "It's limited to" %} {{constant('Utils_MegaCrypter::MAX_REFERER_BYTES')}} {% trans "chars" %}</em>
+<em>8) {% trans "Extra-info is limited to" %} {{constant('Utils_MegaCrypter::MAX_EXTRA_BYTES')}} {% trans "chars" %}.</em>
 <em>{% trans "Note: link list is limited to " %}{{constant('Controller_ApiController::MAX_LINKS_LIST')}}</em></div>
 <strong>{% trans "Crypt-response" %}:</strong>
 {"links": [<em>"MC_LINK_1"</em>, <em>"MC_LINK_2"</em> ... <em>"MC_LINK_N"</em>]}

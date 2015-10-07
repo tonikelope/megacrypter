@@ -26,6 +26,16 @@ $(document).ready(function()
             }
         });
         
+        $('select#expire').click(function()
+        {
+            if($('select#expire').val() == '0') {
+                $('#no_exp_tok').slideUp('fast'); 
+            } else {
+                $('#no_exp_tok').slideDown('fast');  
+            }
+            
+        });
+        
         $('input#advanced_mode').click(function()
         {
             if($('input#advanced_mode').is(':checked')) {
