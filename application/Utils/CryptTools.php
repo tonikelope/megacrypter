@@ -66,60 +66,6 @@ class Utils_CryptTools
             $data);
     }
     
-    public static function opensslDecryptWithPass($data, $method, $password, $base64=false) {
-        
-        $descriptorspec = [
-            0 => ['pipe', 'r'],
-            1 => ['pipe', 'w']
-        ];
-
-        if (is_resource(($process = proc_open("openssl enc -{$method} -pass pass:'{$password}' -d".($base64?' -a':''), $descriptorspec, $pipes)))) {
-            
-            fwrite($pipes[0], $data);
-            
-            fclose($pipes[0]);
-
-            $dec = stream_get_contents($pipes[1]);
-
-            fclose($pipes[1]);
-            
-            proc_close($process);
-            
-            return $dec;
-            
-        } else {
-            
-            return false;
-        }
-    }
-    
-    public static function opensslEncryptWithPass($data, $method, $password, $base64=false) {
-        
-        $descriptorspec = [
-            0 => ['pipe', 'r'],
-            1 => ['pipe', 'w']
-        ];
-
-        if (is_resource(($process = proc_open("openssl enc -{$method} -pass pass:'{$password}' -e".($base64?' -a':''), $descriptorspec, $pipes)))) {
-            
-            fwrite($pipes[0], $data);
-            
-            fclose($pipes[0]);
-
-            $enc = stream_get_contents($pipes[1]);
-
-            fclose($pipes[1]);
-            
-            proc_close($process);
-            
-            return $enc;
-            
-        } else {
-            
-            return false;
-        }
-    }
-    
     public static function passHMAC($algo, $pass, $salt, $iterations, $raw_output=true) {
 		
         for($i=1, $xor=($last=hash_hmac($algo, $salt, $pass, true)); $i<$iterations; $i++) {
