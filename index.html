@@ -88,7 +88,8 @@ fjs.parentNode.insertBefore(js, fjs);
 <div class="api_method"><strong>Crypt-request </strong>(for protecting a mega link list):
 {"m": "crypt", 
 "links": [<em>"MEGA_LINK_1"</em>, <em>"MEGA_LINK_2"</em> ... <em>"MEGA_LINK_N"</em>],
-*"expire": <em>0-6</em>
+*"expire": <em>0-6</em>,
+*"no_expire_token": <em>true OR false</em>,
 *"tiny_url": <em>true OR false</em>,
 *"app_finfo": <em>true OR false</em>,
 *"hide_name": <em>true OR false</em>,
@@ -99,12 +100,13 @@ fjs.parentNode.insertBefore(js, fjs);
 
 <div class="extra_info"><strong>*Optional params:</strong>
 <em>1) Expiration values: 0 -> never (default), 1 -> 10 minutes, 2 -> 1 hour...</em>
-<em>2) Tiny url option is false by default.</em>
-<em>3) Append file info option is false by default.</em>
-<em>4) Hide name option is false by default.</em>
-<em>5) Passwords are case-sensitive.</em>
-<em>6) Referer is not required to include 'http://'. It's limited to 64 chars</em>
-<em>7) Extra-info is limited to 64 chars.</em>
+<em>2) True by default.</em>
+<em>3) Tiny url option is false by default.</em>
+<em>4) Append file info option is false by default.</em>
+<em>5) Hide name option is false by default.</em>
+<em>6) Passwords are case-sensitive.</em>
+<em>7) Referer is not required to include 'http://'. It's limited to 64 chars</em>
+<em>8) Extra-info is limited to 64 chars.</em>
 <em>Note: link list is limited to 500</em></div>
 <strong>Crypt-response:</strong>
 {"links": [<em>"MC_LINK_1"</em>, <em>"MC_LINK_2"</em> ... <em>"MC_LINK_N"</em>]}
