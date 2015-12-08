@@ -167,11 +167,6 @@ class Utils_MegaCrypter
 
 		list(, $file_id, $file_key) = explode('!', $link);
 
-        if(FORCE_CACHE_UPDATE_ON_LINK_CRYPT === true) {
-
-            Utils_MemcacheTon::getInstance()->delete($file_id . $file_key);
-        }
-
         $c_link = self::_encryptLink($link, $options)['link'];
 
         if ($app_finfo) {
@@ -180,7 +175,8 @@ class Utils_MegaCrypter
             
             try {
 
-                $file_info = $ma->getFileInfo($file_id, $file_key);
+                $file_info = $ma->getFileInfo($file_id, $file_key, IGNORE_CACHE_ON_LINK_CRYPT);
+
                 $info = "{$file_info['name']} [" . Utils_MiscTools::formatBytes($file_info['size']) . "]";
 
             } catch (Exception_MegaLinkException $exception) {
@@ -207,11 +203,6 @@ class Utils_MegaCrypter
 
                 foreach($mega_links as $mlink) {
 
-                    if(FORCE_CACHE_UPDATE_ON_LINK_CRYPT === true) {
-
-                        Utils_MemcacheTon::getInstance()->delete($mlink['node_id'].$folder_key);
-                    }
-
                     $clinks[] = "{$mlink['name']} [" . Utils_MiscTools::formatBytes($mlink['size']) . "] ". self::_encryptLink(Utils_MegaApi::MEGA_HOST . "/#!{$mlink['node_id']}*{$folder_id}!{$folder_key}", $options)['link'];
                 }
 
@@ -220,12 +211,6 @@ class Utils_MegaCrypter
                 $urls = [];
                 
                 foreach($mega_links as $mlink) {
-
-                    if(FORCE_CACHE_UPDATE_ON_LINK_CRYPT === true) {
-
-                        Utils_MemcacheTon::getInstance()->delete($mlink['node_id'].$folder_key);
-                    }
-
                     
                     $urls[] = Utils_MegaApi::MEGA_HOST . "/#!{$mlink['node_id']}*{$folder_id}!{$folder_key}";
                 }
@@ -316,9 +301,12 @@ class Utils_MegaCrypter
             
             $isblacklisted=(int)$res->fetchColumn();
         }
-        
-        Utils_MemcacheTon::getInstance()->set(BLACKLIST_MEMCACHE_PREFIX.$id, $isblacklisted, MEMCACHE_COMPRESSED, self::CACHE_BLACKLISTED_TTL);
-        
+
+        if(Utils_MemcacheTon::getInstance()->replace(BLACKLIST_MEMCACHE_PREFIX.$id, $isblacklisted, MEMCACHE_COMPRESSED, self::CACHE_BLACKLISTED_TTL) === false) {
+
+            Utils_MemcacheTon::getInstance()->set(BLACKLIST_MEMCACHE_PREFIX.$id, $isblacklisted, MEMCACHE_COMPRESSED, self::CACHE_BLACKLISTED_TTL);
+        }
+
         return (boolean)$isblacklisted;
     }
 
@@ -328,7 +316,10 @@ class Utils_MegaCrypter
 
         $res->execute([$id, $reporter, $ip]);
 
-        Utils_MemcacheTon::getInstance()->set(BLACKLIST_MEMCACHE_PREFIX.$id, 1, MEMCACHE_COMPRESSED, self::CACHE_BLACKLISTED_TTL);
+        if(Utils_MemcacheTon::getInstance()->replace(BLACKLIST_MEMCACHE_PREFIX.$id, 1, MEMCACHE_COMPRESSED, self::CACHE_BLACKLISTED_TTL)) {
+
+            Utils_MemcacheTon::getInstance()->set(BLACKLIST_MEMCACHE_PREFIX.$id, 1, MEMCACHE_COMPRESSED, self::CACHE_BLACKLISTED_TTL);
+        }
     }
 
 }

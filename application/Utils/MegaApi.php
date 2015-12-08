@@ -116,7 +116,7 @@ class Utils_MegaApi
         return Utils_MiscTools::urlBase64Encode(Utils_CryptTools::aesEcbDecrypt(Utils_MiscTools::urlBase64Decode($node_key), $this->_urlBase64KeyDecode($folder_key)));
     }
 
-    public function getFileInfo($fid, $fkey) {
+    public function getFileInfo($fid, $fkey, $ignore_cache=false) {
 
         if (strpos($fid, '*') !== false) {
 			
@@ -128,7 +128,7 @@ class Utils_MegaApi
  
         }
 
-        if ($this->_cache) {
+        if ($this->_cache && $ignore_cache === false) {
 			
             $cached_file_info = Utils_MemcacheTon::getInstance()->get((isset($file_id) ? $file_id : $fid) . $fkey);
 
@@ -139,7 +139,7 @@ class Utils_MegaApi
         }
 
         try {
-            if (!$this->_cache || $cached_file_info === false) {
+            if (!$this->_cache || $ignore_cache !== false || $cached_file_info === false) {
 				
                 if (isset($file_id) && !empty($folder_id)) {
 					
@@ -167,14 +167,24 @@ class Utils_MegaApi
             }
 
             if ($this->_cache && $file_info['size'] > 0 ) {
-				
-                Utils_MemcacheTon::getInstance()->set((isset($file_id) ? $file_id : $fid) . $fkey, $file_info, MEMCACHE_COMPRESSED, self::CACHE_FILEINFO_TTL);
+
+                if(Utils_MemcacheTon::getInstance()->replace((isset($file_id) ? $file_id : $fid) . $fkey, $file_info, MEMCACHE_COMPRESSED, self::CACHE_FILEINFO_TTL) === false) {
+
+                    Utils_MemcacheTon::getInstance()->set((isset($file_id) ? $file_id : $fid) . $fkey, $file_info, MEMCACHE_COMPRESSED, self::CACHE_FILEINFO_TTL);
+
+                }
+
             }
         } catch (Exception_MegaLinkException $exception) {
            
             if ($this->_cache && Utils_MiscTools::isCacheableError($exception->getCode())) {
-				
-                Utils_MemcacheTon::getInstance()->set((isset($file_id) ? $file_id : $fid) . $fkey, $exception->getCode(), MEMCACHE_COMPRESSED, self::CACHE_FILEINFO_TTL);
+
+                if(Utils_MemcacheTon::getInstance()->replace((isset($file_id) ? $file_id : $fid) . $fkey, $exception->getCode(), MEMCACHE_COMPRESSED, self::CACHE_FILEINFO_TTL) === false) {
+
+                    Utils_MemcacheTon::getInstance()->set((isset($file_id) ? $file_id : $fid) . $fkey, $exception->getCode(), MEMCACHE_COMPRESSED, self::CACHE_FILEINFO_TTL);
+
+                }
+
             }
             
             throw $exception->getCode() == self::EINTERNAL?new Exception_MegaLinkException(self::ETEMPUNAVAIL):$exception;

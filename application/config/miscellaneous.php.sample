@@ -11,16 +11,16 @@
     define('ERROR_LOG', false);
     define('API_VERSION', '0.9');
 
-    define('FORCE_CACHE_UPDATE_ON_LINK_CRYPT', true); //Disable if you generate lots of MC links from the same MEGA link
-    
+    define('IGNORE_CACHE_ON_LINK_CRYPT', false); //Enable if you generate lots of MC links from the same MEGA link
+
     define('BLACKLIST_LEVEL', Utils_MegaCrypter::BLACKLIST_LEVEL_OFF); //Disabled by default (ensure memcache is installed and running for optimal blacklist performance)
     define('BLACKLIST_MEMCACHE_PREFIX', 'BLACKLIST_');
     define('ZOMBIE_LINKS', false);
-    
+
     define('TAKEDOWN_TOOL', false); //Disabled by default
     define('RECAPTCHA_PUBLIC_KEY', ''); //Required for TAKEDOWN TOOL www.google.com/recaptcha
     define('RECAPTCHA_PRIVATE_KEY', '');
-    
+
     define('CURL_USERAGENT', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.137 Safari/537.36');
     define('_CURLPROXY_SOCKS5_HOSTNAME', 7);
     define('TOR_PROXY_SOCKS', '127.0.0.1:9050');
