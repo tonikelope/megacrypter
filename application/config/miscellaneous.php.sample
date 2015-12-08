@@ -10,6 +10,8 @@
     define('WEB_MAINTENANCE', false);
     define('ERROR_LOG', false);
     define('API_VERSION', '0.9');
+
+    define('FORCE_CACHE_UPDATE_ON_LINK_CRYPT', true); //Disable if you generate lots of MC links from the same MEGA link
     
     define('BLACKLIST_LEVEL', Utils_MegaCrypter::BLACKLIST_LEVEL_OFF); //Disabled by default (ensure memcache is installed and running for optimal blacklist performance)
     define('BLACKLIST_MEMCACHE_PREFIX', 'BLACKLIST_');

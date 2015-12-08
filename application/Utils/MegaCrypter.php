@@ -166,8 +166,11 @@ class Utils_MegaCrypter
 		$link = preg_replace('/#(?:!N\?|N!)([^!]+)/', '#!\1*', $link);
 
 		list(, $file_id, $file_key) = explode('!', $link);
-		
-        Utils_MemcacheTon::getInstance()->delete($file_id . $file_key);
+
+        if(FORCE_CACHE_UPDATE_ON_LINK_CRYPT === true) {
+
+            Utils_MemcacheTon::getInstance()->delete($file_id . $file_key);
+        }
 
         $c_link = self::_encryptLink($link, $options)['link'];
 
@@ -203,9 +206,12 @@ class Utils_MegaCrypter
                 $clinks=[];
 
                 foreach($mega_links as $mlink) {
-                    
-                    Utils_MemcacheTon::getInstance()->delete($mlink['node_id'].$folder_key);
- 
+
+                    if(FORCE_CACHE_UPDATE_ON_LINK_CRYPT === true) {
+
+                        Utils_MemcacheTon::getInstance()->delete($mlink['node_id'].$folder_key);
+                    }
+
                     $clinks[] = "{$mlink['name']} [" . Utils_MiscTools::formatBytes($mlink['size']) . "] ". self::_encryptLink(Utils_MegaApi::MEGA_HOST . "/#!{$mlink['node_id']}*{$folder_id}!{$folder_key}", $options)['link'];
                 }
 
@@ -214,8 +220,12 @@ class Utils_MegaCrypter
                 $urls = [];
                 
                 foreach($mega_links as $mlink) {
-                    
-                    Utils_MemcacheTon::getInstance()->delete($mlink['node_id'].$folder_key);
+
+                    if(FORCE_CACHE_UPDATE_ON_LINK_CRYPT === true) {
+
+                        Utils_MemcacheTon::getInstance()->delete($mlink['node_id'].$folder_key);
+                    }
+
                     
                     $urls[] = Utils_MegaApi::MEGA_HOST . "/#!{$mlink['node_id']}*{$folder_id}!{$folder_key}";
                 }
