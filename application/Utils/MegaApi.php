@@ -197,36 +197,42 @@ class Utils_MegaApi
 
 		$request = ['a' => 'g', 'g' => 1];
 
+        if ($ssl) {
+
+            $request['ssl'] = 2;
+        }
+
         if (strpos($fid, '*') !== false) {
-			
+
             list($file_id, $folder_id) = explode('*', $fid);
 
             if (empty($file_id)) {
-				
+
                 throw new Exception_MegaLinkException(self::ENOENT);
             }
-            
+
             $request['n'] = $file_id;
-            
+
+            $params = [$request, $folder_id];
+
         } else {
-			
-			$request['p'] = $fid;
+
+            $request['p'] = $fid;
+
+            $params = [$request];
         }
 
-        if ($ssl) {
-            $request['ssl'] = 2;
-        }
-        
         try
         {
-            $url = $this->rawAPIRequest($request)->g;
-        
+            $url = call_user_func_array([$this, 'rawAPIRequest'], $params)->g;
+
         } catch (Exception_MegaLinkException $exception) {
-            
+
             throw $exception->getCode() == self::EINTERNAL?new Exception_MegaLinkException(self::ETEMPUNAVAIL):$exception;
         }
 
         return $verify?$this->_verifyDownloadUrl($url):$url;
+
     }
 
     public function getFolderChildFileNodes($folder_id, $folder_key, $name_sorted = true) {
