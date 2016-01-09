@@ -141,16 +141,33 @@ class Utils_MegaApi
         try {
             if (!$this->_cache || $ignore_cache !== false || $cached_file_info === false) {
 				
-                if (isset($file_id) && !empty($folder_id)) {
-					
-                    $child_node = $this->getFolderChildFileNode($folder_id, $fkey, $file_id);
+                if (isset($file_id)) {
 
-                    $file_info = ['name' => $child_node['name'], 'path'=> $child_node['path'], 'size' => $child_node['size'], 'key' => $child_node['key']];
+                    if(!empty($folder_id)) {
+
+                        $child_node = $this->getFolderChildFileNode($folder_id, $fkey, $file_id);
+
+                        $file_info = ['name' => $child_node['name'], 'path'=> $child_node['path'], 'size' => $child_node['size'], 'key' => $child_node['key']];
+
+                    } else if(strpos($file_id, '#') !== false) {
+
+                        list($file_id, $folder_id) = explode('#', $file_id);
+
+                        $response = $this->rawAPIRequest(['a' => 'g', 'n' => $file_id], $folder_id);
+
+                        $at = $this->_decryptAt($response->at, $fkey);
+
+                        $file_info = ['name' => $at->n, 'size' => $response->s];
+
+                    } else {
+
+                        throw new Exception_MegaLinkException(self::ENOENT);
+                    }
                     
                 } else {
-				
-					$response = isset($file_id)?$this->rawAPIRequest(['a' => 'g', 'n' => $file_id]):$this->rawAPIRequest(['a' => 'g', 'p' => $fid]);
-					
+
+                    $response = $this->rawAPIRequest(['a' => 'g', 'p' => $fid]);
+
                     $at = $this->_decryptAt($response->at, $fkey);
 
                     $file_info = ['name' => $at->n, 'size' => $response->s];
@@ -211,6 +228,19 @@ class Utils_MegaApi
                 throw new Exception_MegaLinkException(self::ENOENT);
             }
 
+            if(empty($folder_id)) {
+
+                if(strpos($file_id, '#') !== false) {
+
+                    list($file_id, $folder_id) = explode('#', $file_id);
+
+                } else {
+
+                    throw new Exception_MegaLinkException(self::ENOENT);
+                }
+
+            }
+            
             $request['n'] = $file_id;
 
             $params = [$request, $folder_id];

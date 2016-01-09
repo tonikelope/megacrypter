@@ -1,3 +1,4 @@
 vendor/
 composer.lock
 application/config/*.php
+.idea/

@@ -163,7 +163,7 @@ class Utils_MegaCrypter
 
     private static function _encryptMegaSingleLink($link, array $options=[], $app_finfo=false) {
 
-		$link = preg_replace('/#(?:!N\?|N!)([^!]+)/', '#!\1*', $link);
+        $link = preg_replace('/#(?:!N\?|N!)([^!]+)(.*?)###n=(.+)$/', '#!\1#\3*\2', $link);
 
 		list(, $file_id, $file_key) = explode('!', $link);
 
