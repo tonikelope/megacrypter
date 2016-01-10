@@ -240,7 +240,7 @@ class Utils_MegaApi
                 }
 
             }
-            
+
             $request['n'] = $file_id;
 
             $params = [$request, $folder_id];

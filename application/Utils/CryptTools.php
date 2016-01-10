@@ -66,7 +66,7 @@ class Utils_CryptTools
             $data);
     }
     
-    public static function passHMAC($algo, $pass, $salt, $iterations, $raw_output=true) {
+    public static function passHMAC($algo, $salt, $pass, $iterations, $raw_output = true) {
 		
         for($i=1, $xor=($last=hash_hmac($algo, $salt, $pass, true)); $i<$iterations; $i++) {
 

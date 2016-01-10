@@ -44,7 +44,7 @@ class Utils_MegaCrypter
                 $options['no_expire_token'] ? self::EXTRA_TRUE_CHAR : null]
             );
 
-            $data = Utils_MiscTools::urlBase64Encode(Utils_CryptTools::aesCbcEncrypt(gzdeflate(implode(self::SEPARATOR, [$secret, $match['file_id'], $match['file_key'], !empty($options['pass']) ? self::PASS_HASH_ITERATIONS_LOG2.'#'.  base64_encode(Utils_CryptTools::passHMAC('sha256', $options['pass'], ($salt=openssl_random_pseudo_bytes(self::PASS_SALT_BYTE_LENGTH)), pow(2, self::PASS_HASH_ITERATIONS_LOG2))) . '#' . base64_encode($salt) : null, $extra, !empty($options['auth'])?$options['auth']:null]), 9), Utils_MiscTools::hex2bin(MASTER_KEY), md5(MASTER_KEY, true)));
+            $data = Utils_MiscTools::urlBase64Encode(Utils_CryptTools::aesCbcEncrypt(gzdeflate(implode(self::SEPARATOR, [$secret, $match['file_id'], $match['file_key'], !empty($options['pass']) ? self::PASS_HASH_ITERATIONS_LOG2.'#'.base64_encode(Utils_CryptTools::passHMAC('sha256', ($salt = openssl_random_pseudo_bytes(self::PASS_SALT_BYTE_LENGTH)), $options['pass'], pow(2, self::PASS_HASH_ITERATIONS_LOG2))).'#'.base64_encode($salt):null, $extra, !empty($options['auth'])?$options['auth']:null]), 9), Utils_MiscTools::hex2bin(MASTER_KEY), md5(MASTER_KEY, true)));
 
             $hash = hash_hmac(self::HMAC_ALGO, $data, md5(MASTER_KEY));
 
