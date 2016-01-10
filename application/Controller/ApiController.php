@@ -53,8 +53,8 @@ class Controller_ApiController extends Controller_DefaultController
     }
     
     private function _actionInfo($post_data) {
-        
-        $dec_link = $this->_decryptLink($post_data->link);
+
+		$dec_link = Utils_MegaCrypter::decryptLink($post_data->link);
         
         $ma = new Utils_MegaApi(MEGA_API_KEY);
         
@@ -101,57 +101,38 @@ class Controller_ApiController extends Controller_DefaultController
     }
    
    	private function _actionDl($post_data) {
-        
-	        try
-	        {
-			$dec_link = $this->_decryptLink($post_data->link);
-				
-		} catch(Exception_MegaCrypterLinkException $exception) {
-				
-			if($exception->getCode() == Utils_MegaCrypter::EXPIRED_LINK) {
-				
-				$dec_link = Utils_MegaCrypter::decryptLink($post_data->link, true);
-					
-				if($post_data->noexpire != base64_encode(hash('sha256', base64_decode($dec_link['secret']), true))) {
-				
-					throw $exception;
-				}
-					
-			} else {
-					
-				throw $exception;
-			}
-			
-		}
 
-	        $ma = new Utils_MegaApi(MEGA_API_KEY);
+		$dec_link = Utils_MegaCrypter::decryptLink($post_data->link, isset($post_data->noexpire)?$post_data->noexpire:null);
+				
+		$ma = new Utils_MegaApi(MEGA_API_KEY);
 	        
-	        try {
+		try {
+
 			$data = ['url' => $ma->getFileDownloadUrl($dec_link['file_id'], is_bool($post_data->ssl) ? $post_data->ssl : false)];
-				
+
 			if ($dec_link['pass']) {
-					
-				list($iterations, $pass, $pass_salt) = explode('#', $dec_link['pass']);
-				
+
+				list(, $pass, ) = explode('#', $dec_link['pass']);
+
 				$iv = openssl_random_pseudo_bytes(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
-	
+
 				$data['url'] = $this->_encryptApiField($data['url'], base64_decode($pass), $iv);
-				
+
 				$data['pass'] = base64_encode($iv);
-				
+
 			} else {
-				
+
 				$data['pass'] = false;
 			}
-	            
-	        } catch (Exception $exception) {
-	            
-	            Utils_MemcacheTon::getInstance()->delete($dec_link['file_id'] . $dec_link['file_key']);
-	            
-	            throw $exception;
-	        }
-	        
-	        return $data;
+
+		} catch (Exception $exception) {
+
+			Utils_MemcacheTon::getInstance()->delete($dec_link['file_id'] . $dec_link['file_key']);
+
+			throw $exception;
+		}
+
+		return $data;
     }
     
     private function _actionCrypt($post_data) {
@@ -185,26 +166,6 @@ class Controller_ApiController extends Controller_DefaultController
         }
         
         return $data;
-    }
-    
-    private function _decryptLink($link) {
-        
-        if(preg_match('/^(?:https?\:\/\/)?mega(?:\.co)?\.nz(?P<file_data>\/#!(?P<file_id>[^!]+)!(?P<file_key>.+))?$/i', ($link = trim($link)), $match)) {
-                           
-		if(!empty($match['file_data'])) {
-
-			$dec_link=['file_id' => $match['file_id'], 'file_key' => $match['file_key']];
-
-		} else {
-			
-			throw new Exception_MegaCrypterAPIException(Utils_MegaCrypter::LINK_ERROR);
-		}
-
-        } else {
-		$dec_link = Utils_MegaCrypter::decryptLink($link);
-        }
-        
-        return $dec_link;
     }
     
     private function _encryptApiField($field_value, $pass_sha256, $iv) {
