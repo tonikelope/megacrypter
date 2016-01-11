@@ -6,7 +6,7 @@ class Utils_MegaCrypter
     const MAX_REFERER_BYTES = 64;
     const MAX_EMAIL_BYTES = 64;
     const SECRET_BYTE_LENGTH = 16;
-    const PASS_SALT_BYTE_LENGTH = 8;
+    const PASS_SALT_BYTE_LENGTH = 16;
     const PASS_HASH_ITERATIONS_LOG2 = 14;
     const ZOMBIE_LINK_TTL = 86400;
     const MAX_FILE_NAME_BYTES = 255;
