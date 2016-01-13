@@ -44,7 +44,7 @@ class Utils_MegaCrypter
                 $options['no_expire_token'] ? self::EXTRA_TRUE_CHAR : null]
             );
 
-            $data = Utils_MiscTools::urlBase64Encode(Utils_CryptTools::aesCbcEncrypt(gzdeflate(implode(self::SEPARATOR, [$secret, $match['file_id'], $match['file_key'], !empty($options['pass']) ? self::PASS_HASH_ITERATIONS_LOG2.'#'.base64_encode(Utils_CryptTools::passHMAC('sha256', ($salt = openssl_random_pseudo_bytes(self::PASS_SALT_BYTE_LENGTH)), $options['pass'], pow(2, self::PASS_HASH_ITERATIONS_LOG2))).'#'.base64_encode($salt):null, $extra, !empty($options['auth'])?$options['auth']:null]), 9), Utils_MiscTools::hex2bin(MASTER_KEY), md5(MASTER_KEY, true)));
+            $data = Utils_MiscTools::urlBase64Encode(Utils_CryptTools::aesCbcEncrypt(gzdeflate(implode(self::SEPARATOR, [$secret, $match['file_id'], $match['file_key'], !empty($options['pass'])?$options['pass']:null, $extra, !empty($options['auth'])?$options['auth']:null]), 9), Utils_MiscTools::hex2bin(MASTER_KEY), md5(MASTER_KEY, true)));
 
             $hash = hash_hmac(self::HMAC_ALGO, $data, md5(MASTER_KEY));
 
@@ -58,7 +58,7 @@ class Utils_MegaCrypter
         }
     }
 
-    public static function decryptLink($link, $noexpire=null) {
+    public static function decryptLink($link, $no_expire=null, $ignore_blacklist=false) {
 
         if (preg_match('/^.*?!(?P<data>[0-9a-z_-]+)!(?P<hash>[0-9a-f]+)/i', trim(str_replace('/', '', $link)), $match)) {
 
@@ -66,7 +66,7 @@ class Utils_MegaCrypter
 
                 throw new Exception_MegaCrypterLinkException(self::LINK_ERROR);
 
-            } else if (BLACKLIST_LEVEL >= self::BLACKLIST_LEVEL_MC && self::isBlacklistedLink($match['data'])) {
+            } else if (!$ignore_blacklist && BLACKLIST_LEVEL >= self::BLACKLIST_LEVEL_MC && self::isBlacklistedLink($match['data'])) {
 
                 throw new Exception_MegaCrypterLinkException(self::BLACKLISTED_LINK);
 
@@ -74,7 +74,7 @@ class Utils_MegaCrypter
 
                 list($secret, $file_id, $file_key, $pass, $extra, $auth) = explode(self::SEPARATOR, gzinflate(Utils_CryptTools::aesCbcDecrypt(Utils_MiscTools::urlBase64Decode($match['data']), Utils_MiscTools::hex2bin(MASTER_KEY), md5(MASTER_KEY, true))));
 
-                if (BLACKLIST_LEVEL == self::BLACKLIST_LEVEL_MEGA && self::isBlacklistedLink($file_id)) {
+                if (!$ignore_blacklist && BLACKLIST_LEVEL == self::BLACKLIST_LEVEL_MEGA && self::isBlacklistedLink($file_id)) {
 
                     throw new Exception_MegaCrypterLinkException(self::BLACKLISTED_LINK);
 
@@ -86,7 +86,7 @@ class Utils_MegaCrypter
 
                         if (!empty($expire)) {
 
-                            if(time() >= $expire && (is_null($noexpire) || base64_decode($noexpire) != hash('sha256', base64_decode($secret), true))) {
+                            if(time() >= $expire && (is_null($no_expire) || base64_decode($no_expire) != hash('sha256', base64_decode($secret), true))) {
 
                                 throw new Exception_MegaCrypterLinkException(self::EXPIRED_LINK);
                             }
@@ -256,7 +256,7 @@ class Utils_MegaCrypter
 
             if ($exception->getCode() == self::BLACKLISTED_LINK && ZOMBIE_LINKS) {
 
-                $dec_link = array_merge(self::decryptLink($link), ['expire' => time() + self::ZOMBIE_LINK_TTL, 'extra_info' => 'Zombie link!', 'hide_name' => true, 'referer' => null, 'email' => null, 'zombie' => $_SERVER['REMOTE_ADDR']]);
+                $dec_link = array_merge(self::decryptLink($link, null, true), ['expire' => time() + self::ZOMBIE_LINK_TTL, 'extra_info' => 'Zombie link!', 'hide_name' => true, 'referer' => null, 'email' => null, 'zombie' => $_SERVER['REMOTE_ADDR']]);
                 
             } else {
                 
@@ -291,7 +291,13 @@ class Utils_MegaCrypter
         $cooked_options['expire'] = (!is_numeric($options['expire']) || !isset($EXPIRE_SECS[(int)$options['expire'] - 1])) ? false : time() + $EXPIRE_SECS[(int) $options['expire'] - 1];
         
         $cooked_options['referer'] = !empty($options['referer']) ? Utils_MiscTools::extractHostFromUrl(filter_var($options['referer'], FILTER_SANITIZE_STRING), true) : null;
-        
+
+        if (!empty($options['pass'])) {
+
+            $options['pass'] = self::PASS_HASH_ITERATIONS_LOG2.'#'.base64_encode(Utils_CryptTools::passHMAC('sha256', ($salt = openssl_random_pseudo_bytes(self::PASS_SALT_BYTE_LENGTH)), $options['pass'], pow(2, self::PASS_HASH_ITERATIONS_LOG2))).'#'.base64_encode($salt);
+
+        }
+
         return $cooked_options;
     }
 
