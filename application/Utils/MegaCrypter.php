@@ -294,7 +294,7 @@ class Utils_MegaCrypter
 
         if (!empty($options['pass'])) {
 
-            $options['pass'] = self::PASS_HASH_ITERATIONS_LOG2.'#'.base64_encode(Utils_CryptTools::passHMAC('sha256', ($salt = openssl_random_pseudo_bytes(self::PASS_SALT_BYTE_LENGTH)), $options['pass'], pow(2, self::PASS_HASH_ITERATIONS_LOG2))).'#'.base64_encode($salt);
+            $cooked_options['pass'] = self::PASS_HASH_ITERATIONS_LOG2.'#'.base64_encode(Utils_CryptTools::passHMAC('sha256', ($salt = openssl_random_pseudo_bytes(self::PASS_SALT_BYTE_LENGTH)), $options['pass'], pow(2, self::PASS_HASH_ITERATIONS_LOG2))).'#'.base64_encode($salt);
 
         }
 
