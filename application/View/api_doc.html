@@ -71,7 +71,7 @@ Megacrypter API (version <strong>{{constant('API_VERSION')}}</strong>) {% trans 
     
     END
 
-UNTIL aes_cbc_dec(base64_dec(INFO_KEY_CHECK), info_key, base64_dec(IV)) = base64_dec(info_key)
+UNTIL aes_cbc_dec(base64_dec(INFO_KEY_CHECK), info_key, base64_dec(IV)) = info_key
 
 crypted_field := aes_cbc_dec(base64_dec(CRYPTED_FIELD), info_key, base64_dec(IV))
 </em>
