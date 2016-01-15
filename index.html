@@ -121,7 +121,7 @@ fjs.parentNode.insertBefore(js, fjs);
 "key": <em>"FILE_KEY" OR "CRYPTED_FILE_KEY"</em>,
 "extra": <em>false OR "EXTRA_INFO" OR "CRYPTED_EXTRA_INFO"</em>,
 "expire": <em>false OR "EXPIRE_TIMESTAMP#NOEXPIRE_TOKEN"</em>,
-"pass": <em>false OR "ITER_LOG2#KEY_CHECK_HMAC#SALT#IV"</em>}
+"pass": <em>false OR "ITER_LOG2#INFO_KEY_CHECK#SALT#IV"</em>}
 
 <div class="extra_info"><strong>About password protected files</strong>: 
 
@@ -144,7 +144,7 @@ Follow this <strong>algorithm</strong> to decrypt crypted fields:
     
     END
 
-UNTIL hmac_sha256(base64_dec(IV), info_key) = base64_dec(KEY_CHECK_HMAC)
+UNTIL aes_cbc_dec(base64_dec(INFO_KEY_CHECK), info_key, base64_dec(IV)) = info_key
 
 crypted_field := aes_cbc_dec(base64_dec(CRYPTED_FIELD), info_key, base64_dec(IV))
 </em>
