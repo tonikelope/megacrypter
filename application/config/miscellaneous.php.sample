@@ -9,7 +9,7 @@
     define('STOP_IT_ALL', false);
     define('WEB_MAINTENANCE', false);
     define('ERROR_LOG', false);
-    define('API_VERSION', '0.9');
+    define('API_VERSION', '1.0');
 
     define('IGNORE_CACHE_ON_LINK_CRYPT', true); //Disable for better performance if you auto-gen MC links
 
