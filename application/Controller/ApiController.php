@@ -168,9 +168,9 @@ class Controller_ApiController extends Controller_DefaultController
         return $data;
     }
     
-    private function _encryptApiField($field_value, $pass_sha256, $iv) {
+    private function _encryptApiField($data, $key, $iv) {
         
-        return base64_encode(Utils_CryptTools::aesCbcEncrypt($field_value, $pass_sha256, $iv, true));
+        return base64_encode(Utils_CryptTools::aesCbcEncrypt($data, $key, $iv, true));
     }
 
 }
