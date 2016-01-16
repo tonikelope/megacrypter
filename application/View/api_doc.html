@@ -49,12 +49,11 @@ Megacrypter API (version <strong>{{constant('API_VERSION')}}</strong>) {% trans 
 "key": <em>"FILE_KEY" OR "CRYPTED_FILE_KEY"</em>,
 "extra": <em>false OR "EXTRA_INFO" OR "CRYPTED_EXTRA_INFO"</em>,
 "expire": <em>false OR "EXPIRE_TIMESTAMP#NOEXPIRE_TOKEN"</em>,
-"pass": <em>false OR "ITER_LOG2#KCV#SALT"</em>}
+"pass": <em>false OR "ITER_LOG2#KCV#SALT#IV"</em>}
 
 <div class="extra_info"><strong>{% trans "About password protected files" %}</strong>: 
 
-{% trans "File metadata will be returned crypted using AES CBC (PKCS7) with 256 bits key derivated
-    from pass. KCV is this key crypted with itself. Use it to verify key before decrypt metadata." %}.
+{% trans "File name, file key, and extra-info will be returned crypted using AES CBC (PKCS7) with 256 bits key derivated from pass." %}.
 
 {% trans "Follow this <strong>algorithm</strong> to decrypt crypted fields" %}:
 
@@ -72,13 +71,12 @@ Megacrypter API (version <strong>{{constant('API_VERSION')}}</strong>) {% trans 
     
     END
 
-UNTIL aes_cbc_dec(base64_dec(KCV), info_key, base64_dec(SALT)) = info_key
+UNTIL aes_cbc_dec(base64_dec(KCV), info_key, base64_dec(IV)) = info_key
 
-crypted_field := aes_cbc_dec(base64_dec(CRYPTED_FIELD), info_key, base64_dec(SALT))
+crypted_field := aes_cbc_dec(base64_dec(CRYPTED_FIELD), info_key, base64_dec(IV))
 </em>
 <div class="extra_info">
-<em>{% trans "Note: iteration count is -> " %}pow(2, {{constant('Utils_MegaCrypter::PASS_HASH_ITERATIONS_LOG2')}}) = {{ 2**constant('Utils_MegaCrypter::PASS_HASH_ITERATIONS_LOG2') }}</em>
-    <em>{% trans "Note2: SALT value is used as SALT and AES IV" %}</em></div>
+<em>{% trans "Note: iteration count is -> " %}pow(2, {{constant('Utils_MegaCrypter::PASS_HASH_ITERATIONS_LOG2')}}) = {{ 2**constant('Utils_MegaCrypter::PASS_HASH_ITERATIONS_LOG2') }}</em></div>
 </div></div>
 
 <div class="api_method">{% trans "<strong>Dl-request</strong> (for getting a temporary url to the (crypted) file)" %}:

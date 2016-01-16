@@ -6,6 +6,7 @@ class Utils_MegaCrypter
     const MAX_REFERER_BYTES = 64;
     const MAX_EMAIL_BYTES = 64;
     const SECRET_BYTE_LENGTH = 16;
+    const PASS_SALT_BYTE_LENGTH = 16;
     const PASS_HASH_ITERATIONS_LOG2 = 14;
     const ZOMBIE_LINK_TTL = 86400;
     const MAX_FILE_NAME_BYTES = 255;
@@ -293,7 +294,7 @@ class Utils_MegaCrypter
 
         if (!empty($options['pass'])) {
 
-            $cooked_options['pass'] = self::PASS_HASH_ITERATIONS_LOG2.'#'.base64_encode(Utils_CryptTools::customPBKDF2('sha256', ($salt = openssl_random_pseudo_bytes(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC))), $options['pass'], pow(2, self::PASS_HASH_ITERATIONS_LOG2))).'#'.base64_encode($salt);
+            $cooked_options['pass'] = self::PASS_HASH_ITERATIONS_LOG2.'#'.base64_encode(Utils_CryptTools::customPBKDF2('sha256', ($salt = openssl_random_pseudo_bytes(self::PASS_SALT_BYTE_LENGTH)), $options['pass'], pow(2, self::PASS_HASH_ITERATIONS_LOG2))).'#'.base64_encode($salt);
 
         }
 

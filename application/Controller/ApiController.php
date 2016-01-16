@@ -73,24 +73,24 @@ class Controller_ApiController extends Controller_DefaultController
 
 			list($iterlog2, $pass, $pass_salt) = explode('#', $dec_link['pass']);
             
-			$info_key = base64_decode($pass);
+			$pass_hash = base64_decode($pass);
 
-			$iv = base64_decode($pass_salt);
+			$iv = openssl_random_pseudo_bytes(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
 
-			$data['name'] = $this->_encryptApiField($data['name'], $info_key, $iv);
+			$data['name'] = $this->_encryptApiField($data['name'], $pass_hash, $iv);
                         
                         if($data['path']) {
-                            $data['path'] = $this->_encryptApiField($data['path'], $info_key, $iv);
+                            $data['path'] = $this->_encryptApiField($data['path'], $pass_hash, $iv);
                         }
 		
-			$data['key'] = $this->_encryptApiField(Utils_MiscTools::urlBase64Decode($data['key']), $info_key, $iv);
+			$data['key'] = $this->_encryptApiField(Utils_MiscTools::urlBase64Decode($data['key']), $pass_hash, $iv);
 
 			if ($data['extra']) {
 
-				$data['extra'] = $this->_encryptApiField($data['extra'], $info_key, $iv);
+				$data['extra'] = $this->_encryptApiField($data['extra'], $pass_hash, $iv);
 			}
 
-			$data['pass'] = implode('#', [$iterlog2, $this->_encryptApiField($info_key, $info_key, $iv), $pass_salt]);
+			$data['pass'] = implode('#', [$iterlog2, $this->_encryptApiField($pass_hash, $pass_hash, $iv), $pass_salt, base64_encode($iv)]);
 			
         } else {
 			
@@ -112,11 +112,13 @@ class Controller_ApiController extends Controller_DefaultController
 
 			if ($dec_link['pass']) {
 
-				list(, $pass, $pass_salt) = explode('#', $dec_link['pass']);
+				list(, $pass, ) = explode('#', $dec_link['pass']);
 
-				$data['url'] = $this->_encryptApiField($data['url'], base64_decode($pass), base64_decode($pass_salt));
+				$iv = openssl_random_pseudo_bytes(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
 
-				$data['pass'] = true;
+				$data['url'] = $this->_encryptApiField($data['url'], base64_decode($pass), $iv);
+
+				$data['pass'] = base64_encode($iv);
 
 			} else {
 
