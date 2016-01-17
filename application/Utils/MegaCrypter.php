@@ -6,8 +6,9 @@ class Utils_MegaCrypter
     const MAX_REFERER_BYTES = 64;
     const MAX_EMAIL_BYTES = 64;
     const SECRET_BYTE_LENGTH = 16;
-    const PASS_SALT_BYTE_LENGTH = 16;
-    const PASS_HASH_ITERATIONS_LOG2 = 14;
+    const PBKDF2_SALT_BYTE_LENGTH = 16;
+    const PBKDF2_ITERATIONS_LOG2 = 14;
+    const PBKDF2_HMAC_ALGO = 'sha256';
     const ZOMBIE_LINK_TTL = 86400;
     const MAX_FILE_NAME_BYTES = 255;
     const CACHE_BLACKLISTED_TTL = 3600;
@@ -19,7 +20,7 @@ class Utils_MegaCrypter
     const SEPARATOR = '@'; //Distinto a los caracteres en BASE64
     const SEPARATOR_EXTRA = '#'; //Distinto a los caracteres en BASE64 y distinto al separador normal
     const EXTRA_TRUE_CHAR = '*'; //Distinto a los caracteres en BASE64 y distinto de los separadores
-    const HMAC_ALGO = 'crc32';
+    const MC_LINKS_HMAC_ALGO = 'crc32';
     /* Fin constantes peligrosas */
 
     /* Inicio códigos de error (los códigos positivos por debajo del 21 están reservados para errores del APIController) */
@@ -46,7 +47,7 @@ class Utils_MegaCrypter
 
             $data = Utils_MiscTools::urlBase64Encode(Utils_CryptTools::aesCbcEncrypt(gzdeflate(implode(self::SEPARATOR, [$secret, $match['file_id'], $match['file_key'], !empty($options['pass'])?$options['pass']:null, $extra, !empty($options['auth'])?$options['auth']:null]), 9), Utils_MiscTools::hex2bin(MASTER_KEY), md5(MASTER_KEY, true)));
 
-            $hash = hash_hmac(self::HMAC_ALGO, $data, md5(MASTER_KEY));
+            $hash = hash_hmac(self::MC_LINKS_HMAC_ALGO, $data, md5(MASTER_KEY));
 
             $url_path = preg_replace('/.{' . self::MAX_FILE_NAME_BYTES . '}(?!$)/', '\0/', "!$data!$hash");
             
@@ -62,7 +63,7 @@ class Utils_MegaCrypter
 
         if (preg_match('/^.*?!(?P<data>[0-9a-z_-]+)!(?P<hash>[0-9a-f]+)/i', trim(str_replace('/', '', $link)), $match)) {
 
-            if (hash_hmac(self::HMAC_ALGO, $match['data'], md5(MASTER_KEY)) != $match['hash']) {
+            if (hash_hmac(self::MC_LINKS_HMAC_ALGO, $match['data'], md5(MASTER_KEY)) != $match['hash']) {
 
                 throw new Exception_MegaCrypterLinkException(self::LINK_ERROR);
 
@@ -294,7 +295,7 @@ class Utils_MegaCrypter
 
         if (!empty($options['pass'])) {
 
-            $cooked_options['pass'] = self::PASS_HASH_ITERATIONS_LOG2.'#'.base64_encode(Utils_CryptTools::customPBKDF2('sha256', ($salt = openssl_random_pseudo_bytes(self::PASS_SALT_BYTE_LENGTH)), $options['pass'], pow(2, self::PASS_HASH_ITERATIONS_LOG2))).'#'.base64_encode($salt);
+            $cooked_options['pass'] = implode(self::SEPARATOR_EXTRA, [$iterations=defined('PBKDF2_ITERATIONS_LOG2')?:self::PBKDF2_ITERATIONS_LOG2, base64_encode(Utils_CryptTools::customPBKDF2(self::PBKDF2_HMAC_ALGO, ($salt = openssl_random_pseudo_bytes(self::PBKDF2_SALT_BYTE_LENGTH)), $options['pass'], pow(2, $iterations))), base64_encode($salt)]);
 
         }
 
