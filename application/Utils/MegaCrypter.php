@@ -295,8 +295,7 @@ class Utils_MegaCrypter
 
         if (!empty($options['pass'])) {
 
-            $cooked_options['pass'] = implode(self::SEPARATOR_EXTRA, [$iterations=defined('PBKDF2_ITERATIONS_LOG2')?:self::PBKDF2_ITERATIONS_LOG2, base64_encode(Utils_CryptTools::customPBKDF2(self::PBKDF2_HMAC_ALGO, ($salt = openssl_random_pseudo_bytes(self::PBKDF2_SALT_BYTE_LENGTH)), $options['pass'], pow(2, $iterations))), base64_encode($salt)]);
-
+            $cooked_options['pass'] = implode(self::SEPARATOR_EXTRA, [$iterations=defined('PBKDF2_ITERATIONS_LOG2')?:self::PBKDF2_ITERATIONS_LOG2, base64_encode(hash_pbkdf2(self::PBKDF2_HMAC_ALGO, $options['pass'], ($salt = openssl_random_pseudo_bytes(self::PBKDF2_SALT_BYTE_LENGTH)), pow(2, 14), 0, true)), base64_encode($salt)]);
         }
 
         return $cooked_options;
