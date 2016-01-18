@@ -65,15 +65,5 @@ class Utils_CryptTools
                 
             $data);
     }
-    
-    public static function customPBKDF2($algo, $salt, $pass, $iterations, $raw_output = true) {
-		
-        for($i=1, $xor=($last=hash_hmac($algo, $salt, $pass, true)); $i<$iterations; $i++) {
-
-            $xor^=($last=hash_hmac($algo, $last, $pass, true));
-        }
-
-        return $raw_output?$xor:bin2hex($xor);
-    }
 
 }

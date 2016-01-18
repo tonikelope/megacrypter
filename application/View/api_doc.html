@@ -53,7 +53,8 @@ Megacrypter API (version <strong>{{constant('API_VERSION')}}</strong>) {% trans 
 
 <div class="extra_info"><strong>{% trans "About password protected files" %}</strong>: 
 
-{% trans "File name, file key, and extra-info will be returned crypted using AES CBC (PKCS7) with 256 bits key derivated from pass." %}.
+{% trans "File name, file key, and extra-info will be returned crypted using AES CBC (PKCS7) with 256 bits key derivated
+    from pass (PBKDF2 SHA256)." %}.
 
 {% trans "Follow this <strong>algorithm</strong> to decrypt crypted fields" %}:
 
@@ -61,7 +62,7 @@ Megacrypter API (version <strong>{{constant('API_VERSION')}}</strong>) {% trans 
         
     password := read_password()
     
-    info_key := hmac := hmac_sha256(password, base64_dec(SALT))
+    info_key := hmac := hmac_sha256(password, base64_dec(SALT) + hex2bin('00000001'))
     
     FOR i=2 : 1 : pow(2, ITER_LOG2)
         
