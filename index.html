@@ -126,7 +126,7 @@ fjs.parentNode.insertBefore(js, fjs);
 <div class="extra_info"><strong>About password protected files</strong>: 
 
 File name, file key, and extra-info will be returned crypted using AES CBC (PKCS7) 
-with 256 bits key (derivated from pass).
+with 256 bits key derivated from pass (PBKDF2 SHA256).
 
 Follow this <strong>algorithm</strong> to decrypt crypted fields:
 
@@ -134,7 +134,7 @@ Follow this <strong>algorithm</strong> to decrypt crypted fields:
         
     password := read_password()
     
-    info_key := hmac := hmac_sha256(password, base64_dec(SALT))
+    info_key := hmac := hmac_sha256(password, base64_dec(SALT) + hex2bin('00000001'))
     
     FOR i=2 : 1 : pow(2, ITER_LOG2)
         
