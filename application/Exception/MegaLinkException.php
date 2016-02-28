@@ -13,7 +13,7 @@ class Exception_MegaLinkException extends Exception_LinkException
             Utils_MegaApi::ENOENT => '%p not found!',
             Utils_MegaApi::EBLOCKED => '%p is blocked!',
             Utils_MegaApi::EKEY => 'Bad %p!',
-            Utils_MegaApi::ETOOMANY => "%p not found\n(user account was terminated)"
+            Utils_MegaApi::ETOOMANY => "%p not found (user account was terminated)"
         );
 
         return array_key_exists($ecode, $emessages) ? strtr($emessages[$ecode], ['%p' => self::PREFIX]) : self::PREFIX . ' error (' . $ecode . ')';
