@@ -2,7 +2,7 @@
 
 class Exception_MegaCrypterLinkException extends Exception_LinkException
 {
-    const PREFIX = 'MC link';
+    const PREFIX = 'ERROR: MC link';
 
     public function errorCode2Message($ecode) {
         $emessages = array

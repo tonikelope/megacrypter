@@ -3,7 +3,7 @@
 class Exception_MegaLinkException extends Exception_LinkException
 {
 
-    const PREFIX = 'MEGA file';
+    const PREFIX = 'ERROR: MEGA file';
 
     public function errorCode2Message($ecode) {
         $emessages = array
