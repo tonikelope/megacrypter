@@ -34,11 +34,11 @@ class Utils_MiscTools
         
         do {
             
-            $ch = curl_init('https://www.googleapis.com/urlshortener/v1/url');
+            $ch = curl_init('https://www.googleapis.com/urlshortener/v1/url?key='.GOOGLE_URL_SHORT_API_KEY);
 
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['longUrl' => $url, 'key' => GOOGLE_URL_SHORT_API_KEY]));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['longUrl' => $url]));
             curl_setopt($ch, CURLOPT_USERAGENT, CURL_USERAGENT);
             curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
 
