@@ -302,6 +302,26 @@ class Utils_MegaApi
                         return strnatcasecmp($a['path'].$a['name'], $b['path'].$b['name']);
                     });
         }
+
+        if($this->_cache) {
+
+            //Precacheamos nodos hijo (útil si el enlace protegido fue autogenerado ya que seguramente el cliente solicite descargar los subnodos a continuación)
+
+            foreach($fnodes as $node) {
+
+                $id = $node['id'];
+
+                unset($node['id']);
+
+                if ($node['size'] > 0 ) {
+
+                    if(Utils_MemcacheTon::getInstance()->replace($id . $folder_key, $node, MEMCACHE_COMPRESSED, self::CACHE_FILEINFO_TTL) === false) {
+
+                        Utils_MemcacheTon::getInstance()->set($id . $folder_key, $node, MEMCACHE_COMPRESSED, self::CACHE_FILEINFO_TTL);
+                    }
+                }
+            }
+        }
         
         return $fnodes;
     }
