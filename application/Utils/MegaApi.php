@@ -145,7 +145,7 @@ class Utils_MegaApi
 
                     if(!empty($folder_id)) {
 
-                        $child_node = $this->getFolderChildFileNode($folder_id, $fkey, $file_id);
+                        $child_node = $this->getFolderChildFileNodes($folder_id, $fkey, $file_id);
 
                         $file_info = ['name' => $child_node['name'], 'path'=> $child_node['path'], 'size' => $child_node['size'], 'key' => $child_node['key']];
 
@@ -265,13 +265,15 @@ class Utils_MegaApi
 
     }
 
-    public function getFolderChildFileNodes($folder_id, $folder_key, $name_sorted = true) {
+    public function getFolderChildFileNodes($folder_id, $folder_key, $filter_node_id = null, $name_sorted = true) {
 
         $file_nodes = $this->_getFolderRawNodes($folder_id, $folder_key);
         
         $fnodes = [];
         
         $paths = [];
+
+        $filter_node=null;
 
         foreach ($file_nodes as $id => $node) {
             
@@ -293,10 +295,20 @@ class Utils_MegaApi
                 unset($aux_node['parent']);
                 
                 $fnodes[] = $aux_node;
+
+                if($aux_node['id'] == $filter_node_id) {
+
+                    $filter_node = $aux_node;
+
+                    if(!$this->_cache) {
+
+                        break;
+                    }
+                }
             }
         }
 
-        if ($name_sorted) {
+        if (is_null($filter_node_id) && $name_sorted) {
 			
             usort($fnodes, function($a, $b) {
                         return strnatcasecmp($a['path'].$a['name'], $b['path'].$b['name']);
@@ -323,30 +335,7 @@ class Utils_MegaApi
             }
         }
         
-        return $fnodes;
-    }
-    
-    public function getFolderChildFileNode($folder_id, $folder_key, $node_id) {
-
-        $file_nodes = $this->_getFolderRawNodes($folder_id, $folder_key);
-
-        foreach ($file_nodes as $id => $node) {
-            
-            if ($node['type'] == 0 && $id == $node_id) {
-                
-                $aux_node = $node;
-                
-                $aux_node['id'] = $id;
-                
-                $aux_node['path'] = $this->_calculatePath($file_nodes, $id);
-                
-                unset($aux_node['type']);
-                
-                unset($aux_node['parent']);
-                  
-                return $aux_node;
-            }
-        }
+        return is_null($filter_node_id)?$fnodes:$filter_node;
     }
     
     private function _getFolderRawNodes($folder_id, $folder_key) {
