@@ -183,6 +183,8 @@ class Utils_MegaApi
                 $file_info = $cached_file_info;
             }
 
+            $file_info['name'] = trim($file_info['name']);
+
             if ($this->_cache && $file_info['size'] > 0 ) {
 
                 if(Utils_MemcacheTon::getInstance()->replace((isset($file_id) ? $file_id : $fid) . $fkey, $file_info, MEMCACHE_COMPRESSED, self::CACHE_FILEINFO_TTL) === false) {
@@ -364,7 +366,9 @@ class Utils_MegaApi
         
         while(isset($file_nodes[$parent_id]))
         {
-            $path="{$file_nodes[$parent_id]['name']}/$path";
+            $parent_name=trim($file_nodes[$parent_id]['name']);
+
+            $path="{$parent_name}/{$path}";
             
             $parent_id = $file_nodes[$parent_id]['parent']; 
         }
