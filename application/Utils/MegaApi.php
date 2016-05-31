@@ -98,9 +98,12 @@ class Utils_MegaApi
      */
     private function _decryptAt($at, $key) {
 
-        if (preg_match('/^.*MEGA.*?(?P<at>\{.+\}).*$/is', Utils_CryptTools::aesCbcDecrypt(Utils_MiscTools::urlBase64Decode($at), $this->_urlBase64KeyDecode($key)), $match)) {
-            return $this->_sanitizeAt(json_decode($match['at']));
+        if (preg_match('/MEGA.*?(?P<at>\{.+\})/is', mb_convert_encoding(Utils_CryptTools::aesCbcDecrypt(Utils_MiscTools::urlBase64Decode($at), $this->_urlBase64KeyDecode($key)), 'UTF-8'), $match)) {
+            
+            return json_decode($match['at']);
+        
         } else {
+            
             throw new Exception_MegaLinkException(self::EKEY);
         }
     }
@@ -417,10 +420,4 @@ class Utils_MegaApi
         return $url;
     }
     
-    private function _sanitizeAt($at) {
-        
-        $at->n = preg_replace('/[\x00-\x1F\x80-\x9F]/u', '', $at->n);
-        
-        return $at;
-    }
 }
