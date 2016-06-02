@@ -1,7 +1,9 @@
 {
     "require": {
-        "twig/twig": "1.*",
-	"twig/extensions": "1.0.*",
-	"phpmailer/phpmailer": "v5.2.7"
+
+      "twig/twig": "1.*",
+      "twig/extensions": "1.0.*",
+	  "phpmailer/phpmailer": "v5.2.7",
+      "phpunit/phpunit": "5.3.*"
     }
 }

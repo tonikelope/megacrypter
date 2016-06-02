@@ -8,7 +8,7 @@ class Controller_LinkCryptController extends Controller_DefaultController
         
         if ($this->isValidReferer()) {
             
-            $mc_links = Utils_MegaCrypter::encryptLinkList(Utils_MiscTools::extractLinks(Utils_CryptTools::decryptMegaDownloaderLinks($this->request->getPostVar('links'))), ['tiny_url' => $this->request->getPostVar('tiny_url'), 'pass' => $this->request->getPostVar('pass'), 'extra_info' => $this->request->getPostVar('extra_info'), 'hide_name' => $this->request->getPostVar('hide_name'), 'expire' => $this->request->getPostVar('expire'), 'no_expire_token' => $this->request->getPostVar('no_expire_token'), 'referer' => $this->request->getPostVar('referer'), 'email' => $this->request->getPostVar('email')], $this->request->getPostVar('app_finfo'));
+            $mc_links = Utils_MegaCrypter::encryptLinkList(Utils_MiscTools::extractLinks(Utils_CryptTools::decryptMegaDownloaderLinks($this->request->getPostVar('links'))), ['tiny_url' => $this->request->getPostVar('tiny_url'), 'PASSWORD' => $this->request->getPostVar('pass'), 'EXTRAINFO' => $this->request->getPostVar('extra_info'), 'HIDENAME' => $this->request->getPostVar('hide_name'), 'EXPIRE' => $this->request->getPostVar('expire'), 'NOEXPIRETOKEN' => $this->request->getPostVar('no_expire_token'), 'REFERER' => $this->request->getPostVar('referer'), 'EMAIL' => $this->request->getPostVar('email')], $this->request->getPostVar('app_finfo'));
                 
             if (!empty($mc_links)) {
 

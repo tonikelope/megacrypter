@@ -66,14 +66,16 @@ class Controller_ApiController extends Controller_DefaultController
 		'size' => $file_info['size'],
 		'key' => isset($file_info['key']) ? $file_info['key'] : $dec_link['file_key'],
 		'extra' => $dec_link['extra_info'],
-		'expire' => $dec_link['expire']?implode(Utils_MegaCrypter::SEPARATOR_EXTRA, [$dec_link['expire'], ($dec_link['no_expire_token']?base64_encode(hash('sha256', base64_decode($dec_link['secret']), true)):self::NO_EXP_TOK_NOT_ALLOWED)]):false
+		'expire' => $dec_link['expire']?implode('#', [$dec_link['expire'], ($dec_link['no_expire_token']?base64_encode(hash('sha256', $dec_link['secret'], true)):self::NO_EXP_TOK_NOT_ALLOWED)]):false
         ];
 
         if ($dec_link['pass']) {
 
-			list($iterlog2, $pass, $pass_salt) = explode(Utils_Megacrypter::SEPARATOR_EXTRA, $dec_link['pass']);
-            
-			$pass_hash = base64_decode($pass);
+			$iterlog2 = $dec_link['pass']['iterations'];
+
+			$pass_hash = $dec_link['pass']['pbkdf2_hash'];
+
+			$pass_salt = $dec_link['pass']['salt'];
 
 			$iv = openssl_random_pseudo_bytes(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
 
@@ -90,7 +92,7 @@ class Controller_ApiController extends Controller_DefaultController
 				$data['extra'] = $this->_encryptApiField($data['extra'], $pass_hash, $iv);
 			}
 
-			$data['pass'] = implode(Utils_MegaCrypter::SEPARATOR_EXTRA, [$iterlog2, $this->_encryptApiField($pass_hash, $pass_hash, $iv), $pass_salt, base64_encode($iv)]);
+			$data['pass'] = implode('#', [$iterlog2, $this->_encryptApiField($pass_hash, $pass_hash, $iv), base64_encode($pass_salt), base64_encode($iv)]);
 			
         } else {
 			
@@ -111,12 +113,10 @@ class Controller_ApiController extends Controller_DefaultController
 			$data = ['url' => $ma->getFileDownloadUrl($dec_link['file_id'], is_bool($post_data->ssl) ? $post_data->ssl : false)];
 
 			if ($dec_link['pass']) {
-
-				list(, $pass, ) = explode(Utils_MegaCrypter::SEPARATOR_EXTRA, $dec_link['pass']);
-
+                
 				$iv = openssl_random_pseudo_bytes(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
 
-				$data['url'] = $this->_encryptApiField($data['url'], base64_decode($pass), $iv);
+				$data['url'] = $this->_encryptApiField($data['url'], $dec_link['pass']['pbkdf2_hash'], $iv);
 
 				$data['pass'] = base64_encode($iv);
 
@@ -143,13 +143,13 @@ class Controller_ApiController extends Controller_DefaultController
 					
 					$options = [];
 					
-					$opts = ['tiny_url', 'pass', 'extra_info', 'hide_name', 'expire', 'no_expire_token', 'referer', 'email'];
-					
-					foreach($opts as $opt)
+					$opts = ['tiny_url' => 'tiny_url', 'pass' => 'PASSWORD', 'extra_info' => 'EXTRAINFO', 'hide_name' => 'HIDENAME', 'expire' => 'EXPIRE', 'no_expire_token' => 'NOEXPIRETOKEN', 'referer' => 'REFERER', 'email' => 'EMAIL'];
+
+					foreach($opts as $opt_post => $opt)
 					{
-						if(isset($post_data->$opt)) {
+						if(isset($post_data->$opt_post)) {
 						
-							$options[$opt]=$post_data->$opt;
+							$options[$opt]=$post_data->$opt_post;
 						}
 					}
                 	

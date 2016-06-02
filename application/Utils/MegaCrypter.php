@@ -5,9 +5,8 @@ class Utils_MegaCrypter
     const MAX_EXTRA_BYTES = 64;
     const MAX_REFERER_BYTES = 64;
     const MAX_EMAIL_BYTES = 64;
-    const SECRET_BYTE_LENGTH = 16;
     const PBKDF2_SALT_BYTE_LENGTH = 16;
-    const PBKDF2_ITERATIONS_LOG2 = 14;
+    const PBKDF2_ITERATIONS_LOG2 = 14; // 1-255
     const PBKDF2_HMAC_ALGO = 'sha256';
     const ZOMBIE_LINK_TTL = 86400;
     const MAX_FILE_NAME_BYTES = 255;
@@ -16,13 +15,6 @@ class Utils_MegaCrypter
     const BLACKLIST_LEVEL_MC = 1;
     const BLACKLIST_LEVEL_MEGA = 2;
 
-    /* Inicio constantes "peligrosas" (si se modifican, los links antiguos dejarán de funcionar) */
-    const SEPARATOR = '@'; //Distinto a los caracteres en BASE64
-    const SEPARATOR_EXTRA = '#'; //Distinto a los caracteres en BASE64 y distinto al separador normal
-    const EXTRA_TRUE_CHAR = '*'; //Distinto a los caracteres en BASE64 y distinto de los separadores
-    const MC_LINKS_HMAC_ALGO = 'crc32';
-    /* Fin constantes peligrosas */
-
     /* Inicio códigos de error (los códigos positivos por debajo del 21 están reservados para errores del APIController) */
     const INTERNAL_ERROR = 21;
     const LINK_ERROR = 22;
@@ -30,30 +22,55 @@ class Utils_MegaCrypter
     const EXPIRED_LINK = 24;
     /* Fin códigos de error */
 
+
     private static function _encryptLink($link, array $options=[]) {
+        
         if (preg_match('/^.*?!(?P<file_id>[^!]+)!(?P<file_key>.+)$/', trim($link), $match)) {
             
-            $secret = base64_encode(openssl_random_pseudo_bytes(self::SECRET_BYTE_LENGTH));
+            $secret = openssl_random_pseudo_bytes(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
 
-            /* ¡OJO! -> NO SE PUEDE CAMBIAR EL ORDEN NI ELIMINAR NINGUNO */
-            $extra = implode(self::SEPARATOR_EXTRA, [!empty($options['extra_info']) ? base64_encode(substr($options['extra_info'], 0, self::MAX_EXTRA_BYTES)) : null,
-                $options['hide_name'] ? self::EXTRA_TRUE_CHAR : null,
-                (is_numeric($options['expire']) && time() < (int) $options['expire']) ? (int) $options['expire'] : null,
-                !empty($options['referer']) ? base64_encode(substr($options['referer'], 0, self::MAX_REFERER_BYTES)) : null,
-                !empty($options['email']) ? base64_encode(substr($options['email'], 0, self::MAX_EMAIL_BYTES)) : null,
-                !empty($options['zombie']) ? $options['zombie'] : null,
-                $options['no_expire_token'] ? self::EXTRA_TRUE_CHAR : null]
-            );
+            $flags = 0;
 
-            $data = Utils_MiscTools::urlBase64Encode(Utils_CryptTools::aesCbcEncrypt(gzdeflate(implode(self::SEPARATOR, [$secret, $match['file_id'], $match['file_key'], !empty($options['pass'])?$options['pass']:null, $extra, !empty($options['auth'])?$options['auth']:null]), 9), Utils_MiscTools::hex2bin(MASTER_KEY), md5(MASTER_KEY, true)));
+            $mask = 0x80000000;
 
-            $hash = hash_hmac(self::MC_LINKS_HMAC_ALGO, $data, md5(MASTER_KEY));
+            $i=0;
+
+            $optional_data='';
+
+            if(!empty($options)) {
+
+                $available_flags = self::_getOptionalFlags();
+
+                foreach($available_flags as $label => $val) {
+
+                    if(array_key_exists($label, $options) && !is_null($options[$label]) && $options[$label] !== false) {
+
+                        $flags|=($mask>>$i);
+
+                        if(!is_null($val)) {
+
+                            $optional_data.=$val['pack']($options[$label]);
+                        }
+                    }
+
+                    $i++;
+                }
+            }
+
+            $file_id=$match['file_id'];
+
+            $file_key=Utils_MiscTools::urlBase64Decode($match['file_key']);
+
+            $data = Utils_MiscTools::urlBase64Encode(Utils_CryptTools::aesCbcEncrypt(gzdeflate($secret . pack('C', strlen($file_id)) . $file_id . pack('C', strlen($file_key)) . $file_key . pack('N', $flags) . $optional_data, 9), Utils_MiscTools::hex2bin(MASTER_KEY)));
+
+            $hash = hash_hmac('crc32', $data, md5(MASTER_KEY, true));
 
             $url_path = preg_replace('/.{' . self::MAX_FILE_NAME_BYTES . '}(?!$)/', '\0/', "!$data!$hash");
             
             $c_link = URL_BASE . "/$url_path";
 
-            return ['link' => $options['tiny_url'] ? Utils_MiscTools::deflateUrl($c_link) : $c_link, 'secret' => $secret];
+            return ['link' => isset($options['tiny_url']) && $options['tiny_url'] ? Utils_MiscTools::deflateUrl($c_link) : $c_link, 'secret' => $secret];
+
         } else {
             throw new Exception_MegaCrypterLinkException(self::LINK_ERROR);
         }
@@ -63,7 +80,7 @@ class Utils_MegaCrypter
 
         if (preg_match('/^.*?!(?P<data>[0-9a-z_-]+)!(?P<hash>[0-9a-f]+)/i', trim(str_replace('/', '', $link)), $match)) {
 
-            if (hash_hmac(self::MC_LINKS_HMAC_ALGO, $match['data'], md5(MASTER_KEY)) != $match['hash']) {
+            if (hash_hmac('crc32', $match['data'], md5(MASTER_KEY, true)) != $match['hash']) {
 
                 throw new Exception_MegaCrypterLinkException(self::LINK_ERROR);
 
@@ -73,7 +90,15 @@ class Utils_MegaCrypter
 
             } else {
 
-                list($secret, $file_id, $file_key, $pass, $extra, $auth) = explode(self::SEPARATOR, gzinflate(Utils_CryptTools::aesCbcDecrypt(Utils_MiscTools::urlBase64Decode($match['data']), Utils_MiscTools::hex2bin(MASTER_KEY), md5(MASTER_KEY, true))));
+                $dec_data = gzinflate(Utils_CryptTools::aesCbcDecrypt(Utils_MiscTools::urlBase64Decode($match['data']), Utils_MiscTools::hex2bin(MASTER_KEY)));
+
+                $secret = substr($dec_data, 0, mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
+
+                $file_id = substr($dec_data, strlen($secret) + 1, unpack('Clength', substr($dec_data, strlen($secret), 1) )['length']);
+
+                $file_key = substr($dec_data, strlen($secret) + 1 + strlen($file_id) + 1, unpack('Clength', substr($dec_data, strlen($secret) + 1 + strlen($file_id), 1) )['length']);
+
+                $optional_fields = [];
 
                 if (!$ignore_blacklist && BLACKLIST_LEVEL == self::BLACKLIST_LEVEL_MEGA && self::isBlacklistedLink($file_id)) {
 
@@ -81,19 +106,44 @@ class Utils_MegaCrypter
 
                 } else {
 
-                    if ($extra) {
+                    $flags = unpack('Nflags', substr($dec_data, ($offset=strlen($secret) + 1 + strlen($file_id) + 1 + strlen($file_key)), 4))['flags'];
 
-                        list($extra_info, $hide_name, $expire, $referer, $email, $zombie, $no_expire_token) = explode(self::SEPARATOR_EXTRA, $extra);
+                    if ($flags !== 0) {
 
-                        if (!empty($expire)) {
+                        $offset+=4;
 
-                            if(time() >= $expire && (is_null($no_expire) || base64_decode($no_expire) != hash('sha256', base64_decode($secret), true))) {
+                        $available_flags = self::_getOptionalFlags();
+
+                        $mask = 0x80000000;
+
+                        $i = 0;
+
+                        foreach($available_flags as $label => $val) {
+
+                            if(($mask >> $i) & $flags) {
+
+                                if(!is_null($val)) {
+
+                                    $optional_fields[$label] = $val['unpack']($dec_data, $offset);
+
+                                } else {
+
+                                    $optional_fields[$label] = true;
+                                }
+                            }
+
+                            $i++;
+                        }
+
+                        if (array_key_exists('NOEXPIRE', $optional_fields)) {
+
+                            if(time() >= $optional_fields['NOEXPIRE'] && (is_null($no_expire) || base64_decode($no_expire) != hash('sha256', $secret, true))) {
 
                                 throw new Exception_MegaCrypterLinkException(self::EXPIRED_LINK);
                             }
                         }
 
-                        if (!empty($zombie) && $zombie != $_SERVER['REMOTE_ADDR']) {
+                        if (array_key_exists('ZOMBIE', $optional_fields) && $optional_fields['ZOMBIE'] != $_SERVER['REMOTE_ADDR']) {
 
                             throw new Exception_MegaCrypterLinkException(self::LINK_ERROR);
 
@@ -101,24 +151,98 @@ class Utils_MegaCrypter
                     }
 
                     return [
-                        'file_id' => $file_id, 
-                        'file_key' => $file_key, 
-                        'extra_info' => !empty($extra_info) ? base64_decode($extra_info) : false, 
-                        'pass' => !empty($pass) ? $pass : false, 
-                        'auth' => !empty($auth) ? base64_decode($auth) : false, 
-                        'hide_name' => !empty($hide_name), 
-                        'expire' => !empty($expire) ? $expire : false,
-                        'no_expire_token' => !empty($no_expire_token),
-                        'referer' => !empty($referer) ? base64_decode($referer) : false, 
-                        'email' => !empty($email) ? base64_decode($email) : false, 
-                        'zombie' => !empty($zombie) ? $zombie : false, 
-                        'secret' => $secret
-                        ];
+                        'secret' => $secret,
+                        'file_id' => $file_id,
+                        'file_key' => Utils_MiscTools::urlBase64Encode($file_key),
+                        'extra_info' => array_key_exists('EXTRAINFO', $optional_fields)? $optional_fields['EXTRAINFO'] : false,
+                        'pass' => array_key_exists('PASSWORD', $optional_fields) ? $optional_fields['PASSWORD'] : false,
+                        'auth' => array_key_exists('AUTH', $optional_fields) ? $optional_fields['AUTH'] : false,
+                        'hide_name' => array_key_exists('HIDENAME', $optional_fields),
+                        'expire' => array_key_exists('EXPIRE', $optional_fields) ? $optional_fields['EXPIRE'] : false,
+                        'no_expire_token' => array_key_exists('NOEXPIRETOKEN', $optional_fields),
+                        'referer' => array_key_exists('REFERER', $optional_fields)? $optional_fields['REFERER'] : false,
+                        'email' => array_key_exists('EMAIL', $optional_fields)? $optional_fields['EMAIL'] : false,
+                        'zombie' => array_key_exists('ZOMBIE', $optional_fields)? $optional_fields['ZOMBIE'] : false
+                    ];
                 }
             }
         } else {
             throw new Exception_MegaCrypterLinkException(self::LINK_ERROR);
         }
+    }
+
+    /* Campos opcionales (MAX 32) (MUY IMPORTANTE -> NO SE PUEDE CAMBIAR EL ORDEN) */
+    private static function _getOptionalFlags() {
+
+        return [
+
+            'EXTRAINFO' => [
+                'pack' => function($data) {return pack('n', strlen($data)) . $data;},
+
+                'unpack' => function($data, &$offset) {$ret=substr($data, $offset+2, unpack('nlength', substr($data, $offset, 2))['length']); $offset+=2+strlen($ret); return $ret;}
+            ],
+
+            'HIDENAME'      => null,
+
+            'PASSWORD'      => [
+                'pack' => function($data, $salt=null) {return pack('C', self::PBKDF2_ITERATIONS_LOG2 - 1) . hash_pbkdf2(self::PBKDF2_HMAC_ALGO, $data, ($pbkdf2_salt = is_null($salt)?openssl_random_pseudo_bytes(self::PBKDF2_SALT_BYTE_LENGTH):$salt), pow(2, self::PBKDF2_ITERATIONS_LOG2), 0, true) . $pbkdf2_salt;},
+
+                'unpack' => function($data, &$offset) { $ret = ['iterations' => unpack('Citer', $data[$offset])['iter']+1, 'pbkdf2_hash' => substr($data, $offset + 1, 32), 'salt' => substr($data, $offset + 33, 16) ]; $offset+=1+strlen($ret['pbkdf2_hash'])+strlen($ret['salt']); return $ret;}
+            ],
+
+            'EXPIRE'        => [
+
+                'pack' => function($data) {return pack('NN', ($data >> 32) & 0xFFFFFFFF, $data & 0xFFFFFFFF);},
+
+                'unpack' => function($data, &$offset) {
+
+                    $expire = unpack('Nmsw/Nlsw', substr($data, $offset, 8));
+
+                    $offset+=8;
+
+                    return ($expire['msw'] << 32) | $expire['lsw'];}
+            ],
+
+            'NOEXPIRETOKEN' => null,
+
+            'REFERER'       => [
+
+                'pack' => function($data) {return pack('n', strlen($data)) . $data;},
+
+                'unpack' => function($data, &$offset) {$ret=substr($data, $offset+2, unpack('nlength', substr($data, $offset, 2))['length']); $offset+=2+strlen($ret); return $ret;}
+
+            ],
+
+            'EMAIL'         => [
+
+                'pack' => function($data) {return pack('C', strlen($data)) . $data;},
+
+                'unpack' => function($data, &$offset) {$ret=substr($data, $offset+1, unpack('Clength', substr($data, $offset, 1))['length']); $offset+=1+strlen($ret); return $ret;}
+
+            ],
+
+            'ZOMBIE'        => [
+
+                'pack' => function($data) { list($o1,$o2,$o3,$o4) = explode('.', $data); return pack('CCCC', $o1,$o2,$o3,$o4); },
+
+                'unpack' => function($data, &$offset) {
+
+                    $octetos = unpack('Co1/Co2/Co3/Co4', substr($data, $offset, 4));
+
+                    $offset+=4;
+
+                    return "{$octetos['o1']}.{$octetos['o2']}.{$octetos['o3']}.{$octetos['o4']}"; }
+
+            ],
+
+            'AUTH'          => [
+
+                'pack' => function($data) {return pack('n', strlen($data)) . $data;},
+
+                'unpack' => function($data, &$offset) {$ret=substr($data, $offset+2, unpack('nlength', substr($data, $offset, 2))['length']); $offset+=2+strlen($ret); return $ret;}
+
+            ]
+        ];
     }
 
     public static function encryptLinkList(array $links=null, array $options = [], $app_finfo = false, $cook_options=true, $anti_timeout=false) {
@@ -257,7 +381,7 @@ class Utils_MegaCrypter
 
             if ($exception->getCode() == self::BLACKLISTED_LINK && ZOMBIE_LINKS) {
 
-                $dec_link = array_merge(self::decryptLink($link, null, true), ['expire' => time() + self::ZOMBIE_LINK_TTL, 'extra_info' => 'Zombie link!', 'hide_name' => true, 'referer' => null, 'email' => null, 'zombie' => $_SERVER['REMOTE_ADDR']]);
+                $dec_link = array_merge(self::decryptLink($link, null, true), ['EXPIRE' => time() + self::ZOMBIE_LINK_TTL, 'EXTRAINFO' => 'Zombie link!', 'hide_name' => true, 'REFERER' => null, 'EMAIL' => null, 'ZOMBIE' => $_SERVER['REMOTE_ADDR']]);
                 
             } else {
                 
@@ -287,16 +411,11 @@ class Utils_MegaCrypter
         
         $EXPIRE_SECS = [600, 3600, 86400, 604800, 1209600, 2592000, 7776000, 15552000, 31536000];
         
-        $cooked_options = array_merge(['tiny_url' => false, 'pass' => null, 'extra_info' => null, 'hide_name' => false, 'expire' => false, 'no_expire_token' => true, 'referer' => null, 'email' => null, 'zombie' => null, 'auth' => null], array_change_key_case($options));
+        $cooked_options = array_merge(['tiny_url' => false, 'PASSWORD' => null, 'EXTRAINFO' => null, 'HIDENAME' => false, 'EXPIRE' => false, 'NOEXPIRETOKEN' => true, 'REFERER' => null, 'EMAIL' => null, 'ZOMBIE' => null, 'AUTH' => null], $options);
                 
-        $cooked_options['expire'] = (!is_numeric($options['expire']) || !isset($EXPIRE_SECS[(int)$options['expire'] - 1])) ? false : time() + $EXPIRE_SECS[(int) $options['expire'] - 1];
+        $cooked_options['EXPIRE'] = (!is_numeric($options['EXPIRE']) || !isset($EXPIRE_SECS[(int)$options['EXPIRE'] - 1])) ? false : time() + $EXPIRE_SECS[(int) $options['EXPIRE'] - 1];
         
-        $cooked_options['referer'] = !empty($options['referer']) ? Utils_MiscTools::extractHostFromUrl(filter_var($options['referer'], FILTER_SANITIZE_STRING), true) : null;
-
-        if (!empty($options['pass'])) {
-
-            $cooked_options['pass'] = implode(self::SEPARATOR_EXTRA, [self::PBKDF2_ITERATIONS_LOG2, base64_encode(hash_pbkdf2(self::PBKDF2_HMAC_ALGO, $options['pass'], ($salt = openssl_random_pseudo_bytes(self::PBKDF2_SALT_BYTE_LENGTH)), pow(2, self::PBKDF2_ITERATIONS_LOG2), 0, true)), base64_encode($salt)]);
-        }
+        $cooked_options['REFERER'] = !empty($options['REFERER']) ? Utils_MiscTools::extractHostFromUrl(filter_var($options['REFERER'], FILTER_SANITIZE_STRING), true) : null;
 
         return $cooked_options;
     }
