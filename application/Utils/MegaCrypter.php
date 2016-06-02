@@ -3,7 +3,7 @@
 class Utils_MegaCrypter
 {
     const PBKDF2_SALT_BYTE_LENGTH = 16;
-    const PBKDF2_ITERATIONS_LOG2 = 14; // 1-255
+    const PBKDF2_ITERATIONS_LOG2 = 14; // MAX 256
     const PBKDF2_HMAC_ALGO = 'sha256';
     const ZOMBIE_LINK_TTL = 86400;
     const MAX_FILE_NAME_BYTES = 255;
