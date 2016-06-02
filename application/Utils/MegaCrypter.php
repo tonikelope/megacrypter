@@ -2,9 +2,6 @@
 
 class Utils_MegaCrypter
 {
-    const MAX_EXTRA_BYTES = 64;
-    const MAX_REFERER_BYTES = 64;
-    const MAX_EMAIL_BYTES = 64;
     const PBKDF2_SALT_BYTE_LENGTH = 16;
     const PBKDF2_ITERATIONS_LOG2 = 14; // 1-255
     const PBKDF2_HMAC_ALGO = 'sha256';
