@@ -178,7 +178,7 @@ class Utils_MegaApi
                 
                 if(empty($file_info['name'])) {
 					
-                    $file_info['name'] = md5((isset($file_id) ? $file_id . $file_info['key'] : $fid . $fkey) . base64_decode(GENERIC_PASSWORD));
+                    $file_info['name'] = md5((isset($file_id) ? $file_id . $file_info['key'] : $fid . $fkey) . GENERIC_PASSWORD);
                 }
                 
             } else {

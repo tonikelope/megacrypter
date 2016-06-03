@@ -24,7 +24,7 @@ class Utils_MegaCrypter
         
         if (preg_match('/^.*?!(?P<file_id>[^!]+)!(?P<file_key>.+)$/', trim($link), $match)) {
             
-            $secret = openssl_random_pseudo_bytes(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
+            $iv = openssl_random_pseudo_bytes(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
 
             $flags = 0;
 
@@ -58,15 +58,15 @@ class Utils_MegaCrypter
 
             $file_key=Utils_MiscTools::urlBase64Decode($match['file_key']);
 
-            $data = Utils_MiscTools::urlBase64Encode(Utils_CryptTools::aesCbcEncrypt(gzdeflate($secret . pack('C', strlen($file_id)) . $file_id . pack('C', strlen($file_key)) . $file_key . pack('N', $flags) . $optional_data, 9), Utils_MiscTools::hex2bin(MASTER_KEY)));
+            $data = Utils_MiscTools::urlBase64Encode($iv.Utils_CryptTools::aesCbcEncrypt(gzdeflate(pack('C', strlen($file_id)) . $file_id . pack('C', strlen($file_key)) . $file_key . pack('N', $flags) . $optional_data, 9), hex2bin(MASTER_KEY), $iv));
 
-            $hash = hash_hmac('crc32', $data, md5(MASTER_KEY, true));
+            $hash = substr(hash_hmac('sha256', $data, md5(hex2bin(MASTER_KEY), true)), -8);
 
             $url_path = preg_replace('/.{' . self::MAX_FILE_NAME_BYTES . '}(?!$)/', '\0/', "!$data!$hash");
             
             $c_link = URL_BASE . "/$url_path";
 
-            return ['link' => isset($options['tiny_url']) && $options['tiny_url'] ? Utils_MiscTools::deflateUrl($c_link) : $c_link, 'secret' => $secret];
+            return ['link' => isset($options['tiny_url']) && $options['tiny_url'] ? Utils_MiscTools::deflateUrl($c_link) : $c_link, 'secret' => hash_hmac('sha256', $iv, GENERIC_PASSWORD, true)];
 
         } else {
             throw new Exception_MegaCrypterLinkException(self::LINK_ERROR);
@@ -77,9 +77,16 @@ class Utils_MegaCrypter
 
         if (preg_match('/^.*?!(?P<data>[0-9a-z_-]+)!(?P<hash>[0-9a-f]+)/i', trim(str_replace('/', '', $link)), $match)) {
 
-            if (hash_hmac('crc32', $match['data'], md5(MASTER_KEY, true)) != $match['hash']) {
+            if ( ($mc_key=self::_checkLinkHmac($match['data'], $match['hash'])) === false ) {
 
-                throw new Exception_MegaCrypterLinkException(self::LINK_ERROR);
+                if( TRY_LEGACY_LINK_DECRYPT && ($mc_key=self::_checkLegacyLinkHmac($match['data'], $match['hash'])) !== false ) {
+
+                    return self::_legacyDecryptLink($match['data'], $mc_key, $no_expire, $ignore_blacklist);
+
+                } else {
+
+                    throw new Exception_MegaCrypterLinkException(self::LINK_ERROR);
+                }
 
             } else if (!$ignore_blacklist && BLACKLIST_LEVEL >= self::BLACKLIST_LEVEL_MC && self::isBlacklistedLink($match['data'])) {
 
@@ -87,13 +94,15 @@ class Utils_MegaCrypter
 
             } else {
 
-                $dec_data = gzinflate(Utils_CryptTools::aesCbcDecrypt(Utils_MiscTools::urlBase64Decode($match['data']), Utils_MiscTools::hex2bin(MASTER_KEY)));
+                $iv = substr(($data=Utils_MiscTools::urlBase64Decode($match['data'])), 0, mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
 
-                $secret = substr($dec_data, 0, mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
+                $dec_data = gzinflate(Utils_CryptTools::aesCbcDecrypt(substr($data, strlen($iv)), hex2bin($mc_key), $iv));
 
-                $file_id = substr($dec_data, strlen($secret) + 1, unpack('Clength', substr($dec_data, strlen($secret), 1) )['length']);
+                $secret = hash_hmac('sha256', $iv, GENERIC_PASSWORD, true);
 
-                $file_key = substr($dec_data, strlen($secret) + 1 + strlen($file_id) + 1, unpack('Clength', substr($dec_data, strlen($secret) + 1 + strlen($file_id), 1) )['length']);
+                $file_id = substr($dec_data, 1, unpack('Clength', substr($dec_data, 0, 1) )['length']);
+
+                $file_key = substr($dec_data, 1 + strlen($file_id) + 1, unpack('Clength', substr($dec_data, 1 + strlen($file_id), 1) )['length']);
 
                 $optional_fields = [];
 
@@ -103,7 +112,7 @@ class Utils_MegaCrypter
 
                 } else {
 
-                    $flags = unpack('Nflags', substr($dec_data, ($offset=strlen($secret) + 1 + strlen($file_id) + 1 + strlen($file_key)), 4))['flags'];
+                    $flags = unpack('Nflags', substr($dec_data, ($offset=1 + strlen($file_id) + 1 + strlen($file_key)), 4))['flags'];
 
                     if ($flags !== 0) {
 
@@ -457,5 +466,92 @@ class Utils_MegaCrypter
         }
     }
 
+    private static function _legacyDecryptLink($data, $mc_key, $no_expire=null, $ignore_blacklist=false) {
+
+        if (!$ignore_blacklist && BLACKLIST_LEVEL >= self::BLACKLIST_LEVEL_MC && self::isBlacklistedLink($data)) {
+
+            throw new Exception_MegaCrypterLinkException(self::BLACKLISTED_LINK);
+
+        } else {
+
+            list($secret, $file_id, $file_key, $pass, $extra, $auth) = explode('@', gzinflate(Utils_CryptTools::aesCbcDecrypt(Utils_MiscTools::urlBase64Decode($data), hex2bin($mc_key), md5($mc_key, true))));
+
+            if (!$ignore_blacklist && BLACKLIST_LEVEL == self::BLACKLIST_LEVEL_MEGA && self::isBlacklistedLink($file_id)) {
+
+                throw new Exception_MegaCrypterLinkException(self::BLACKLISTED_LINK);
+
+            } else {
+
+                if ($extra) {
+
+                    list($extra_info, $hide_name, $expire, $referer, $email, $zombie, $no_expire_token) = explode('#', $extra);
+
+                    if (!empty($expire)) {
+
+                        if (time() >= $expire && (is_null($no_expire) || base64_decode($no_expire) != hash('sha256', base64_decode($secret), true))) {
+
+                            throw new Exception_MegaCrypterLinkException(self::EXPIRED_LINK);
+                        }
+                    }
+
+                    if (!empty($zombie) && $zombie != $_SERVER['REMOTE_ADDR']) {
+
+                        throw new Exception_MegaCrypterLinkException(self::LINK_ERROR);
+                    }
+                }
+
+                return [
+                    'file_id' => $file_id,
+                    'file_key' => $file_key,
+                    'extra_info' => !empty($extra_info) ? base64_decode($extra_info) : false,
+                    'pass' => !empty($pass) ? $pass : false,
+                    'auth' => !empty($auth) ? base64_decode($auth) : false,
+                    'hide_name' => !empty($hide_name),
+                    'expire' => !empty($expire) ? $expire : false,
+                    'no_expire_token' => !empty($no_expire_token),
+                    'referer' => !empty($referer) ? base64_decode($referer) : false,
+                    'email' => !empty($email) ? base64_decode($email) : false,
+                    'zombie' => !empty($zombie) ? $zombie : false,
+                    'secret' => $secret
+                ];
+            }
+        }
+    }
+
+    private static function _checkLinkHmac($data, $hash) {
+
+        $hex_keys = [MASTER_KEY];
+
+        if(!empty($hex_keys)) {
+
+            foreach($hex_keys as $key) {
+
+                if(substr(hash_hmac('sha256', $data, md5(hex2bin($key), true)), -8) == $hash) {
+
+                    return $key;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static function _checkLegacyLinkHmac($data, $hash) {
+
+        $legacy_hex_keys = [MASTER_KEY];
+
+        if(!empty($legacy_hex_keys)) {
+
+            foreach($legacy_hex_keys as $key) {
+
+                if(hash_hmac('crc32', $data, md5($key)) == $hash) {
+
+                    return $key;
+                }
+            }
+        }
+
+        return false;
+    }
 }
 

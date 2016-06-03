@@ -61,7 +61,7 @@ class Utils_CryptTools
 
                 $iv = '79F10A01844A0B27FF5B2D4E0ED3163E';
 
-                return Utils_MegaApi::MEGA_HOST . '/#' . strtoupper($match['folder']) . Utils_CryptTools::aesCbcDecrypt(Utils_MiscTools::urlBase64Decode($match['linkdata']), Utils_MiscTools::hex2bin($key[$match['enc']]), Utils_MiscTools::hex2bin($iv), true); }, 
+                return Utils_MegaApi::MEGA_HOST . '/#' . strtoupper($match['folder']) . Utils_CryptTools::aesCbcDecrypt(Utils_MiscTools::urlBase64Decode($match['linkdata']), hex2bin($key[$match['enc']]), hex2bin($iv), true); }, 
                 
             $data);
     }

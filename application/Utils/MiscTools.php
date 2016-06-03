@@ -26,9 +26,6 @@ class Utils_MiscTools
         return self::bin2i32a(self::urlBase64Decode($data));
     }
     
-    public static function hex2bin($hex) {
-        return pack('H*', $hex);
-    }
 
     public static function deflateUrl($url, $retry = 3, $https=true) {
         

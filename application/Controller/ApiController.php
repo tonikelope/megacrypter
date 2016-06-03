@@ -61,7 +61,7 @@ class Controller_ApiController extends Controller_DefaultController
         $file_info = $ma->getFileInfo($dec_link['file_id'], $dec_link['file_key']);
 
         $data = [
-		'name' => $dec_link['hide_name'] ? Utils_MiscTools::hideFileName($file_info['name'], ($dec_link['zombie'] ? $dec_link['zombie'] : null) . base64_decode(GENERIC_PASSWORD)) : $file_info['name'],
+		'name' => $dec_link['hide_name'] ? Utils_MiscTools::hideFileName($file_info['name'], ($dec_link['zombie'] ? $dec_link['zombie'] : null) . GENERIC_PASSWORD) : $file_info['name'],
                 'path' => isset($file_info['path'])?$file_info['path']:false,
 		'size' => $file_info['size'],
 		'key' => isset($file_info['key']) ? $file_info['key'] : $dec_link['file_key'],
