@@ -78,7 +78,7 @@ class Utils_MegaCrypter
 
                 if( TRY_LEGACY_LINK_DECRYPT && ($mc_key=self::_checkLegacyLinkHmac($match['data'], $match['hash'])) !== false ) {
 
-                    return self::_legacyDecryptLink($match['data'], $mc_key, $no_expire, $ignore_blacklist);
+                    return self::_decryptLegacyLink($match['data'], $mc_key, $no_expire, $ignore_blacklist);
 
                 } else {
 
@@ -463,7 +463,7 @@ class Utils_MegaCrypter
         }
     }
 
-    private static function _legacyDecryptLink($data, $mc_key, $no_expire=null, $ignore_blacklist=false) {
+    private static function _decryptLegacyLink($data, $mc_key, $no_expire=null, $ignore_blacklist=false) {
 
         if (!$ignore_blacklist && BLACKLIST_LEVEL >= self::BLACKLIST_LEVEL_MC && self::isBlacklistedLink($data)) {
 
