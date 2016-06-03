@@ -21,7 +21,7 @@ class MegaCrypterTest extends PHPUnit_Framework_TestCase
 
             'EXTRAINFO' => ['in' => ['hola'], 'out' => pack('n', strlen('hola')).'hola'],
 
-            'PASSWORD' => ['in' => ['mypassword', 'mysalt'], 'out' => pack('C', Utils_MegaCrypter::PBKDF2_ITERATIONS_LOG2 - 1) . hash_pbkdf2(Utils_MegaCrypter::PBKDF2_HMAC_ALGO, 'mypassword', 'mysalt', pow(2, Utils_MegaCrypter::PBKDF2_ITERATIONS_LOG2), 0, true) . 'mysalt'],
+            'PASSWORD' => ['in' => ['mypassword', 'mysalt'], 'out' => pack('C', Utils_MegaCrypter::PBKDF2_ITERATIONS_LOG2 - 1) . hash_pbkdf2('sha256', 'mypassword', 'mysalt', pow(2, Utils_MegaCrypter::PBKDF2_ITERATIONS_LOG2), 0, true) . 'mysalt'],
 
             'EXPIRE' => ['in' => [1452961699], 'out' => pack('NN', (1452961699 >> 32) & 0xFFFFFFFF, 1452961699 & 0xFFFFFFFF)],
 
@@ -52,7 +52,7 @@ class MegaCrypterTest extends PHPUnit_Framework_TestCase
 
             'EXTRAINFO' => ['out' => 'hola', 'in' => [pack('n', strlen('hola')).'hola']],
 
-            'PASSWORD' => ['in' => [($password_pack = pack('C', Utils_MegaCrypter::PBKDF2_ITERATIONS_LOG2 - 1) . ($hash_pbkdf2=hash_pbkdf2(Utils_MegaCrypter::PBKDF2_HMAC_ALGO, 'mypassword', md5('mysalt', true), pow(2, Utils_MegaCrypter::PBKDF2_ITERATIONS_LOG2), 0, true)) . md5('mysalt', true))], 'out' => ['iterations' => Utils_MegaCrypter::PBKDF2_ITERATIONS_LOG2, 'pbkdf2_hash' => $hash_pbkdf2, 'salt' => md5('mysalt', true) ]],
+            'PASSWORD' => ['in' => [($password_pack = pack('C', Utils_MegaCrypter::PBKDF2_ITERATIONS_LOG2 - 1) . ($hash_pbkdf2=hash_pbkdf2('sha256', 'mypassword', md5('mysalt', true), pow(2, Utils_MegaCrypter::PBKDF2_ITERATIONS_LOG2), 0, true)) . md5('mysalt', true))], 'out' => ['iterations' => Utils_MegaCrypter::PBKDF2_ITERATIONS_LOG2, 'pbkdf2_hash' => $hash_pbkdf2, 'salt' => md5('mysalt', true) ]],
 
             'EXPIRE' => ['in' => [pack('NN', (1452961699 >> 32) & 0xFFFFFFFF, 1452961699 & 0xFFFFFFFF)], 'out' => 1452961699],
 

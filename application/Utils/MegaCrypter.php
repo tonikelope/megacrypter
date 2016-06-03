@@ -2,9 +2,7 @@
 
 class Utils_MegaCrypter
 {
-    const PBKDF2_SALT_BYTE_LENGTH = 16;
-    const PBKDF2_ITERATIONS_LOG2 = 14; // MAX 256
-    const PBKDF2_HMAC_ALGO = 'sha256';
+    const PBKDF2_ITERATIONS_LOG2 = 14; // [1-256]
     const ZOMBIE_LINK_TTL = 86400;
     const MAX_FILE_NAME_BYTES = 255;
     const CACHE_BLACKLISTED_TTL = 3600;
@@ -18,7 +16,6 @@ class Utils_MegaCrypter
     const BLACKLISTED_LINK = 23;
     const EXPIRED_LINK = 24;
     /* Fin códigos de error */
-
 
     private static function _encryptLink($link, array $options=[]) {
         
@@ -191,7 +188,7 @@ class Utils_MegaCrypter
             'HIDENAME'      => null,
 
             'PASSWORD'      => [
-                'pack' => function($data, $salt=null) {return pack('C', self::PBKDF2_ITERATIONS_LOG2 - 1) . hash_pbkdf2(self::PBKDF2_HMAC_ALGO, $data, ($pbkdf2_salt = is_null($salt)?openssl_random_pseudo_bytes(self::PBKDF2_SALT_BYTE_LENGTH):$salt), pow(2, self::PBKDF2_ITERATIONS_LOG2), 0, true) . $pbkdf2_salt;},
+                'pack' => function($data, $salt=null) {return pack('C', self::PBKDF2_ITERATIONS_LOG2 - 1) . hash_pbkdf2('sha256', $data, ($pbkdf2_salt = is_null($salt)?openssl_random_pseudo_bytes(16):$salt), pow(2, self::PBKDF2_ITERATIONS_LOG2), 0, true) . $pbkdf2_salt;},
 
                 'unpack' => function($data, &$offset) { $ret = ['iterations' => unpack('Citer', $data[$offset])['iter']+1, 'pbkdf2_hash' => substr($data, $offset + 1, 32), 'salt' => substr($data, $offset + 33, 16) ]; $offset+=1+strlen($ret['pbkdf2_hash'])+strlen($ret['salt']); return $ret;}
             ],
