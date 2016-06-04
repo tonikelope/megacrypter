@@ -37,7 +37,7 @@ class Utils_MegaCrypter
 
                 foreach($available_flags as $label => $val) {
 
-                    if(array_key_exists($label, $options) && !is_null($options[$label]) && $options[$label] !== false) {
+                    if(array_key_exists($label, $options) && !empty($options[$label])) {
 
                         $flags|=($mask>>$i);
 
@@ -182,9 +182,9 @@ class Utils_MegaCrypter
         return [
 
             'EXTRAINFO' => [
-                'pack' => function($data) {return pack('n', strlen($data)) . $data;},
+                'pack' => function($data) {return pack('n', strlen($data)-1) . $data;},
 
-                'unpack' => function($data, &$offset) {$ret=substr($data, $offset+2, unpack('nlength', substr($data, $offset, 2))['length']); $offset+=2+strlen($ret); return $ret;}
+                'unpack' => function($data, &$offset) {$ret=substr($data, $offset+2, unpack('nlength', substr($data, $offset, 2))['length']+1); $offset+=2+strlen($ret); return $ret;}
             ],
 
             'HIDENAME'      => null,
@@ -212,17 +212,17 @@ class Utils_MegaCrypter
 
             'REFERER'       => [
 
-                'pack' => function($data) {return pack('n', strlen($data)) . $data;},
+                'pack' => function($data) {return pack('n', strlen($data)-1) . $data;},
 
-                'unpack' => function($data, &$offset) {$ret=substr($data, $offset+2, unpack('nlength', substr($data, $offset, 2))['length']); $offset+=2+strlen($ret); return $ret;}
+                'unpack' => function($data, &$offset) {$ret=substr($data, $offset+2, unpack('nlength', substr($data, $offset, 2))['length']+1); $offset+=2+strlen($ret); return $ret;}
 
             ],
 
             'EMAIL'         => [
 
-                'pack' => function($data) {return pack('C', strlen($data)) . $data;},
+                'pack' => function($data) {return pack('C', strlen($data)-1) . $data;},
 
-                'unpack' => function($data, &$offset) {$ret=substr($data, $offset+1, unpack('Clength', substr($data, $offset, 1))['length']); $offset+=1+strlen($ret); return $ret;}
+                'unpack' => function($data, &$offset) {$ret=substr($data, $offset+1, unpack('Clength', substr($data, $offset, 1))['length']+1); $offset+=1+strlen($ret); return $ret;}
 
             ],
 
@@ -242,9 +242,9 @@ class Utils_MegaCrypter
 
             'AUTH'          => [
 
-                'pack' => function($data) {return pack('n', strlen($data)) . $data;},
+                'pack' => function($data) {return pack('n', strlen($data)-1) . $data;},
 
-                'unpack' => function($data, &$offset) {$ret=substr($data, $offset+2, unpack('nlength', substr($data, $offset, 2))['length']); $offset+=2+strlen($ret); return $ret;}
+                'unpack' => function($data, &$offset) {$ret=substr($data, $offset+2, unpack('nlength', substr($data, $offset, 2))['length']+1); $offset+=2+strlen($ret); return $ret;}
 
             ]
         ];
