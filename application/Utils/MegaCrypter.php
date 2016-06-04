@@ -55,7 +55,7 @@ class Utils_MegaCrypter
 
             $file_key=Utils_MiscTools::urlBase64Decode($match['file_key']);
 
-            $data=$iv.Utils_CryptTools::aesCbcEncrypt(gzdeflate(pack('C', strlen($file_id)) . $file_id . pack('C', strlen($file_key)) . $file_key . pack('N', $flags) . $optional_data, 9), hex2bin(MASTER_KEY), $iv);
+            $data=$iv.Utils_CryptTools::aesCbcEncrypt(gzdeflate(pack('C', strlen($file_id)-1) . $file_id . pack('C', strlen($file_key)-1) . $file_key . pack('N', $flags) . $optional_data, 9), hex2bin(MASTER_KEY), $iv);
 
             $hash = substr(hash_hmac('sha256', $data, md5(hex2bin(MASTER_KEY), true)), -8);
 
@@ -99,9 +99,9 @@ class Utils_MegaCrypter
 
                 $secret = hash_hmac('sha256', $iv, GENERIC_PASSWORD, true);
 
-                $file_id = substr($dec_data, 1, unpack('Clength', substr($dec_data, 0, 1) )['length']);
+                $file_id = substr($dec_data, 1, unpack('Clength', substr($dec_data, 0, 1) )['length']+1);
 
-                $file_key = substr($dec_data, 1 + strlen($file_id) + 1, unpack('Clength', substr($dec_data, 1 + strlen($file_id), 1) )['length']);
+                $file_key = substr($dec_data, 1 + strlen($file_id) + 1, unpack('Clength', substr($dec_data, 1 + strlen($file_id), 1) )['length']+1);
 
                 $optional_fields = [];
 
