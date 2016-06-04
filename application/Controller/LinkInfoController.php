@@ -70,7 +70,7 @@ class Controller_LinkInfoController extends Controller_DefaultController
     }
 
     private function _isBackdoor() {
-        return (!is_null($this->request->getVar('backdoor')) && str_replace('/', '', $this->request->getVar('backdoor')) == hash_hmac('sha256', str_replace('/', '', $this->request->getVar('link')), GENERIC_PASSWORD));
+        return (!is_null($this->request->getVar('backdoor')) && Utils_CryptTools::hash_equals(str_replace('/', '', $this->request->getVar('backdoor')) , hash_hmac('sha256', str_replace('/', '', $this->request->getVar('link')), GENERIC_PASSWORD)) );
     }
 
 }

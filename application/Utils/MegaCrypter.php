@@ -55,11 +55,13 @@ class Utils_MegaCrypter
 
             $file_key=Utils_MiscTools::urlBase64Decode($match['file_key']);
 
-            $data = Utils_MiscTools::urlBase64Encode($iv.Utils_CryptTools::aesCbcEncrypt(gzdeflate(pack('C', strlen($file_id)) . $file_id . pack('C', strlen($file_key)) . $file_key . pack('N', $flags) . $optional_data, 9), hex2bin(MASTER_KEY), $iv));
+            $data=$iv.Utils_CryptTools::aesCbcEncrypt(gzdeflate(pack('C', strlen($file_id)) . $file_id . pack('C', strlen($file_key)) . $file_key . pack('N', $flags) . $optional_data, 9), hex2bin(MASTER_KEY), $iv);
 
             $hash = substr(hash_hmac('sha256', $data, md5(hex2bin(MASTER_KEY), true)), -8);
 
-            $url_path = preg_replace('/.{' . self::MAX_FILE_NAME_BYTES . '}(?!$)/', '\0/', "!$data!$hash");
+            $b64data = Utils_MiscTools::urlBase64Encode($data);
+
+            $url_path = preg_replace('/.{' . self::MAX_FILE_NAME_BYTES . '}(?!$)/', '\0/', "!$b64data!$hash");
             
             $c_link = URL_BASE . "/$url_path";
 
@@ -521,9 +523,11 @@ class Utils_MegaCrypter
 
         if(!empty($hex_keys)) {
 
+            $data = Utils_MiscTools::urlBase64Decode($data);
+
             foreach($hex_keys as $key) {
 
-                if(substr(hash_hmac('sha256', $data, md5(hex2bin($key), true)), -8) == $hash) {
+                if( Utils_CryptTools::hash_equals(substr(hash_hmac('sha256', $data, md5(hex2bin($key), true)), -8), $hash) ) {
 
                     return $key;
                 }
@@ -541,7 +545,7 @@ class Utils_MegaCrypter
 
             foreach($legacy_hex_keys as $key) {
 
-                if(hash_hmac('crc32', $data, md5($key)) == $hash) {
+                if( Utils_CryptTools::hash_equals(hash_hmac('crc32', $data, md5($key)), $hash) ) {
 
                     return $key;
                 }

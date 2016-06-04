@@ -50,6 +50,27 @@ class Utils_CryptTools
         return ($pad > strlen($data) || strspn($data, chr($pad), strlen($data) - $pad) != $pad) ? false : substr($data, 0, -1 * $pad);
     }
 
+    public static function hash_equals($str1, $str2) {
+
+        if( ($l=strlen($str1)) != strlen($str2) ) {
+        
+            return false;
+
+        } else {
+        
+            $xor = $str1 ^ $str2;
+            
+            $ret = 0;
+        
+            for($i = $l - 1; $i >= 0; $i--) {
+
+                $ret |= $xor[$i];
+            }
+            
+            return !$ret;
+        }
+    }
+
     public static function decryptMegaDownloaderLinks($data) {
         
         return preg_replace_callback('/mega\:\/\/(?P<folder>f)?(?P<enc>enc\d*?)\?(?P<linkdata>[\da-z_,-]*?)(?=https?\:|mega\:|[^\da-z_,-]|$)/i', 

@@ -120,7 +120,7 @@ class Controller_TakedownController extends Controller_DefaultController
         
         list($email, $hmac, $grants) = explode('#', base64_decode($id));
 
-        return hash_hmac('sha256', $email . $grants, GENERIC_PASSWORD) == $hmac ? ['email' => $email, 'grants' => $grants] : false;
+        return Utils_CryptTools::hash_equals(hash_hmac('sha256', $email . $grants, GENERIC_PASSWORD), $hmac) ? ['email' => $email, 'grants' => $grants] : false;
     }
 
     private function _notifyUploaderRemovedLinks($rem_links_by_email) {
