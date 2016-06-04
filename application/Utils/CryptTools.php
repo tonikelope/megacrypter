@@ -64,7 +64,7 @@ class Utils_CryptTools
         
             for($i = $l - 1; $i >= 0; $i--) {
 
-                $ret |= $xor[$i];
+                $ret |= ord($xor[$i]);
             }
             
             return !$ret;
