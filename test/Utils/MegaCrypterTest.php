@@ -114,7 +114,7 @@ class MegaCrypterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(true, $dlink['hide_name']);
         $this->assertInternalType('array', $dlink['pass']);
         $this->assertEquals(2452961699, $dlink['expire']);
-        $this->assertEquals(true, $dlink['no_expire_token']);
+        $this->assertEquals($clink['secret'], base64_decode($dlink['no_expire_token']));
         $this->assertEquals('www.foo.com', $dlink['referer']);
         $this->assertEquals('foo@foo.com', $dlink['email']);
         $this->assertEquals('127.0.0.1', $dlink['zombie']);
