@@ -57,7 +57,7 @@ class Utils_MegaCrypter
 
             $data=$iv.Utils_CryptTools::aesCbcEncrypt(gzdeflate(pack('C', strlen($file_id)-1) . $file_id . pack('C', strlen($file_key)-1) . $file_key . pack('N', $flags) . $optional_data, 9), hex2bin(MASTER_KEY), $iv);
 
-            $hash = substr(hash_hmac('sha256', $data, md5(hex2bin(MASTER_KEY), true)), -8);
+            $hash = hash_hmac('crc32', $data, md5(hex2bin(MASTER_KEY), true));
 
             $b64data = Utils_MiscTools::urlBase64Encode($data);
 
@@ -526,7 +526,7 @@ class Utils_MegaCrypter
 
             foreach($hex_keys as $key) {
 
-                if( Utils_CryptTools::hash_equals(substr(hash_hmac('sha256', $data, md5(hex2bin($key), true)), -8), $hash) ) {
+                if( Utils_CryptTools::hash_equals(hash_hmac('crc32', $data, md5(hex2bin($key), true), true), hex2bin($hash) ) ) {
 
                     return $key;
                 }
@@ -544,7 +544,7 @@ class Utils_MegaCrypter
 
             foreach($legacy_hex_keys as $key) {
 
-                if( Utils_CryptTools::hash_equals(hash_hmac('crc32', $data, md5($key)), $hash) ) {
+                if( Utils_CryptTools::hash_equals(hash_hmac('crc32', $data, md5($key), true), hex2bin($hash)) ) {
 
                     return $key;
                 }

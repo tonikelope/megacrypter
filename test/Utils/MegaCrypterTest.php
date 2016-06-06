@@ -106,6 +106,8 @@ class MegaCrypterTest extends PHPUnit_Framework_TestCase
 
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 
+        echo $clink['link'];
+
         $dlink = Utils_MegaCrypter::decryptLink($clink['link']);
 
         $this->assertEquals('RF1GiAzT', $dlink['file_id']);
