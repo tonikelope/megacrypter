@@ -105,10 +105,10 @@ class MegaCrypterTest extends PHPUnit_Framework_TestCase
             ]);
 
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+        
+        preg_match('/^.*?!(?P<data>[0-9a-z_-]+)!(?P<hash>[0-9a-f]+)/i', trim(str_replace('/', '', $clink)), $match);
 
-        echo $clink['link'];
-
-        $dlink = Utils_MegaCrypter::decryptLink($clink['link']);
+        $dlink = Utils_MegaCrypter::decryptLink($clink);
 
         $this->assertEquals('RF1GiAzT', $dlink['file_id']);
         $this->assertEquals('JznAr3lWn-A28Sp6CqmqnrEJymNtkgkESSwfunSRJf4', $dlink['file_key']);
@@ -116,7 +116,7 @@ class MegaCrypterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(true, $dlink['hide_name']);
         $this->assertInternalType('array', $dlink['pass']);
         $this->assertEquals(2452961699, $dlink['expire']);
-        $this->assertEquals($clink['secret'], base64_decode($dlink['no_expire_token']));
+        $this->assertEquals(hash_hmac('sha256', substr(Utils_MiscTools::urlBase64Decode($match['data']), 0, mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC)), GENERIC_PASSWORD, true), base64_decode($dlink['no_expire_token']));
         $this->assertEquals('www.foo.com', $dlink['referer']);
         $this->assertEquals('foo@foo.com', $dlink['email']);
         $this->assertEquals('127.0.0.1', $dlink['zombie']);

@@ -65,7 +65,7 @@ class Utils_MegaCrypter
             
             $c_link = URL_BASE . "/$url_path";
 
-            return ['link' => isset($options['tiny_url']) && $options['tiny_url'] ? Utils_MiscTools::deflateUrl($c_link) : $c_link, 'secret' => hash_hmac('sha256', $iv, GENERIC_PASSWORD, true)];
+            return isset($options['tiny_url']) && $options['tiny_url'] ? Utils_MiscTools::deflateUrl($c_link) : $c_link;
 
         } else {
             throw new Exception_MegaCrypterLinkException(self::LINK_ERROR);
@@ -308,7 +308,7 @@ class Utils_MegaCrypter
 
 		list(, $file_id, $file_key) = explode('!', $link);
 
-        $c_link = self::_encryptLink($link, $options)['link'];
+        $c_link = self::_encryptLink($link, $options);
 
         if ($app_finfo) {
             
@@ -344,7 +344,7 @@ class Utils_MegaCrypter
 
                 foreach($mega_links as $mlink) {
 
-                    $clinks[] = "{$mlink['name']} [" . Utils_MiscTools::formatBytes($mlink['size']) . "] ". self::_encryptLink(Utils_MegaApi::MEGA_HOST . "/#!{$mlink['node_id']}*{$folder_id}!{$folder_key}", $options)['link'];
+                    $clinks[] = "{$mlink['name']} [" . Utils_MiscTools::formatBytes($mlink['size']) . "] ". self::_encryptLink(Utils_MegaApi::MEGA_HOST . "/#!{$mlink['node_id']}*{$folder_id}!{$folder_key}", $options);
                 }
 
             } else {
@@ -392,7 +392,7 @@ class Utils_MegaCrypter
             }
         }
         
-        return self::_encryptLink("!{$dec_link['file_id']}!{$dec_link['file_key']}", array_merge($options, $dec_link))['link'];
+        return self::_encryptLink("!{$dec_link['file_id']}!{$dec_link['file_key']}", array_merge($options, $dec_link));
     }
 
     private static function _getFolderMegaLinks($folder_id, $folder_key) {
