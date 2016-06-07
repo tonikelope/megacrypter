@@ -174,12 +174,29 @@ class Utils_MegaCrypter
         }
     }
 
-    /* Campos opcionales (MAX 32) (MUY IMPORTANTE -> NO SE PUEDE CAMBIAR EL ORDEN) */
+    /* CAMPOS OPCIONALES DEL ENLACE CIFRADO (MUY IMPORTANTE)
+
+    **********************************************************************************************************************
+    Reglas:
+
+    1) El número MÁXIMO de campos opcionales es 32.
+
+    2) Los campos NUEVOS tienen que añadirse por el FINAL del array.
+
+    3) NO está permitido ELIMINAR campos.
+
+    4) NO está permitido alterar el ORDEN de los campos.
+
+    5) NO está permitido alterar la LONGITUD MÁXIMA de los campos.
+    **********************************************************************************************************************
+
+    */
     private static function _getOptionalFlags() {
 
         return [
 
             'EXTRAINFO' => [
+
                 'pack' => function($data) {return pack('n', strlen($data)-1) . $data;},
 
                 'unpack' => function($data, &$offset) {$ret=substr($data, $offset+2, unpack('nlength', substr($data, $offset, 2))['length']+1); $offset+=2+strlen($ret); return $ret;}
@@ -188,6 +205,7 @@ class Utils_MegaCrypter
             'HIDENAME'      => null,
 
             'PASSWORD'      => [
+
                 'pack' => function($data, $salt=null) {return pack('C', self::PBKDF2_ITERATIONS_LOG2 - 1) . hash_pbkdf2('sha256', $data, ($pbkdf2_salt = is_null($salt)?openssl_random_pseudo_bytes(16):$salt), pow(2, self::PBKDF2_ITERATIONS_LOG2), 0, true) . $pbkdf2_salt;},
 
                 'unpack' => function($data, &$offset) { $ret = ['iterations' => unpack('Citer', $data[$offset])['iter']+1, 'pbkdf2_hash' => substr($data, $offset + 1, 32), 'salt' => substr($data, $offset + 33, 16) ]; $offset+=1+strlen($ret['pbkdf2_hash'])+strlen($ret['salt']); return $ret;}

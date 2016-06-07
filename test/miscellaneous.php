@@ -1,0 +1,1 @@
+../application/config/miscellaneous.php.sample
