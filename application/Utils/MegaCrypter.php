@@ -109,8 +109,6 @@ class Utils_MegaCrypter
 
                 } else {
 
-                    $no_expire_token = hash_hmac('sha256', $iv, GENERIC_PASSWORD, true);
-
                     $flags = unpack('Nflags', substr($dec_data, ($offset=1 + strlen($file_id) + 1 + strlen($file_key)), 4))['flags'];
 
                     if ($flags !== 0) {
@@ -140,9 +138,14 @@ class Utils_MegaCrypter
                             $i++;
                         }
 
+                        if(array_key_exists('NOEXPIRETOKEN', $optional_fields)) {
+
+                            $optional_fields['NOEXPIRETOKEN'] = hash_hmac('sha256', $iv, GENERIC_PASSWORD, true);
+                        }
+
                         if (array_key_exists('EXPIRE', $optional_fields)) {
 
-                            if( time() >= $optional_fields['EXPIRE'] && ( !array_key_exists('NOEXPIRETOKEN', $optional_fields) || is_null($no_expire) || !Utils_CryptTools::hash_equals(base64_decode($no_expire), $no_expire_token) ) ) {
+                            if( time() >= $optional_fields['EXPIRE'] && ( !array_key_exists('NOEXPIRETOKEN', $optional_fields) || is_null($no_expire) || !Utils_CryptTools::hash_equals(base64_decode($no_expire), $optional_fields['NOEXPIRETOKEN']) ) ) {
                                 throw new Exception_MegaCrypterLinkException(self::EXPIRED_LINK);
                             }
                         }
@@ -162,7 +165,7 @@ class Utils_MegaCrypter
                         'auth' => array_key_exists('AUTH', $optional_fields) ? $optional_fields['AUTH'] : false,
                         'hide_name' => array_key_exists('HIDENAME', $optional_fields),
                         'expire' => array_key_exists('EXPIRE', $optional_fields) ? $optional_fields['EXPIRE'] : false,
-                        'no_expire_token' => array_key_exists('NOEXPIRETOKEN', $optional_fields)?base64_encode($no_expire_token):false,
+                        'no_expire_token' => array_key_exists('NOEXPIRETOKEN', $optional_fields)?base64_encode($optional_fields['NOEXPIRETOKEN']):false,
                         'referer' => array_key_exists('REFERER', $optional_fields)? $optional_fields['REFERER'] : false,
                         'email' => array_key_exists('EMAIL', $optional_fields)? $optional_fields['EMAIL'] : false,
                         'zombie' => array_key_exists('ZOMBIE', $optional_fields)? $optional_fields['ZOMBIE'] : false
@@ -479,15 +482,18 @@ class Utils_MegaCrypter
 
             } else {
 
-                $net = hash_hmac('sha256', base64_decode($secret), GENERIC_PASSWORD, true);
-
                 if ($extra) {
 
                     list($extra_info, $hide_name, $expire, $referer, $email, $zombie, $no_expire_token) = explode('#', $extra);
 
+                    if(!empty($no_expire_token)) {
+
+                        $no_expire_token = hash_hmac('sha256', base64_decode($secret), GENERIC_PASSWORD, true);
+                    }
+
                     if (!empty($expire)) {
 
-                        if (time() >= $expire && (empty($no_expire_token) || is_null($no_expire) || !Utils_CryptTools::hash_equals(base64_decode($no_expire), $net))) {
+                        if (time() >= $expire && (empty($no_expire_token) || is_null($no_expire) || !Utils_CryptTools::hash_equals(base64_decode($no_expire), $no_expire_token))) {
 
                             throw new Exception_MegaCrypterLinkException(self::EXPIRED_LINK);
                         }
@@ -507,7 +513,7 @@ class Utils_MegaCrypter
                     'auth' => !empty($auth) ? base64_decode($auth) : false,
                     'hide_name' => !empty($hide_name),
                     'expire' => !empty($expire) ? $expire : false,
-                    'no_expire_token' => !empty($no_expire_token)?base64_encode($net):false,
+                    'no_expire_token' => !empty($no_expire_token)?base64_encode($no_expire_token):false,
                     'referer' => !empty($referer) ? base64_decode($referer) : false,
                     'email' => !empty($email) ? base64_decode($email) : false,
                     'zombie' => !empty($zombie) ? $zombie : false
