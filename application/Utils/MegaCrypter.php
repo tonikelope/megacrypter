@@ -143,11 +143,8 @@ class Utils_MegaCrypter
                             $optional_fields['NOEXPIRETOKEN'] = hash_hmac('sha256', $iv, GENERIC_PASSWORD, true);
                         }
 
-                        if (array_key_exists('EXPIRE', $optional_fields)) {
-
-                            if( time() >= $optional_fields['EXPIRE'] && ( !array_key_exists('NOEXPIRETOKEN', $optional_fields) || is_null($no_expire) || !Utils_CryptTools::hash_equals(base64_decode($no_expire), $optional_fields['NOEXPIRETOKEN']) ) ) {
+                        if( array_key_exists('EXPIRE', $optional_fields) && time() >= $optional_fields['EXPIRE'] && ( !array_key_exists('NOEXPIRETOKEN', $optional_fields) || is_null($no_expire) || !Utils_CryptTools::hash_equals(base64_decode($no_expire), $optional_fields['NOEXPIRETOKEN']) ) ) {
                                 throw new Exception_MegaCrypterLinkException(self::EXPIRED_LINK);
-                            }
                         }
 
                         if (array_key_exists('ZOMBIE', $optional_fields) && $optional_fields['ZOMBIE'] != $_SERVER['REMOTE_ADDR']) {
@@ -491,12 +488,9 @@ class Utils_MegaCrypter
                         $no_expire_token = hash_hmac('sha256', base64_decode($secret), GENERIC_PASSWORD, true);
                     }
 
-                    if (!empty($expire)) {
-
-                        if (time() >= $expire && (empty($no_expire_token) || is_null($no_expire) || !Utils_CryptTools::hash_equals(base64_decode($no_expire), $no_expire_token))) {
+                    if (!empty($expire) && time() >= $expire && (empty($no_expire_token) || is_null($no_expire) || !Utils_CryptTools::hash_equals(base64_decode($no_expire), $no_expire_token))) {
 
                             throw new Exception_MegaCrypterLinkException(self::EXPIRED_LINK);
-                        }
                     }
 
                     if (!empty($zombie) && $zombie != $_SERVER['REMOTE_ADDR']) {
