@@ -25,7 +25,7 @@ class Utils_MegaCrypter
 
             $flags = 0;
 
-            $mask = 0x80000000;
+            $mask = 0x8000;
 
             $i=0;
 
@@ -55,7 +55,7 @@ class Utils_MegaCrypter
 
             $file_key=Utils_MiscTools::urlBase64Decode($match['file_key']);
 
-            $data=$iv.Utils_CryptTools::aesCbcEncrypt(gzdeflate(pack('C', strlen($file_id)-1) . $file_id . pack('C', strlen($file_key)-1) . $file_key . pack('N', $flags) . $optional_data, 9), hex2bin(MASTER_KEY), $iv);
+            $data=$iv.Utils_CryptTools::aesCbcEncrypt(gzdeflate(pack('C', strlen($file_id)-1) . $file_id . pack('C', strlen($file_key)-1) . $file_key . pack('n', $flags) . $optional_data, 9), hex2bin(MASTER_KEY), $iv);
 
             $hash = hash_hmac('crc32', $data, md5(hex2bin(MASTER_KEY), true));
 
@@ -109,15 +109,15 @@ class Utils_MegaCrypter
 
                 } else {
 
-                    $flags = unpack('Nflags', substr($dec_data, ($offset=1 + strlen($file_id) + 1 + strlen($file_key)), 4))['flags'];
+                    $flags = unpack('nflags', substr($dec_data, ($offset=1 + strlen($file_id) + 1 + strlen($file_key)), 2))['flags'];
 
                     if ($flags !== 0) {
 
-                        $offset+=4;
+                        $offset+=2;
 
                         $available_flags = self::_getOptionalFlags();
 
-                        $mask = 0x80000000;
+                        $mask = 0x8000;
 
                         $i = 0;
 
@@ -159,7 +159,6 @@ class Utils_MegaCrypter
                         'file_key' => Utils_MiscTools::urlBase64Encode($file_key),
                         'extra_info' => array_key_exists('EXTRAINFO', $optional_fields)? $optional_fields['EXTRAINFO'] : false,
                         'pass' => array_key_exists('PASSWORD', $optional_fields) ? $optional_fields['PASSWORD'] : false,
-                        'auth' => array_key_exists('AUTH', $optional_fields) ? $optional_fields['AUTH'] : false,
                         'hide_name' => array_key_exists('HIDENAME', $optional_fields),
                         'expire' => array_key_exists('EXPIRE', $optional_fields) ? $optional_fields['EXPIRE'] : false,
                         'no_expire_token' => array_key_exists('NOEXPIRETOKEN', $optional_fields)?base64_encode($optional_fields['NOEXPIRETOKEN']):false,
@@ -177,9 +176,9 @@ class Utils_MegaCrypter
     /* CAMPOS OPCIONALES DEL ENLACE CIFRADO (MUY IMPORTANTE)
 
     **********************************************************************************************************************
-    Reglas:
+    Reglas (para garantizar la "retrocompatibilidad" de enlaces):
 
-    1) El número MÁXIMO de campos opcionales es 32.
+    1) El número MÁXIMO de campos opcionales es 16.
 
     2) Los campos NUEVOS tienen que añadirse por el FINAL del array.
 
@@ -253,14 +252,6 @@ class Utils_MegaCrypter
                     $offset+=4;
 
                     return "{$octetos['o1']}.{$octetos['o2']}.{$octetos['o3']}.{$octetos['o4']}"; }
-
-            ],
-
-            'AUTH'          => [
-
-                'pack' => function($data) {return pack('n', strlen($data)-1) . $data;},
-
-                'unpack' => function($data, &$offset) {$ret=substr($data, $offset+2, unpack('nlength', substr($data, $offset, 2))['length']+1); $offset+=2+strlen($ret); return $ret;}
 
             ]
         ];
@@ -432,7 +423,7 @@ class Utils_MegaCrypter
         
         $EXPIRE_SECS = [600, 3600, 86400, 604800, 1209600, 2592000, 7776000, 15552000, 31536000];
         
-        $cooked_options = array_merge(['tiny_url' => false, 'PASSWORD' => null, 'EXTRAINFO' => null, 'HIDENAME' => false, 'EXPIRE' => false, 'NOEXPIRETOKEN' => true, 'REFERER' => null, 'EMAIL' => null, 'ZOMBIE' => null, 'AUTH' => null], $options);
+        $cooked_options = array_merge(['tiny_url' => false, 'PASSWORD' => null, 'EXTRAINFO' => null, 'HIDENAME' => false, 'EXPIRE' => false, 'NOEXPIRETOKEN' => true, 'REFERER' => null, 'EMAIL' => null, 'ZOMBIE' => null], $options);
                 
         $cooked_options['EXPIRE'] = (!is_numeric($options['EXPIRE']) || !isset($EXPIRE_SECS[(int)$options['EXPIRE'] - 1])) ? false : time() + $EXPIRE_SECS[(int) $options['EXPIRE'] - 1];
         

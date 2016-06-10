@@ -5,7 +5,7 @@ class MegaCrypterTest extends PHPUnit_Framework_TestCase
 {
     public function testGetOptionalFlags()
     {
-        $expected_flags = ['EXTRAINFO', 'HIDENAME', 'PASSWORD', 'EXPIRE', 'NOEXPIRETOKEN', 'REFERER', 'EMAIL', 'ZOMBIE', 'AUTH'];
+        $expected_flags = ['EXTRAINFO', 'HIDENAME', 'PASSWORD', 'EXPIRE', 'NOEXPIRETOKEN', 'REFERER', 'EMAIL', 'ZOMBIE'];
 
         $optional_flags = $this->_getOptionalFlags();
 
@@ -29,9 +29,7 @@ class MegaCrypterTest extends PHPUnit_Framework_TestCase
 
             'EMAIL' => ['in' => ['foo@foo.com'], 'out' => pack('C', strlen('foo@foo.com')-1) . 'foo@foo.com'],
 
-            'ZOMBIE' => ['in' => ['127.0.0.1'], 'out' => pack('CCCC', 127,0,0,1)],
-
-            'AUTH' => ['in' => ['auth_data'], 'out' => pack('n', strlen('auth_data')-1).'auth_data']
+            'ZOMBIE' => ['in' => ['127.0.0.1'], 'out' => pack('CCCC', 127,0,0,1)]
 
         ];
 
@@ -60,9 +58,7 @@ class MegaCrypterTest extends PHPUnit_Framework_TestCase
 
             'EMAIL' => ['in' => [pack('C', strlen('foo@foo.com')-1) . 'foo@foo.com'], 'out' => 'foo@foo.com'],
 
-            'ZOMBIE' => ['in' => [pack('CCCC', 127,0,0,1)],'out' => '127.0.0.1'],
-
-            'AUTH' => ['in' => [pack('n', strlen('auth_data')-1).'auth_data'], 'out' => 'auth_data']
+            'ZOMBIE' => ['in' => [pack('CCCC', 127,0,0,1)],'out' => '127.0.0.1']
 
         ];
 
@@ -99,8 +95,7 @@ class MegaCrypterTest extends PHPUnit_Framework_TestCase
                 'NOEXPIRETOKEN' => true,
                 'REFERER' => 'www.foo.com',
                 'EMAIL' => 'foo@foo.com',
-                'ZOMBIE' => '127.0.0.1',
-                'AUTH' => 'authdummydata'
+                'ZOMBIE' => '127.0.0.1'
 
             ]);
 
@@ -120,7 +115,6 @@ class MegaCrypterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('www.foo.com', $dlink['referer']);
         $this->assertEquals('foo@foo.com', $dlink['email']);
         $this->assertEquals('127.0.0.1', $dlink['zombie']);
-        $this->assertEquals('authdummydata', $dlink['auth']);
     }
 
     private function _getOptionalFlags()
