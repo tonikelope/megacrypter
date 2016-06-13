@@ -7,7 +7,7 @@ class MegaCrypterTest extends PHPUnit_Framework_TestCase
     {
         $expected_flags = ['EXTRAINFO', 'HIDENAME', 'PASSWORD', 'EXPIRE', 'NOEXPIRETOKEN', 'REFERER', 'EMAIL', 'ZOMBIE'];
 
-        $optional_flags = $this->_getOptionalFlags();
+        $optional_flags = $this->_getOptionalFields();
 
         $this->assertInternalType('array', $optional_flags);
 
@@ -33,7 +33,7 @@ class MegaCrypterTest extends PHPUnit_Framework_TestCase
 
         ];
 
-        $optional_flags = $this->_getOptionalFlags();
+        $optional_flags = $this->_getOptionalFields();
 
         foreach($optional_flags as $flag => $val) {
 
@@ -62,7 +62,7 @@ class MegaCrypterTest extends PHPUnit_Framework_TestCase
 
         ];
 
-        $optional_flags = $this->_getOptionalFlags();
+        $optional_flags = $this->_getOptionalFields();
 
         $offset = 0;
 
@@ -117,10 +117,10 @@ class MegaCrypterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('127.0.0.1', $dlink['zombie']);
     }
 
-    private function _getOptionalFlags()
+    private function _getOptionalFields()
     {
         $method = new ReflectionMethod(
-            'Utils_MegaCrypter', '_getOptionalFlags'
+            'Utils_MegaCrypter', '_getOptionalFields'
         );
 
         $method->setAccessible(TRUE);

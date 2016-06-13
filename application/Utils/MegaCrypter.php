@@ -33,9 +33,9 @@ class Utils_MegaCrypter
 
             if(!empty($options)) {
 
-                $available_flags = self::_getOptionalFlags();
+                $available_fields = self::_getOptionalFields();
 
-                foreach($available_flags as $label => $val) {
+                foreach($available_fields as $label => $val) {
 
                     if(array_key_exists($label, $options) && !empty($options[$label])) {
 
@@ -113,21 +113,23 @@ class Utils_MegaCrypter
 
                     if ($flags !== 0) {
 
-                        $offset+=2;
+                        $optional_data = substr($dec_data, $offset+2);
 
-                        $available_flags = self::_getOptionalFlags();
+                        $offset=0;
+
+                        $available_fields = self::_getOptionalFields();
 
                         $mask = 0x8000;
 
                         $i = 0;
 
-                        foreach($available_flags as $label => $val) {
+                        foreach($available_fields as $label => $val) {
 
                             if(($mask >> $i) & $flags) {
 
                                 if(!is_null($val)) {
 
-                                    $optional_fields[$label] = $val['unpack']($dec_data, $offset);
+                                    $optional_fields[$label] = $val['unpack']($optional_data, $offset);
 
                                 } else {
 
@@ -176,6 +178,7 @@ class Utils_MegaCrypter
     /* CAMPOS OPCIONALES DEL ENLACE CIFRADO (MUY IMPORTANTE)
 
     **********************************************************************************************************************
+
     Reglas (para garantizar la "retrocompatibilidad" de enlaces):
 
     1) El número MÁXIMO de campos opcionales es 16.
@@ -187,10 +190,19 @@ class Utils_MegaCrypter
     4) NO está permitido alterar el ORDEN de los campos.
 
     5) NO está permitido alterar la LONGITUD MÁXIMA de los campos.
+
+
+    + Los campos opcionales (no booleanos) tienen que implementar dos métodos pack y unpack que empaqueten y desempaqueten
+    los datos respectivamente. Al empaquetador se le pasa el contenido del campo mientras que unpack() recibe la cadena
+    binaria completa con toda la información opcional del enlace y un offset por referencia que debe ser actualizado al
+    terminar la lectura.
+
+    + Los campos opcionales de tipo booleano irán a NULL en el array ya que no es necesario guardar más información.
+
     **********************************************************************************************************************
 
     */
-    private static function _getOptionalFlags() {
+    private static function _getOptionalFields() {
 
         return [
 
