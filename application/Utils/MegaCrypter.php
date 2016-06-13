@@ -208,9 +208,9 @@ class Utils_MegaCrypter
 
             'EXTRAINFO' => [
 
-                'pack' => function($data) {return pack('n', strlen($data)-1) . $data;},
+                'pack' => function($data) {$data=substr($data, 0, 256); return pack('C', strlen($data)-1) . $data;},
 
-                'unpack' => function($data, &$offset) {$ret=substr($data, $offset+2, unpack('nlength', substr($data, $offset, 2))['length']+1); $offset+=2+strlen($ret); return $ret;}
+                'unpack' => function($data, &$offset) {$ret=substr($data, $offset+1, unpack('Clength', substr($data, $offset, 1))['length']+1); $offset+=1+strlen($ret); return $ret;}
             ],
 
             'HIDENAME'      => null,
@@ -239,15 +239,15 @@ class Utils_MegaCrypter
 
             'REFERER'       => [
 
-                'pack' => function($data) {return pack('n', strlen($data)-1) . $data;},
+                'pack' => function($data) {$data=substr($data, 0, 256); return pack('C', strlen($data)-1) . $data;},
 
-                'unpack' => function($data, &$offset) {$ret=substr($data, $offset+2, unpack('nlength', substr($data, $offset, 2))['length']+1); $offset+=2+strlen($ret); return $ret;}
+                'unpack' => function($data, &$offset) {$ret=substr($data, $offset+1, unpack('Clength', substr($data, $offset, 1))['length']+1); $offset+=1+strlen($ret); return $ret;}
 
             ],
 
             'EMAIL'         => [
 
-                'pack' => function($data) {return pack('C', strlen($data)-1) . $data;},
+                'pack' => function($data) {$data=substr($data, 0, 256); return pack('C', strlen($data)-1) . $data;},
 
                 'unpack' => function($data, &$offset) {$ret=substr($data, $offset+1, unpack('Clength', substr($data, $offset, 1))['length']+1); $offset+=1+strlen($ret); return $ret;}
 
@@ -259,11 +259,11 @@ class Utils_MegaCrypter
 
                 'unpack' => function($data, &$offset) {
 
-                    $octetos = unpack('Co1/Co2/Co3/Co4', substr($data, $offset, 4));
+                    $oct = unpack('Co1/Co2/Co3/Co4', substr($data, $offset, 4));
 
                     $offset+=4;
 
-                    return "{$octetos['o1']}.{$octetos['o2']}.{$octetos['o3']}.{$octetos['o4']}"; }
+                    return "{$oct['o1']}.{$oct['o2']}.{$oct['o3']}.{$oct['o4']}"; }
 
             ]
         ];

@@ -19,13 +19,13 @@ class MegaCrypterTest extends PHPUnit_Framework_TestCase
     {
         $expected_packs = [
 
-            'EXTRAINFO' => ['in' => ['hola'], 'out' => pack('n', strlen('hola')-1).'hola'],
+            'EXTRAINFO' => ['in' => ['hola'], 'out' => pack('C', strlen('hola')-1).'hola'],
 
             'PASSWORD' => ['in' => ['mypassword', 'mysalt'], 'out' => pack('C', Utils_MegaCrypter::PBKDF2_ITERATIONS_LOG2 - 1) . hash_pbkdf2('sha256', 'mypassword', 'mysalt', pow(2, Utils_MegaCrypter::PBKDF2_ITERATIONS_LOG2), 0, true) . 'mysalt'],
 
             'EXPIRE' => ['in' => [1452961699], 'out' => pack('NN', (1452961699 >> 32) & 0xFFFFFFFF, 1452961699 & 0xFFFFFFFF)],
 
-            'REFERER' => ['in' => ['www.foo.com'], 'out' => pack('n', strlen('www.foo.com')-1) . 'www.foo.com'],
+            'REFERER' => ['in' => ['www.foo.com'], 'out' => pack('C', strlen('www.foo.com')-1) . 'www.foo.com'],
 
             'EMAIL' => ['in' => ['foo@foo.com'], 'out' => pack('C', strlen('foo@foo.com')-1) . 'foo@foo.com'],
 
@@ -48,13 +48,13 @@ class MegaCrypterTest extends PHPUnit_Framework_TestCase
     {
         $expected_unpacks = [
 
-            'EXTRAINFO' => ['in' => [pack('n', strlen('hola')-1).'hola'], 'out' => 'hola'],
+            'EXTRAINFO' => ['in' => [pack('C', strlen('hola')-1).'hola'], 'out' => 'hola'],
 
             'PASSWORD' => ['in' => [($password_pack = pack('C', Utils_MegaCrypter::PBKDF2_ITERATIONS_LOG2 - 1) . ($hash_pbkdf2=hash_pbkdf2('sha256', 'mypassword', md5('mysalt', true), pow(2, Utils_MegaCrypter::PBKDF2_ITERATIONS_LOG2), 0, true)) . md5('mysalt', true))], 'out' => ['iterations' => Utils_MegaCrypter::PBKDF2_ITERATIONS_LOG2, 'pbkdf2_hash' => $hash_pbkdf2, 'salt' => md5('mysalt', true) ]],
 
             'EXPIRE' => ['in' => [pack('NN', (1452961699 >> 32) & 0xFFFFFFFF, 1452961699 & 0xFFFFFFFF)], 'out' => 1452961699],
 
-            'REFERER' => ['in' => [pack('n', strlen('www.foo.com')-1) . 'www.foo.com'], 'out' => 'www.foo.com'],
+            'REFERER' => ['in' => [pack('C', strlen('www.foo.com')-1) . 'www.foo.com'], 'out' => 'www.foo.com'],
 
             'EMAIL' => ['in' => [pack('C', strlen('foo@foo.com')-1) . 'foo@foo.com'], 'out' => 'foo@foo.com'],
 
