@@ -8,11 +8,7 @@ class Controller_LinkInfoController extends Controller_DefaultController
         
         $dec_link = Utils_MegaCrypter::decryptLink($this->request->getVar('link'));
 
-        if ($this->_isBackdoor()) {
-            
-            $this->setViewData(['backdoor' => Utils_MegaApi::MEGA_HOST . "/#!{$dec_link['file_id']}!{$dec_link['file_key']}"]);
-            
-        } else if ($dec_link['zombie']) {
+        if ($dec_link['zombie']) {
             
             throw new Exception(__METHOD__ . ' Zombie link!');
             
@@ -68,9 +64,4 @@ class Controller_LinkInfoController extends Controller_DefaultController
             $this->setViewData($view_data);
         }
     }
-
-    private function _isBackdoor() {
-        return (!is_null($this->request->getVar('backdoor')) && Utils_CryptTools::hash_equals(str_replace('/', '', $this->request->getVar('backdoor')) , hash_hmac('sha256', str_replace('/', '', $this->request->getVar('link')), GENERIC_PASSWORD)) );
-    }
-
 }
