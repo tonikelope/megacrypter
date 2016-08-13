@@ -215,7 +215,7 @@ class Utils_MegaApi
         return $file_info;
     }
 
-    public function getFileDownloadUrl($fid, $ssl = false, $verify=true) {
+    public function getFileDownloadUrl($fid, $ssl = false) {
 
 		$request = ['a' => 'g', 'g' => 1];
 
@@ -259,14 +259,14 @@ class Utils_MegaApi
 
         try
         {
-            $url = call_user_func_array([$this, 'rawAPIRequest'], $params)->g;
+            $url = $this->_verifyDownloadUrl(call_user_func_array([$this, 'rawAPIRequest'], $params)->g);
 
         } catch (Exception_MegaLinkException $exception) {
 
             throw $exception->getCode() == self::EINTERNAL?new Exception_MegaLinkException(self::ETEMPUNAVAIL):$exception;
         }
 
-        return $verify?$this->_verifyDownloadUrl($url):$url;
+        return $url;
 
     }
 
@@ -398,25 +398,38 @@ class Utils_MegaApi
     private function _verifyDownloadUrl($url)
     {
         if (empty($url)) {
+
             throw new Exception_MegaLinkException(self::ETEMPUNAVAIL);
         }
-        
-        $ch = curl_init("{$url}/0-0");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, self::CONNECT_TIMEOUT);
-        curl_setopt($ch, CURLOPT_USERAGENT, CURL_USERAGENT);
-        curl_exec($ch);
-        
-        $curl_error = curl_errno($ch);
-        
-        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        
-        curl_close($ch);
-        
-        if($curl_error || $http_code != 200) {
+
+        preg_match('/\:\/\/([^\/]+)\/(.+)$/', trim($url), $match);
+
+        $fp = fsockopen($match[1], 80, $errno, $errstr, self::CONNECT_TIMEOUT);
+
+        if (!$fp) {
+
             throw new Exception_MegaLinkException(self::EDLURL);
+
+        } else {
+
+            $out = "GET /{$match[2]}/0 HTTP/1.1\r\n";
+
+            $out .= "Host: {$match[1]}\r\n";
+
+            $out .= "Connection: Close\r\n\r\n";
+
+            fwrite($fp, $out);
+
+            $res=fgets($fp);
+
+            fclose($fp);
+
+            if(strrpos($res, ' 200 ') === false) {
+
+                throw new Exception_MegaLinkException(self::EDLURL);
+            }
         }
-        
+
         return $url;
     }
     
