@@ -424,7 +424,7 @@ class Utils_MegaApi
 
             fclose($fp);
 
-            if(strrpos($res, ' 200 ') === false) {
+            if(strpos($res, '200') === false) {
 
                 throw new Exception_MegaLinkException(self::EDLURL);
             }
