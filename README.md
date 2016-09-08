@@ -1,6 +1,5 @@
 ![Alt text](/public/images/lock.png?raw=true "MC logo")![Alt text](/public/images/logo.png?raw=true "MC logo")
-megacrypter
-===========
+
 ![Diagrama](https://megacrypter.com/images/diagrama.png)
 ##What do you need to deploy your own Megacrypter?
 
