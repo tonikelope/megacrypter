@@ -98,7 +98,7 @@ class Utils_MegaApi
      */
     private function _decryptAt($at, $key) {
 
-        if (preg_match('/MEGA.*?(?P<at>\{.+\})/is', utf8_encode(utf8_decode(Utils_CryptTools::aesCbcDecrypt(Utils_MiscTools::urlBase64Decode($at), $this->_urlBase64KeyDecode($key)))), $match)) {
+        if (preg_match('/MEGA.*?(?P<at>\{.+\})/is', Utils_CryptTools::aesCbcDecrypt(Utils_MiscTools::urlBase64Decode($at), $this->_urlBase64KeyDecode($key)), $match)) {
             
             return json_decode($match['at']);
         
