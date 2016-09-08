@@ -74,7 +74,7 @@ Note: link list is limited to 500
 {"links": ["MC_LINK_1", "MC_LINK_2" ... "MC_LINK_N"]}
 ```
 
-###Retrieving link information:
+###Retrieving link information
 ####Request:
 ```
 {"m": "info", 
