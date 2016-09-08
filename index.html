@@ -52,7 +52,7 @@ fjs.parentNode.insertBefore(js, fjs);
 
 <p>3) <strong>MySQL</strong> (optional for blacklist).</p>
 
-<h2>5 steps installation instructions:</h2>
+<h3>5 steps installation instructions:</h3>
 
 <p><strong>Step 1:</strong> download tarball (or clone repo) and upload to your server.</p>
 
@@ -76,7 +76,7 @@ fjs.parentNode.insertBefore(js, fjs);
 
 </p>
 
-<p><strong>Step 5:</strong> ask  developers of your favourite download manager to recognize your new megacrypter links (or give it a try to <a href="https://mega.co.nz/#F!lYsRWaQB!uVhntmyKcVECRaOxAbcL4A" target="_blank">MCDownloader</a> that supports any MC clon)</p>
+<p><strong>Step 5:</strong> ask  developers of your favourite download manager to recognize your new megacrypter links (or give it a try to <a href="https://mega.co.nz/#F!lYsRWaQB!uVhntmyKcVECRaOxAbcL4A" target="_blank"><strong>MCDownloader</strong></a> that supports any MC clon)</p>
 
 <p>You're alone from here. Good luck!</p>
 
@@ -84,8 +84,11 @@ fjs.parentNode.insertBefore(js, fjs);
 <pre>
 <div class="api_method"><strong>API URL -> </strong><em>http(s)://yourdomain/api</em>
 (<strong>Content-Type:</strong> <em>application/json</em>)</div>
+</pre>
 
-<div class="api_method"><strong>Crypt-request </strong>(for protecting a mega link list):
+<h3>Protecting MEGA links</h3>
+<h4>Request:</h4>
+<pre>
 {"m": "crypt", 
 "links": [<em>"MEGA_LINK_1"</em>, <em>"MEGA_LINK_2"</em> ... <em>"MEGA_LINK_N"</em>],
 *"expire": <em>0-6</em>,
@@ -97,8 +100,9 @@ fjs.parentNode.insertBefore(js, fjs);
 *"referer": <em>"DOMAIN_NAME"</em>,
 *"extra_info": <em>"EXTRA_INFO"</em>,
 *"email": <em>"EMAIL"</em>}
+</pre>
 
-<div class="extra_info"><strong>*Optional params:</strong>
+<h5>*Optional params:</h5>
 <em>1) Expiration values: 0 -> never (default), 1 -> 10 minutes, 2 -> 1 hour...</em>
 <em>2) True by default.</em>
 <em>3) Tiny url option is false by default.</em>
@@ -108,16 +112,22 @@ fjs.parentNode.insertBefore(js, fjs);
 <em>7) Referer is not required to include 'http://'. It's limited to 256 chars</em>
 <em>8) Extra-info is limited to 256 chars.</em>
 <em>9) Email is limited to 256 chars.</em>
-<em>Note: link list is limited to 500</em></div>
-<strong>Crypt-response:</strong>
-{"links": [<em>"MC_LINK_1"</em>, <em>"MC_LINK_2"</em> ... <em>"MC_LINK_N"</em>]}
-</div></pre>
+<em>Note: link list is limited to 500</em>
 
-<pre><div class="api_method"><strong>Info-request</strong> (for retrieving some file information):
+<h4>Response:</h4>
+<pre>
+{"links": [<em>"MC_LINK_1"</em>, <em>"MC_LINK_2"</em> ... <em>"MC_LINK_N"</em>]}
+</pre>
+
+<h3>Retrieving link information</h3>
+<h4>Request:</h4>
+<pre>
 {"m": "info", 
 "link": <em>"MC_LINK"</em>}
+</pre>
 
-<strong>Info-response:</strong>
+<h4>Response:</h4>
+<pre>
 {"name": <em>"FILE_NAME" OR "CRYPTED_FILE_NAME"</em>, 
 "path": <em>false OR "PATH" OR "CRYPTED_FILE_PATH"</em>,
 "size": <em>FILE_SIZE</em>, 
@@ -125,14 +135,15 @@ fjs.parentNode.insertBefore(js, fjs);
 "extra": <em>false OR "EXTRA_INFO" OR "CRYPTED_EXTRA_INFO"</em>,
 "expire": <em>false OR "EXPIRE_TIMESTAMP#NOEXPIRE_TOKEN"</em>,
 "pass": <em>false OR "ITER_LOG2#KCV#SALT#IV"</em>}
+</pre>
 
-<div class="extra_info"><strong>About password protected files</strong>: 
+<h5>About password protected files:</h5>
 
-File name, file key, and extra-info will be returned crypted using AES CBC (PKCS7) 
-with 256 bits key derivated from pass (PBKDF2 SHA256).
+File name, file key, and extra-info will be returned crypted using AES CBC (PKCS7) with 256 bits key derivated from pass (PBKDF2 SHA256).
 
 Follow this <strong>algorithm</strong> to decrypt crypted fields:
 
+<pre>
 <em>REPEAT
         
     password := read_password()
@@ -150,32 +161,38 @@ Follow this <strong>algorithm</strong> to decrypt crypted fields:
 UNTIL aes_cbc_dec(base64_dec(KCV), info_key, base64_dec(IV)) = info_key
 
 crypted_field := aes_cbc_dec(base64_dec(CRYPTED_FIELD), info_key, base64_dec(IV))
-</em>
-</div></div></pre>
+</pre>
 
-<pre><div class="api_method"><strong>Dl-request</strong> (for getting a temporary url to the (crypted) file):
+<h3>Getting a temporary download url to the (crypted) file)</h3>
+<h4>Request:</h4>
+<pre>
 {"m": "dl", 
 "link": <em>"MC_LINK"</em>,
 *"ssl": <em>true OR false</em>,
 *"noexpire": <em>"NOEXPIRE_TOKEN"</em>}
-
-<div class="extra_info"><strong>*Optional params:</strong>
-<em>1) Default is false (better performance in slow machines)</em>
-<em>2) If link has expiration time you can use NOEXPIRE_TOKEN (cached from a previous "info-request") to bypass it and get the download url.</em>
-</div>
-
-<strong>Dl-response:</strong>
-{"url": <em>"MEGA_TEMP_URL" OR "CRYPTED_MEGA_TEMP_URL"</em>,
-"pass": <em>false OR "IV"</em>}
-
-<div class="extra_info"><em>Note: use the same algorithm described above to decrypt temp url (if password protected)</em></div>
-</div>
 </pre>
 
-<pre><div class="api_error"><strong>Error-response</strong> (because shit happens...):
-{"error": <em>ERROR_CODE</em>}
+<h5>*Optional params:</h5>
+<em>1) Default is false (better performance in slow machines)</em>
+<em>2) If link has expiration time you can use NOEXPIRE_TOKEN (cached from a previous "info-request") to bypass it and get the download url.</em>
 
-<div class="extra_info"><strong>Error codes:</strong>
+
+<h4>Response:</h4>
+<pre>
+{"url": <em>"MEGA_TEMP_URL" OR "CRYPTED_MEGA_TEMP_URL"</em>,
+"pass": <em>false OR "IV"</em>}
+</pre>
+
+<em>Note: use the same algorithm described above to decrypt temp url (if password protected)</em>
+
+
+<h3>Error responses (because shit happens...)</h3>
+<pre>
+{"error": <em>ERROR_CODE</em>}
+</pre>
+
+<h4>Error codes:</h4>
+<pre>
 MC_EMETHOD(1)
 MC_EREQ(2)
 MC_ETOOMUCHLINKS(3)
@@ -207,7 +224,7 @@ MEGA_EWRITE(-20)
 MEGA_EREAD(-21)
 MEGA_EAPPKEY(-22)
 MEGA_EDLURL(-101)
-</div></div></pre>
+</pre>
         </section>
 
         <aside id="sidebar">
