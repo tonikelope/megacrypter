@@ -42,7 +42,8 @@ API URL -> http(s)://yourdomain/api
 (Content-Type: application/json)
 ```
 
-###Crypt request (for protecting a mega link list):
+###Protecting MEGA links
+####Request:
 ```
 {"m": "crypt", 
 "links": ["MEGA_LINK_1", "MEGA_LINK_2" ... "MEGA_LINK_N"],
@@ -55,31 +56,33 @@ API URL -> http(s)://yourdomain/api
 *"referer": "DOMAIN_NAME",
 *"extra_info": "EXTRA_INFO",
 *"email": "EMAIL"}
-
-*Optional params:
-1) Expiration values: 0 -> never (default), 1 -> 10 minutes, 2 -> 1 hour...
-2) True by default.
-3) Tiny url option is false by default.
-4) Append file info option is false by default.
-5) Hide name option is false by default.
-6) Passwords are case-sensitive.
-7) Referer is not required to include 'http://'. It's limited to 256 chars
-8) Extra-info is limited to 256 chars.
-9) Email is limited to 256 chars.
-Note: link list is limited to 500
 ```
+#####*Optional params:
+1. Expiration values: 0 -> never (default), 1 -> 10 minutes, 2 -> 1 hour...
+2. True by default.
+3. Tiny url option is false by default.
+4. Append file info option is false by default.
+5. Hide name option is false by default.
+6. Passwords are case-sensitive.
+7. Referer is not required to include 'http://'. It's limited to 256 chars
+8. Extra-info is limited to 256 chars.
+9. Email is limited to 256 chars.
+Note: link list is limited to 500
 
-###Crypt response:
+####Response:
 ```
 {"links": ["MC_LINK_1", "MC_LINK_2" ... "MC_LINK_N"]}
 ```
 
-###Information request (for retrieving some file information):
+###Retrieving link information:
+####Request:
 ```
 {"m": "info", 
 "link": "MC_LINK"}
+```
 
-Info-response:
+####Response:
+```
 {"name": "FILE_NAME" OR "CRYPTED_FILE_NAME", 
 "path": false OR "PATH" OR "CRYPTED_FILE_PATH",
 "size": FILE_SIZE, 
@@ -88,8 +91,7 @@ Info-response:
 "expire": false OR "EXPIRE_TIMESTAMP#NOEXPIRE_TOKEN",
 "pass": false OR "ITER_LOG2#KCV#SALT#IV"}
 ```
-
-####About password protected files: 
+#####About password protected files: 
 
 File name, file key, and extra-info will be returned crypted using AES CBC (PKCS7) with 256 bits key derivated from pass (PBKDF2 SHA256).
 
@@ -115,31 +117,34 @@ UNTIL aes_cbc_dec(base64_dec(KCV), info_key, base64_dec(IV)) = info_key
 crypted_field := aes_cbc_dec(base64_dec(CRYPTED_FIELD), info_key, base64_dec(IV))
 ```
 
-###Download request (for getting a temporary url to the (crypted) file):
+###Getting a temporary download url to the (crypted) file):
+####Request:
 ```
 {"m": "dl", 
 "link": "MC_LINK",
 *"ssl": true OR false,
 *"noexpire": "NOEXPIRE_TOKEN"}
-
-*Optional params:
-1) Default is false (better performance in slow machines)
-2) If link has expiration time you can use NOEXPIRE_TOKEN (cached from a previous "info-request") to bypass it and get the download url.
 ```
+#####*Optional params:
+1. Default is false (better performance in slow machines)
+2. If link has expiration time you can use NOEXPIRE_TOKEN (cached from a previous "info-request") to bypass it and get the download url.
 
-###Download response:
+####Response:
 ```
 {"url": "MEGA_TEMP_URL" OR "CRYPTED_MEGA_TEMP_URL",
 "pass": false OR "IV"}
+```
 
 Note: use the same algorithm described above to decrypt temp url (if password protected)
-```
 
-###Error response (because shit happens...):
+
+###Error responses (because shit happens...):
 ```
 {"error": ERROR_CODE}
+```
 
-Error codes:
+####Error codes:
+```
 MC_EMETHOD(1)
 MC_EREQ(2)
 MC_ETOOMUCHLINKS(3)
