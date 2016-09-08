@@ -3,11 +3,11 @@
 ![Diagrama](https://megacrypter.com/images/diagrama.png)
 ##What do you need to deploy your own Megacrypter?
 
-1) Apache (mod_rewrite ON)
+1. Apache (mod_rewrite ON)
 
-2) PHP >= 5.5 (cURL + mcrypt + memcache + mbstring)
+2. PHP >= 5.5 (cURL + mcrypt + memcache + mbstring)
 
-3) MySQL (optional for blacklist).
+3. MySQL (optional for blacklist).
 
 ###5 steps installation instructions:
 
@@ -42,7 +42,7 @@ API URL -> http(s)://yourdomain/api
 (Content-Type: application/json)
 ```
 
-###Crypt-request (for protecting a mega link list):
+###Crypt request (for protecting a mega link list):
 ```
 {"m": "crypt", 
 "links": ["MEGA_LINK_1", "MEGA_LINK_2" ... "MEGA_LINK_N"],
@@ -69,12 +69,12 @@ API URL -> http(s)://yourdomain/api
 Note: link list is limited to 500
 ```
 
-###Crypt-response:
+###Crypt response:
 ```
 {"links": ["MC_LINK_1", "MC_LINK_2" ... "MC_LINK_N"]}
 ```
 
-###Info-request (for retrieving some file information):
+###Information request (for retrieving some file information):
 ```
 {"m": "info", 
 "link": "MC_LINK"}
@@ -87,14 +87,15 @@ Info-response:
 "extra": false OR "EXTRA_INFO" OR "CRYPTED_EXTRA_INFO",
 "expire": false OR "EXPIRE_TIMESTAMP#NOEXPIRE_TOKEN",
 "pass": false OR "ITER_LOG2#KCV#SALT#IV"}
+```
 
-About password protected files: 
+####About password protected files: 
 
-File name, file key, and extra-info will be returned crypted using AES CBC (PKCS7) 
-with 256 bits key derivated from pass (PBKDF2 SHA256).
+File name, file key, and extra-info will be returned crypted using AES CBC (PKCS7) with 256 bits key derivated from pass (PBKDF2 SHA256).
 
 Follow this algorithm to decrypt crypted fields:
 
+```
 REPEAT
         
     password := read_password()
@@ -114,7 +115,7 @@ UNTIL aes_cbc_dec(base64_dec(KCV), info_key, base64_dec(IV)) = info_key
 crypted_field := aes_cbc_dec(base64_dec(CRYPTED_FIELD), info_key, base64_dec(IV))
 ```
 
-###Dl-request (for getting a temporary url to the (crypted) file):
+###Download request (for getting a temporary url to the (crypted) file):
 ```
 {"m": "dl", 
 "link": "MC_LINK",
@@ -126,7 +127,7 @@ crypted_field := aes_cbc_dec(base64_dec(CRYPTED_FIELD), info_key, base64_dec(IV)
 2) If link has expiration time you can use NOEXPIRE_TOKEN (cached from a previous "info-request") to bypass it and get the download url.
 ```
 
-###Dl-response:
+###Download response:
 ```
 {"url": "MEGA_TEMP_URL" OR "CRYPTED_MEGA_TEMP_URL",
 "pass": false OR "IV"}
@@ -134,7 +135,7 @@ crypted_field := aes_cbc_dec(base64_dec(CRYPTED_FIELD), info_key, base64_dec(IV)
 Note: use the same algorithm described above to decrypt temp url (if password protected)
 ```
 
-###Error-response (because shit happens...):
+###Error response (because shit happens...):
 ```
 {"error": ERROR_CODE}
 
