@@ -117,7 +117,7 @@ UNTIL aes_cbc_dec(base64_dec(KCV), info_key, base64_dec(IV)) = info_key
 crypted_field := aes_cbc_dec(base64_dec(CRYPTED_FIELD), info_key, base64_dec(IV))
 ```
 
-###Getting a temporary download url to the (crypted) file):
+###Getting a temporary download url to the (crypted) file)
 ####Request:
 ```
 {"m": "dl", 
