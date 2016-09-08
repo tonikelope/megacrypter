@@ -138,7 +138,7 @@ crypted_field := aes_cbc_dec(base64_dec(CRYPTED_FIELD), info_key, base64_dec(IV)
 Note: use the same algorithm described above to decrypt temp url (if password protected)
 
 
-###Error responses (because shit happens...):
+###Error responses (because shit happens...)
 ```
 {"error": ERROR_CODE}
 ```
