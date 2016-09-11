@@ -141,7 +141,7 @@ class Utils_MiscTools
         }
     }
 
-    public static function unescapeUnicodeChars($str, $to_encoding = 'UTF-8', $from_encoding = 'UCS-2BE') {
+    public static function unescapeUnicodeChars($str, $to_encoding = 'UTF-8', $from_encoding = 'UTF-16BE') {
         return preg_replace_callback('/\\\\u([0-9a-f]{4})/i', function($match) use ($to_encoding, $from_encoding) {
                     return mb_convert_encoding(pack('H*', $match[1]), $to_encoding, $from_encoding);
                 }, $str);
