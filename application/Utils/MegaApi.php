@@ -62,7 +62,6 @@ class Utils_MegaApi
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, self::CONNECT_TIMEOUT);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([$request]));
-        curl_setopt($ch, CURLOPT_USERAGENT, CURL_USERAGENT);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
         
         if($this->_tor) {
