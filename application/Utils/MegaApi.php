@@ -99,7 +99,7 @@ class Utils_MegaApi
 
         if (preg_match('/MEGA.*?(?P<at>\{.+\})/is', Utils_CryptTools::aesCbcDecrypt(Utils_MiscTools::urlBase64Decode($at), $this->_urlBase64KeyDecode($key)), $match)) {
             
-            return json_decode($match['at']);
+            return json_decode(mb_convert_encoding($match['at'], "UTF-8", "auto"));
         
         } else {
             
