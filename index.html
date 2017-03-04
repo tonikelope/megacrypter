@@ -46,7 +46,7 @@ fjs.parentNode.insertBefore(js, fjs);
 
 <h2>What do you need to deploy your own Megacrypter?</h2>
 
-<p>1) <strong>Apache</strong> (mod_rewrite ON)</p>
+<p>1) <strong>Apache</strong> (mod_rewrite ON) (Or another web server that supports URL rewrite)</p>
 
 <p>2) <strong>PHP</strong> >= 5.5 (cURL + mcrypt + memcache + mbstring)</p>
 
@@ -60,7 +60,7 @@ fjs.parentNode.insertBefore(js, fjs);
 
 <p><strong>Step 3:</strong> rename ALL /config .sample extension and edit miscellaneous.php and any other file you need.</p>
 
-<p><strong>Step 4:</strong> prepare virtual host:
+<p><strong>Step 4:</strong> prepare Apache virtual host:
 
 <pre>
   &lt;VirtualHost *:80&gt;
