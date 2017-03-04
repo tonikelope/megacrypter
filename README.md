@@ -17,7 +17,7 @@ Step 2: install composer dependencies -> <code>$ php composer.phar install</code
 
 Step 3: rename ALL /config .sample extension and edit miscellaneous.php and any other file you need.
 
-Step 4: prepare virtual host:
+Step 4: prepare Apache virtual host:
 
 ```
 <VirtualHost *:80>
