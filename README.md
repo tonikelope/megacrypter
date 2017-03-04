@@ -3,7 +3,7 @@
 ![Diagrama](https://megacrypter.com/images/diagrama.png)
 ##What do you need to deploy your own Megacrypter?
 
-1. Apache (mod_rewrite ON)
+1. Apache (mod_rewrite ON) (Or another web server that supports URL rewrite)
 
 2. PHP >= 5.5 (cURL + mcrypt + memcache + mbstring)
 
@@ -38,7 +38,7 @@ You're alone from here. Good luck!
 ##API DOC
 
 ```
-API URL -> http(s)://yourdomain/api
+API URL -> http(s)://[BASE_URL]/api
 (Content-Type: application/json)
 ```
 
