@@ -31,7 +31,7 @@ Step 4: prepare Apache virtual host:
 </VirtualHost>
 ```
 
-Step 5: ask developers of your favourite download manager to recognize your new megacrypter links (or give it a try to MCDownloader that supports any MC clon)
+Step 5: ask developers of your favourite download manager to recognize your new megacrypter links (or give it a try to [Megabasterd](https://github.com/tonikelope/megabasterd) that supports any MC clon)
 
 You're alone from here. Good luck!
 
