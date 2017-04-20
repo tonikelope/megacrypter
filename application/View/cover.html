@@ -27,10 +27,10 @@
         <p><label for="app_finfo" title="{% trans "Append file info to encrypted links" %}"><input type="checkbox" id="app_finfo" name="app_finfo" value="yes" />{% trans "Append file info (slower)" %}</label></p>
         <p><label for="tiny_url" title="{% trans "Returns short crypted links" %}"><input type="checkbox" id="tiny_url" name="tiny_url" value="yes" />{% trans "Return short urls (slower)" %}</label></p>
         <p><label for="hide_name" title="{% trans "Check it for maximum security against crawlers." %}"><input type="checkbox" id="hide_name" name="hide_name" value="yes" />{% trans "Mask filenames even at download time" %}</label></p>
-        <div id="cover_text_fields"><p id="referer_block">{% trans "Domain lock" %}: <input title="{% trans "Links will be accessible ONLY from this domain" %}" id="referer" class="input_text" type="text" name="referer" maxlength="128"></p>
+        <div id="cover_text_fields"><p id="referer_block">{% trans "Domain lock" %}: <input title="{% trans "Links will be accessible ONLY from this domain" %}" id="referer" class="input_text" type="text" name="referer" maxlength="256"></p>
         <p>{% trans "Extra info" %}: <input title="{% trans "Put here any relevant information about the links." %}" id="extra_info" class="input_text" type="text" name="extra_info" maxlength="256"></p>
-        <p>{% trans "Email" %}: <input title="{% trans "Put here an email to alert you in case that something happens with your links" %}" id="email" class="input_text" type="text" name="email" maxlength="64"></p>
-        <p>{% trans "Password" %}: <input title="{% trans "Case sensitive!" %}" id="pass" class="input_text" type="text" name="pass" maxlength="64"></p>
+        <p>{% trans "Email" %}: <input title="{% trans "Put here an email to alert you in case that something happens with your links" %}" id="email" class="input_text" type="text" name="email" maxlength="256"></p>
+        <p>{% trans "Password" %}: <input title="{% trans "Case sensitive!" %}" id="pass" class="input_text" type="text" name="pass" maxlength="256"></p>
         <p id="pass_warning" class="warning_message">{% trans "Beware that password protected links might not yet be compatible with some download managers!" %}</p></div>
     </div>
 </form>
