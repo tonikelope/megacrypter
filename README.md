@@ -123,11 +123,13 @@ crypted_field := aes_cbc_dec(base64_dec(CRYPTED_FIELD), info_key, base64_dec(IV)
 {"m": "dl", 
 "link": "MC_LINK",
 *"ssl": true OR false,
-*"noexpire": "NOEXPIRE_TOKEN"}
+*"noexpire": "NOEXPIRE_TOKEN",
+*"sid" : "MEGA_SID"}
 ```
 #####*Optional params:
 1. Default is false (better performance in slow machines)
 2. If link has expiration time you can use NOEXPIRE_TOKEN (cached from a previous "info-request") to bypass it and get the download url.
+3. MEGA SESSION ID (for download MegaCrypter link usind your MEGA PRO SID)
 
 ####Response:
 ```

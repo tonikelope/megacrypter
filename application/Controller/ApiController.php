@@ -110,7 +110,7 @@ class Controller_ApiController extends Controller_DefaultController
 	        
 		try {
 
-			$data = ['url' => $ma->getFileDownloadUrl($dec_link['file_id'], is_bool($post_data->ssl) ? $post_data->ssl : false)];
+			$data = ['url' => $ma->getFileDownloadUrl($dec_link['file_id'], is_bool($post_data->ssl) ? $post_data->ssl : false, isset($post_data->sid)?$post_data->sid:null)];
 
 			if ($dec_link['pass']) {
                 

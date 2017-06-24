@@ -54,10 +54,11 @@ class Utils_MegaApi
         $this->_tor = $use_tor;
     }
 
-    public function rawAPIRequest(array $request, $param_n = null) {
+    public function rawAPIRequest(array $request, $param_n = null, $sid=null) {
 
-        $ch = curl_init(self::MEGA_API_HOST . '/cs?id=' . ($this->_seqno++) . "&ak={$this->_api_key}" . ($param_n ? "&n={$param_n}" : ''));
+        $ch = curl_init(self::MEGA_API_HOST . '/cs?id=' . ($this->_seqno++) . (!is_null($sid)?"&sid={$sid}":"") . "&ak={$this->_api_key}" . ($param_n ? "&n={$param_n}" : ''));
 
+        
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, self::CONNECT_TIMEOUT);
         curl_setopt($ch, CURLOPT_POST, true);
@@ -214,7 +215,7 @@ class Utils_MegaApi
         return $file_info;
     }
 
-    public function getFileDownloadUrl($fid, $ssl = false) {
+    public function getFileDownloadUrl($fid, $ssl = false, $sid = null) {
 
 		$request = ['a' => 'g', 'g' => 1];
 
@@ -253,12 +254,14 @@ class Utils_MegaApi
 
             $request['p'] = $fid;
 
-            $params = [$request];
+            $params = [$request, null];
         }
+
+        $params[]=$sid;
 
         try
         {
-            $url = $this->_verifyDownloadUrl(call_user_func_array([$this, 'rawAPIRequest'], $params)->g);
+            $url = call_user_func_array([$this, 'rawAPIRequest'], $params)->g;
 
         } catch (Exception_MegaLinkException $exception) {
 
@@ -393,43 +396,6 @@ class Utils_MegaApi
             return Utils_MiscTools::i32a2Bin([$key_i32a[0] ^ $key_i32a[4], $key_i32a[1] ^ $key_i32a[5], $key_i32a[2] ^ $key_i32a[6], $key_i32a[3] ^ $key_i32a[7]]);
         }
     }
-    
-    private function _verifyDownloadUrl($url)
-    {
-        if (empty($url)) {
 
-            throw new Exception_MegaLinkException(self::ETEMPUNAVAIL);
-        }
-
-        preg_match('/\:\/\/([^\/]+)\/(.+)$/', trim($url), $match);
-
-        $fp = fsockopen($match[1], 80, $errno, $errstr, self::CONNECT_TIMEOUT);
-
-        if (!$fp) {
-
-            throw new Exception_MegaLinkException(self::EDLURL);
-
-        } else {
-
-            $out = "GET /{$match[2]}/0 HTTP/1.1\r\n";
-
-            $out .= "Host: {$match[1]}\r\n";
-
-            $out .= "Connection: Close\r\n\r\n";
-
-            fwrite($fp, $out);
-
-            $res=fgets($fp);
-
-            fclose($fp);
-
-            if(strpos($res, '200') === false) {
-
-                throw new Exception_MegaLinkException(self::EDLURL);
-            }
-        }
-
-        return $url;
-    }
-    
 }
+    
