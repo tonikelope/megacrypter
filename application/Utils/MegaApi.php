@@ -38,13 +38,14 @@ class Utils_MegaApi
     private $_api_key;
     private $_cache = null;
     private $_tor = null;
+    private $_reverse = null;
 
     public function getSeqno() {
 
         return $this->_seqno;
     }
 
-    public function __construct($api_key, $use_cache = true, $use_tor=false) {
+    public function __construct($api_key, $use_cache = true, $use_tor=false, $reverse_data=null) {
 
         $this->_seqno = mt_rand();
         $this->_api_key = $api_key;
@@ -52,6 +53,8 @@ class Utils_MegaApi
         
         /* Comprobar que TOR está instalado y corriendo antes! */
         $this->_tor = $use_tor;
+
+        $this->_reverse = $reverse_data;
     }
 
     public function rawAPIRequest(array $request, $param_n = null, $sid=null) {
@@ -69,6 +72,14 @@ class Utils_MegaApi
             
             curl_setopt($ch, CURLOPT_PROXY, TOR_PROXY_SOCKS);
             curl_setopt($ch, CURLOPT_PROXYTYPE, _CURLPROXY_SOCKS5_HOSTNAME);
+
+        } else if(!is_null($this->_reverse)) {
+
+            list($rev_host,$rev_port,$rev_auth)=explode(':', $this->_reverse);
+
+            curl_setopt($ch, CURLOPT_PROXY, "{$rev_host}:{$rev_port}");
+            curl_setopt($ch, CURLOPT_PROXYUSERPWD, base64_decode($rev_auth));
+
         }
 
         $resp = json_decode(curl_exec($ch));

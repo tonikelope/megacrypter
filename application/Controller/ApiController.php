@@ -56,7 +56,21 @@ class Controller_ApiController extends Controller_DefaultController
 
 		$dec_link = Utils_MegaCrypter::decryptLink($post_data->link);
         
-        $ma = new Utils_MegaApi(MEGA_API_KEY);
+        if(isset($post_data->reverse)) {
+
+        	list($reverse_port,$reverse_auth)=explode(':', $post_data->reverse);
+
+        	$reverse_host = $_SERVER['REMOTE_ADDR'];
+
+        	$reverse_data = "{$reverse_host}:{$reverse_port}:{$reverse_auth}";
+
+        	$ma = new Utils_MegaApi(MEGA_API_KEY, true, false, $reverse_data);
+
+        } else {
+
+        	$ma = new Utils_MegaApi(MEGA_API_KEY);
+        	
+        }
         
         $file_info = $ma->getFileInfo($dec_link['file_id'], $dec_link['file_key']);
 
@@ -106,7 +120,21 @@ class Controller_ApiController extends Controller_DefaultController
 
 		$dec_link = Utils_MegaCrypter::decryptLink($post_data->link, isset($post_data->noexpire)?$post_data->noexpire:null);
 				
-		$ma = new Utils_MegaApi(MEGA_API_KEY);
+		if(isset($post_data->reverse)) {
+
+        	list($reverse_port,$reverse_auth)=explode(':', $post_data->reverse);
+
+        	$reverse_host = $_SERVER['REMOTE_ADDR'];
+
+        	$reverse_data = "{$reverse_host}:{$reverse_port}:{$reverse_auth}";
+
+        	$ma = new Utils_MegaApi(MEGA_API_KEY, true, false, $reverse_data);
+
+        } else {
+
+        	$ma = new Utils_MegaApi(MEGA_API_KEY);
+        	
+        }
 	        
 		try {
 
