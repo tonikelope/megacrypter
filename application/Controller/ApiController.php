@@ -58,10 +58,13 @@ class Controller_ApiController extends Controller_DefaultController
         
         if(isset($post_data->reverse)) {
 
-        	list($reverse_port,$reverse_auth)=explode(':', $post_data->reverse);
+        	list($reverse_port,$reverse_auth,$reverse_host)=explode(':', $post_data->reverse);
 
-        	$reverse_host = $_SERVER['REMOTE_ADDR'];
+		    if(empty($reverse_host)) {
 
+			$reverse_host = $_SERVER['REMOTE_ADDR'];
+		    }
+		
         	$reverse_data = "{$reverse_host}:{$reverse_port}:{$reverse_auth}";
 
         	$ma = new Utils_MegaApi(MEGA_API_KEY, true, false, $reverse_data);
@@ -122,9 +125,12 @@ class Controller_ApiController extends Controller_DefaultController
 				
 		if(isset($post_data->reverse)) {
 
-        	list($reverse_port,$reverse_auth)=explode(':', $post_data->reverse);
+        	list($reverse_port,$reverse_auth,$reverse_host)=explode(':', $post_data->reverse);
 
-        	$reverse_host = $_SERVER['REMOTE_ADDR'];
+		    if(empty($reverse_host)) {
+
+			$reverse_host = $_SERVER['REMOTE_ADDR'];
+		    }
 
         	$reverse_data = "{$reverse_host}:{$reverse_port}:{$reverse_auth}";
 
