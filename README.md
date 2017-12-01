@@ -128,7 +128,7 @@ crypted_field := aes_cbc_dec(base64_dec(CRYPTED_FIELD), info_key, base64_dec(IV)
 *"ssl": true OR false,
 *"noexpire": "NOEXPIRE_TOKEN",
 *"sid" : "MEGA_SID",
-*"reverse": "port:b64_proxy_auth:[host]"}
+*"reverse": "port:b64_proxy_auth[:host]"}
 ```
 #####*Optional params:
 1. Default is false (better performance in slow machines)
