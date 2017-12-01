@@ -128,13 +128,13 @@ crypted_field := aes_cbc_dec(base64_dec(CRYPTED_FIELD), info_key, base64_dec(IV)
 *"ssl": true OR false,
 *"noexpire": "NOEXPIRE_TOKEN",
 *"sid" : "MEGA_SID",
-*"reverse": "port:b64_proxy_auth"}
+*"reverse": "port:b64_proxy_auth:[host]"}
 ```
 #####*Optional params:
 1. Default is false (better performance in slow machines)
 2. If link has expiration time you can use NOEXPIRE_TOKEN (cached from a previous "info-request") to bypass it and get the download url.
 3. MEGA SESSION ID (for download MegaCrypter link using your MEGA PRO ACCOUNT)
-4. Reverse query: Megacrypter will connect to MEGA API using HTTPS proxy running on the client. Client must send port and 'user:password' (base64 encoded) for proxy auth.
+4. Reverse query: Megacrypter will connect to MEGA API using HTTPS proxy running on the client. Client must send port and 'user:password' (base64 encoded) for proxy auth (host is optional).
 
 ####Response:
 ```
