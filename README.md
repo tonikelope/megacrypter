@@ -79,10 +79,10 @@ Note: link list is limited to 500
 ```
 {"m": "info", 
 "link": "MC_LINK",
-*"reverse": "port:b64_proxy_auth"}
+*"reverse": "port:b64_proxy_auth[:host]"}
 ```
 #####*Optional params:
-1. Reverse query: Megacrypter will connect to MEGA API using HTTPS proxy running on the client. Client must send port and 'user:password' (base64 encoded) for proxy auth.
+1. Reverse query: Megacrypter will connect to MEGA API using HTTPS proxy running on the client. Client must send port and 'user:password' (base64 encoded) for proxy auth (host is optional).
 
 ####Response:
 ```
