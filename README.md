@@ -1,6 +1,6 @@
 ![Alt text](/public/images/lock.png?raw=true "MC logo")![Alt text](/public/images/logo.png?raw=true "MC logo")
 
-![Diagrama]/public/images/diagrama.png)
+![Diagrama](/public/images/diagrama.png)
 ##What do you need to deploy your own Megacrypter?
 
 1. Apache (mod_rewrite ON) (Or another web server that supports URL rewrite)
