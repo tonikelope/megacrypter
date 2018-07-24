@@ -19,22 +19,6 @@
     <div id="main"><div id="name" title="{{name}}">{% if (pass is defined) and (pass) %}<span id="pass_link"><img src="/images/lock_mini.png" /></span>{% endif %}{{name_trunc}}</div><div>[<span {% if size %}id="size">{{size}}{% else %}id="zero_size">{% trans "EMPTY FILE" %}{% endif %}</span>]</div></div>
     {% if extra is defined %}<div id="extra"><em>{{extra}}</em></div>{% endif %}
     <div id="referer">( Ref -> <a href="{{referer}}" target="_blank">{{domain_lock}}</a> )</div>
-    {% if (size) %}<div id="form_block"><button id="button_download" class="button_submit_disabled" onclick="download_file();" title="{% trans "Click on FAQ for alternative download methods" %}">{% trans "DOWNLOAD" %}</button><br />{% if (stream is defined) and (stream) %}<button id="button_stream" class="button_submit_disabled" onclick="stream_file();" title="{% trans "Java and VLC plugins are required" %}">{% trans "WATCH IT NOW" %}</button><br />{% endif %}<input type="checkbox" id="tos_ok" name="tos_ok" value="yes" /><label id="tos_ok_label" for="tos_ok" title="{% trans "You must agree before download file" %}"><em>{% trans "I agree with MC" %} <a class="fancybox" data-fancybox-type="iframe" href="/tos">{% trans "Terms of Service" %}</a></em></label></div>
-    <div id="downloader" class="applet_div"><div id="dl_spinner" class="applet_spinner">
-    <div>{% trans "Loading Kissdownloader, please wait" %}...</div>
-    <div><img src="/images/loading.gif" /></div>
-    </div><div id="dl_applet_message"></div>
-    <applet id="dl_applet" code="kissdownloader/MainBox.class" archive="/java/kissdownloader.jar" width="640" height="240"></applet></div>
-    {% if (stream is defined) and (stream) %}<div id="streamer" class="applet_div">
-        <div id="st_spinner" class="applet_spinner">
-    <div>{% trans "Loading Kissvideostreamer, please wait" %}...</div>
-    <div><img src="/images/loading.gif" /></div>
-</div>
-<applet id="st_applet" code="kissvideostreamer/MainBox.class" archive="/java/kissvideostreamer.jar" width="600" height="25"></applet>
-<div><div id="vlc_wrapper"><embed type="application/x-vlc-plugin" id="vlc_player" autoplay="no" loop="no" width="600" height="338" /><div id="vlc_buttons"><button id="vlc_fullscreen">FULLSCREEN</button><button id="lightsOff">Lights OFF</button><button id="lightsOn">Lights ON</button></div></div></div>
-    </div>{% endif %}
-    {% endif %}
-    <div id="download_footer"><div id="logos"><img id="vfree" src="/images/virus_free.png" /> <a href="//java.com" target="_blank"><img id="java_logo" src="/images/java.png" /></a> <a href="//www.videolan.org" target="_blank"><img id="vlc_logo" src="/images/vlc.png" /></a></div></div>
-{% endif %}
+	{% endif %}
 </div>
 {% endblock content %}
