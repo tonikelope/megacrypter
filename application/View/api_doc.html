@@ -77,7 +77,7 @@ UNTIL aes_cbc_dec(base64_dec(KCV), info_key, base64_dec(IV)) = info_key
 crypted_field := aes_cbc_dec(base64_dec(CRYPTED_FIELD), info_key, base64_dec(IV))
 </em>
 <div class="extra_info">
-<em>{% trans "Note: iteration count is -> " %}pow(2, {{constant('Utils_MegaCrypter::PASS_HASH_ITERATIONS_LOG2')}}) = {{ 2**constant('Utils_MegaCrypter::PASS_HASH_ITERATIONS_LOG2') }}</em></div>
+<em>{% trans "Note: iteration count is -> " %}pow(2, {{constant('Utils_MegaCrypter::PBKDF2_ITERATIONS_LOG2')}}) = {{ 2**constant('Utils_MegaCrypter::PBKDF2_ITERATIONS_LOG2') }}</em></div>
 </div></div>
 
 <div class="api_method">{% trans "<strong>Dl-request</strong> (for getting a temporary url to the (crypted) file)" %}:
