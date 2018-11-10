@@ -220,7 +220,7 @@ class Utils_MegaCrypter
 
                 'pack' => function($data, $salt=null) {return pack('C', self::PBKDF2_ITERATIONS_LOG2 - 1) . hash_pbkdf2('sha256', $data, ($pbkdf2_salt = is_null($salt)?openssl_random_pseudo_bytes(self::PBKDF2_SALT_BYTE_LENGTH):$salt), pow(2, self::PBKDF2_ITERATIONS_LOG2), 0, true) . $pbkdf2_salt;},
 
-                'unpack' => function($data, &$offset) { $ret = ['iterations' => unpack('Citer', $data[$offset])['iter']+1, 'pbkdf2_hash' => substr($data, $offset + 1, 32), 'salt' => substr($data, $offset + 33, 16) ]; $offset+=1+strlen($ret['pbkdf2_hash'])+strlen($ret['salt']); return $ret;}
+                'unpack' => function($data, &$offset) { $ret = ['iterations' => unpack('Citer', $data[$offset])['iter']+1, 'pbkdf2_hash' => substr($data, $offset + 1, 32), 'salt' => substr($data, $offset + 33, self::PBKDF2_SALT_BYTE_LENGTH) ]; $offset+=1+strlen($ret['pbkdf2_hash'])+strlen($ret['salt']); return $ret;}
             ],
 
             'EXPIRE'        => [
