@@ -82,7 +82,7 @@ class Controller_ApiController extends Controller_DefaultController
                 'path' => isset($file_info['path'])?$file_info['path']:false,
 		'size' => $file_info['size'],
 		'key' => isset($file_info['key']) ? $file_info['key'] : $dec_link['file_key'],
-		'extra' => preg_replace('/ *?\| *?[a-f0-9]+$/i', '', $dec_link['extra_info']),
+		'extra' => $dec_link['extra_info'],
 		'expire' => $dec_link['expire']?implode('#', [$dec_link['expire'], ($dec_link['no_expire_token']?$dec_link['no_expire_token']:self::NO_EXP_TOK_NOT_ALLOWED)]):false
         ];
 
