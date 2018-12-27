@@ -6,7 +6,7 @@
 
 1. Apache (mod_rewrite ON) (Or another web server that supports URL rewrite)
 
-2. PHP >= 5.5 (cURL + mcrypt + memcache + mbstring)
+2. PHP >= 5.5 (cURL + memcache + mbstring)
 
 3. MySQL (optional for blacklist).
 
