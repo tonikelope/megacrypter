@@ -60,11 +60,11 @@ class Controller_ApiController extends Controller_DefaultController
 
         	list($reverse_port,$reverse_auth,$reverse_host)=explode(':', $post_data->reverse);
 
-		    if(empty($reverse_host)) {
+            if(empty($reverse_host)) {
 
-			$reverse_host = $_SERVER['REMOTE_ADDR'];
-		    }
-		
+                $reverse_host = $_SERVER['REMOTE_ADDR'];
+            }
+
         	$reverse_data = "{$reverse_host}:{$reverse_port}:{$reverse_auth}";
 
         	$ma = new Utils_MegaApi(MEGA_API_KEY, true, false, $reverse_data);
@@ -74,15 +74,15 @@ class Controller_ApiController extends Controller_DefaultController
         	$ma = new Utils_MegaApi(MEGA_API_KEY);
         	
         }
-        
-        $file_info = $ma->getFileInfo($dec_link['file_id'], $dec_link['file_key']);
 
+        $file_info = $ma->getFileInfo($dec_link['file_id'], $dec_link['file_key']);
+        
         $data = [
 		'name' => $dec_link['hide_name'] ? Utils_MiscTools::hideFileName($file_info['name'], ($dec_link['zombie'] ? $dec_link['zombie'] : null) . GENERIC_PASSWORD) : $file_info['name'],
                 'path' => isset($file_info['path'])?$file_info['path']:false,
 		'size' => $file_info['size'],
 		'key' => isset($file_info['key']) ? $file_info['key'] : $dec_link['file_key'],
-		'extra' => $dec_link['extra_info'],
+		'extra' => preg_replace('/ *?\| *?[a-f0-9]+$/i', '', $dec_link['extra_info']),
 		'expire' => $dec_link['expire']?implode('#', [$dec_link['expire'], ($dec_link['no_expire_token']?$dec_link['no_expire_token']:self::NO_EXP_TOK_NOT_ALLOWED)]):false
         ];
 
@@ -94,7 +94,7 @@ class Controller_ApiController extends Controller_DefaultController
 
 			$pass_salt = $dec_link['pass']['salt'];
 
-			$iv = openssl_random_pseudo_bytes(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
+			$iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('AES-256-CBC'));
 
 			$data['name'] = $this->_encryptApiField($data['name'], $pass_hash, $iv);
                         
@@ -122,15 +122,15 @@ class Controller_ApiController extends Controller_DefaultController
    	private function _actionDl($post_data) {
 
 		$dec_link = Utils_MegaCrypter::decryptLink($post_data->link, isset($post_data->noexpire)?$post_data->noexpire:null);
-				
+
 		if(isset($post_data->reverse)) {
 
         	list($reverse_port,$reverse_auth,$reverse_host)=explode(':', $post_data->reverse);
 
-		    if(empty($reverse_host)) {
+            if(empty($reverse_host)) {
 
-			$reverse_host = $_SERVER['REMOTE_ADDR'];
-		    }
+                $reverse_host = $_SERVER['REMOTE_ADDR'];
+            }
 
         	$reverse_data = "{$reverse_host}:{$reverse_port}:{$reverse_auth}";
 
@@ -148,7 +148,7 @@ class Controller_ApiController extends Controller_DefaultController
 
 			if ($dec_link['pass']) {
                 
-				$iv = openssl_random_pseudo_bytes(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC));
+				$iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('AES-256-CBC'));
 
 				$data['url'] = $this->_encryptApiField($data['url'], $dec_link['pass']['pbkdf2_hash'], $iv);
 
@@ -168,6 +168,7 @@ class Controller_ApiController extends Controller_DefaultController
 
 		return $data;
     }
+	        
     
     private function _actionCrypt($post_data) {
         
@@ -187,7 +188,7 @@ class Controller_ApiController extends Controller_DefaultController
 						}
 					}
                 	
-                	$data = ['links' => Utils_MegaCrypter::encryptLinkList(Utils_CryptTools::decryptMegaDownloaderLinks($post_data->links), $options, $post_data->app_finfo)];
+                	$data = ['links' => Utils_MegaCrypter::encryptLinkList(Utils_CryptTools::decryptMegaDownloaderLinks($post_data->links), $options, $post_data->app_finfo, true, false, isset($post_data->folder_node_list)?json_decode($post_data->folder_node_list):[])];
      
                 } else {
                 	
@@ -204,7 +205,7 @@ class Controller_ApiController extends Controller_DefaultController
     
     private function _encryptApiField($data, $key, $iv) {
         
-        return base64_encode(Utils_CryptTools::aesCbcEncrypt($data, $key, $iv, true));
+        return base64_encode(Utils_CryptTools::aesCbcEncrypt($data, $key, $iv));
     }
 
 }

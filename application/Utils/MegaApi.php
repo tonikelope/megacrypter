@@ -61,7 +61,6 @@ class Utils_MegaApi
 
         $ch = curl_init(self::MEGA_API_HOST . '/cs?id=' . ($this->_seqno++) . (!is_null($sid)?"&sid={$sid}":"") . "&ak={$this->_api_key}" . ($param_n ? "&n={$param_n}" : ''));
 
-        
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, self::CONNECT_TIMEOUT);
         curl_setopt($ch, CURLOPT_POST, true);
@@ -109,7 +108,7 @@ class Utils_MegaApi
      */
     private function _decryptAt($at, $key) {
 
-        if (preg_match('/MEGA.*?(?P<at>\{.+\})/is', Utils_CryptTools::aesCbcDecrypt(Utils_MiscTools::urlBase64Decode($at), $this->_urlBase64KeyDecode($key)), $match)) {
+        if (preg_match('/MEGA.*?(?P<at>\{.+\})/is', Utils_CryptTools::aesCbcDecrypt(Utils_MiscTools::urlBase64Decode($at), $this->_urlBase64KeyDecode($key), null, false), $match)) {
             
             return json_decode(mb_convert_encoding($match['at'], "UTF-8", "auto"));
         
@@ -127,7 +126,7 @@ class Utils_MegaApi
      * @return string Base64 node key
      */
     private function _decryptB64NodeKey($node_key, $folder_key) {
-        return Utils_MiscTools::urlBase64Encode(Utils_CryptTools::aesEcbDecrypt(Utils_MiscTools::urlBase64Decode($node_key), $this->_urlBase64KeyDecode($folder_key)));
+        return Utils_MiscTools::urlBase64Encode(Utils_CryptTools::aesEcbDecrypt(Utils_MiscTools::urlBase64Decode($node_key), $this->_urlBase64KeyDecode($folder_key), null, false));
     }
 
     public function getFileInfo($fid, $fkey, $ignore_cache=false) {
@@ -283,9 +282,9 @@ class Utils_MegaApi
 
     }
 
-    public function getFolderChildFileNodes($folder_id, $folder_key, $filter_node_id = null, $name_sorted = true) {
+    public function getFolderChildFileNodes($folder_id, $folder_key, $filter_node_id = null, $name_sorted = true, $filter_node_list = []) {
 
-        $file_nodes = $this->_getFolderRawNodes($folder_id, $folder_key);
+        $file_nodes = $this->getFolderRawNodes($folder_id, $folder_key, $filter_node_list);
         
         $fnodes = [];
         
@@ -356,22 +355,25 @@ class Utils_MegaApi
         return is_null($filter_node_id)?$fnodes:$filter_node;
     }
     
-    private function _getFolderRawNodes($folder_id, $folder_key) {
+    public function getFolderRawNodes($folder_id, $folder_key, $filter_node_list = []) {
     	
-	$folder = $this->rawAPIRequest(['a' => 'f', 'c' => 1, 'r' => 1], $folder_id);
-	
-	$file_nodes = [];
-	
-	foreach ($folder->f as $node) {
-	    
-	    list(, $node_k) = explode(':', $node->k);
-	
-	    $k = $this->_decryptB64NodeKey($node_k, $folder_key);
-	
-	    $file_nodes[$node->h] = ['type' => $node->t, 'parent' => $node->p, 'key' => $k, 'size' => $node->s, 'name' => $this->_decryptAt($node->a, $k)->n];
-	}
-	
-	return $file_nodes;
+    	$folder = $this->rawAPIRequest(['a' => 'f', 'c' => 1, 'r' => 1], $folder_id);
+    	
+    	$file_nodes = [];
+    	
+    	foreach ($folder->f as $node) {
+
+            if($node->t != 0 || empty($filter_node_list) || in_array($node->h, $filter_node_list))
+            {
+                list(, $node_k) = explode(':', $node->k);
+        
+                $k = $this->_decryptB64NodeKey($node_k, $folder_key);
+        
+                $file_nodes[$node->h] = ['type' => $node->t, 'parent' => $node->p, 'key' => $k, 'size' => $node->s, 'name' => $this->_decryptAt($node->a, $k)->n];
+            }
+    	}
+    	
+    	return $file_nodes;
     }
     
     private function _calculatePath($file_nodes, $id) {
