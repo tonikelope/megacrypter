@@ -56,7 +56,8 @@ API URL -> http(s)://[BASE_URL]/api
 *"pass": "PASS",
 *"referer": "DOMAIN_NAME",
 *"extra_info": "EXTRA_INFO",
-*"email": "EMAIL"}
+*"email": "EMAIL",
+*"folder_node_list": ["NODE_ID_1", "NODE_ID_2" ... "NODE_ID_N"]}
 ```
 ##### *Optional params:
 1. Expiration values: 0 -> never (default), 1 -> 10 minutes, 2 -> 1 hour...
@@ -68,6 +69,7 @@ API URL -> http(s)://[BASE_URL]/api
 7. Referer is not required to include 'http://'. It's limited to 256 chars
 8. Extra-info is limited to 256 chars.
 9. Email is limited to 256 chars.
+10. Only encrypt and return the indicated folder child nodes.
 Note: link list is limited to 500
 
 #### Response:
