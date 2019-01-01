@@ -126,7 +126,7 @@ class Utils_MegaApi
      * @return string Base64 node key
      */
     private function _decryptB64NodeKey($node_key, $folder_key) {
-        return Utils_MiscTools::urlBase64Encode(Utils_CryptTools::aesEcbDecrypt(Utils_MiscTools::urlBase64Decode($node_key), $this->_urlBase64KeyDecode($folder_key), null, false));
+        return Utils_MiscTools::urlBase64Encode(Utils_CryptTools::aesEcbDecrypt(Utils_MiscTools::urlBase64Decode($node_key), $this->_urlBase64KeyDecode($folder_key), false));
     }
 
     public function getFileInfo($fid, $fkey, $ignore_cache=false) {

@@ -18,20 +18,12 @@ class Utils_CryptTools
         return Utils_MiscTools::bin2i32a(self::aesCbcDecrypt(Utils_MiscTools::i32a2Bin($i32a), Utils_MiscTools::i32a2Bin($key), $iv, $pkcs7pad));
     }
 
-    public static function aesEcbEncrypt($data, $key, $iv = null, $pkcs7pad = true) {
-        return openssl_encrypt($data, 'AES-'.(strlen($key)*8).'-ECB', $key, $pkcs7pad?OPENSSL_RAW_DATA:(OPENSSL_RAW_DATA|OPENSSL_ZERO_PADDING), is_null($iv) ? pack('x' . openssl_cipher_iv_length('AES-256-ECB')) : $iv);
+    public static function aesEcbEncrypt($data, $key, $pkcs7pad = true) {
+        return openssl_encrypt($data, 'AES-'.(strlen($key)*8).'-ECB', $key, $pkcs7pad?OPENSSL_RAW_DATA:(OPENSSL_RAW_DATA|OPENSSL_ZERO_PADDING));
     }
 
-    public static function aesEcbDecrypt($data, $key, $iv = null, $pkcs7pad = true) {
-        return openssl_decrypt($data, 'AES-'.(strlen($key)*8).'-ECB', $key, $pkcs7pad?OPENSSL_RAW_DATA:(OPENSSL_RAW_DATA|OPENSSL_ZERO_PADDING), is_null($iv) ? pack('x' . openssl_cipher_iv_length('AES-256-ECB')) : $iv);
-    }
-
-    public static function aesEcbEncryptI32a(array $i32a, $key, $iv = null, $pkcs7pad = true) {
-        return Utils_MiscTools::bin2i32a(self::aesEcbEncrypt(Utils_MiscTools::i32a2Bin($i32a), Utils_MiscTools::i32a2Bin($key), $iv, $pkcs7pad));
-    }
-
-    public static function aesEcbDecryptI32a(array $i32a, $key, $iv = null, $pkcs7pad = true) {
-        return Utils_MiscTools::bin2i32a(self::aesEcbDecrypt(Utils_MiscTools::i32a2Bin($i32a), Utils_MiscTools::i32a2Bin($key), $iv, $pkcs7pad));
+    public static function aesEcbDecrypt($data, $key, $pkcs7pad = true) {
+        return openssl_decrypt($data, 'AES-'.(strlen($key)*8).'-ECB', $key, $pkcs7pad?OPENSSL_RAW_DATA:(OPENSSL_RAW_DATA|OPENSSL_ZERO_PADDING));
     }
 
     public static function hash_equals($str1, $str2) {
