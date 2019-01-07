@@ -3,24 +3,34 @@
 class Utils_CryptTools
 {
     public static function aesCbcEncrypt($data, $key, $iv = null, $pkcs7pad = true) {
-        return openssl_encrypt($data, 'AES-'.(strlen($key)*8).'-CBC', $key, $pkcs7pad?OPENSSL_RAW_DATA:(OPENSSL_RAW_DATA|OPENSSL_ZERO_PADDING), is_null($iv) ? pack('x' . openssl_cipher_iv_length('AES-256-CBC')) : $iv);
+        return openssl_encrypt($data, 'AES-'.(mb_strlen($key, '8bit')*8).'-CBC', $key, $pkcs7pad?OPENSSL_RAW_DATA:(OPENSSL_RAW_DATA|OPENSSL_ZERO_PADDING), is_null($iv) ? pack('x' . openssl_cipher_iv_length('AES-256-CBC')) : $iv);
     }
 
     public static function aesCbcDecrypt($data, $key, $iv = null, $pkcs7pad = true) {
-        return openssl_decrypt($data, 'AES-'.(strlen($key)*8).'-CBC', $key, $pkcs7pad?OPENSSL_RAW_DATA:(OPENSSL_RAW_DATA|OPENSSL_ZERO_PADDING), is_null($iv) ? pack('x' . openssl_cipher_iv_length('AES-256-CBC')) : $iv);
+        return openssl_decrypt($data, 'AES-'.(mb_strlen($key, '8bit')*8).'-CBC', $key, $pkcs7pad?OPENSSL_RAW_DATA:(OPENSSL_RAW_DATA|OPENSSL_ZERO_PADDING), is_null($iv) ? pack('x' . openssl_cipher_iv_length('AES-256-CBC')) : $iv);
     }
 
     public static function aesCbcDecryptMCRYPT($data, $key, $iv = null) {
-        return mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $key, $data, MCRYPT_MODE_CBC, is_null($iv) ? pack('x' . mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC)) : $iv);
+
+        $iv = is_null($iv) ? pack('x' . openssl_cipher_iv_length('AES-256-CBC')) : $iv;
+
+        $plain = self::aesCbcDecrypt($data, $key, $iv, false);
+
+        if (mb_strlen($iv, '8bit') % mb_strlen($plain, '8bit') == 0) {
+
+            $plain = preg_replace('/[\0]{1,7}$/', '', $plain);
+        }
+
+        return $plain;
     }
 
     public static function aesEcbDecrypt($data, $key, $pkcs7pad = true) {
-        return openssl_decrypt($data, 'AES-'.(strlen($key)*8).'-ECB', $key, $pkcs7pad?OPENSSL_RAW_DATA:(OPENSSL_RAW_DATA|OPENSSL_ZERO_PADDING));
+        return openssl_decrypt($data, 'AES-'.(mb_strlen($key, '8bit')*8).'-ECB', $key, $pkcs7pad?OPENSSL_RAW_DATA:(OPENSSL_RAW_DATA|OPENSSL_ZERO_PADDING));
     }
 
     public static function hash_equals($str1, $str2) {
 
-        if( ($l=strlen($str1)) != strlen($str2) ) {
+        if( ($l=mb_strlen($str1, '8bit')) != mb_strlen($str2, '8bit') ) {
         
             return false;
 
