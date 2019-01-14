@@ -8,7 +8,11 @@ class Controller_LinkInfoController extends Controller_DefaultController
         
         $dec_link = Utils_MegaCrypter::decryptLink($this->request->getVar('link'));
 
-        if ($dec_link['zombie']) {
+        if(WEB_ACCESS === false) {
+            
+            throw new Exception(__METHOD__ . ' WEB ACCESS IS DISABLED!');
+            
+        } else if ($dec_link['zombie']) {
             
             throw new Exception(__METHOD__ . ' Zombie link!');
             
