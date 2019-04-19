@@ -16,7 +16,7 @@ class Utils_CryptTools
 
         $plain = self::aesCbcDecrypt($data, $key, $iv, false);
 
-        if (mb_strlen($iv, '8bit') % mb_strlen($plain, '8bit') == 0) {
+        if (mb_strlen($plain, '8bit') % mb_strlen($iv, '8bit') == 0) {
 
             $plain = preg_replace('/[\0]{1,7}$/', '', $plain);
         }
