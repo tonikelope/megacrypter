@@ -12,7 +12,7 @@ class Controller_LinkInfoController extends Controller_DefaultController
             
             throw new Exception(__METHOD__ . ' Zombie link!');
             
-        } else if (empty($dec_link['referer']) || !preg_match('/\.[^.]+$/', $dec_link['referer'])) {
+        } else if (DOMAIN_LOCK === true && (empty($dec_link['referer']) || !preg_match('/\.[^.]+$/', $dec_link['referer']))) {
                 
             throw new Exception_InvalidRefererException(null, 'Web access was not enabled for this link');
                 
@@ -37,7 +37,7 @@ class Controller_LinkInfoController extends Controller_DefaultController
 
             if ($dec_link['extra_info']) {
 
-                $view_data['extra'] = $dec_link['extra_info'];
+                $view_data['extra'] = preg_replace('/ *?\| *?[a-f0-9]+$/i', '', $dec_link['extra_info']);
             }
 
             if ($dec_link['expire']) {
@@ -59,7 +59,9 @@ class Controller_LinkInfoController extends Controller_DefaultController
             
             $view_data['referer'] = $this->request->getServerVar('HTTP_REFERER');
             
-            $view_data['domain_lock'] = $dec_link['referer'];
+            if(DOMAIN_LOCK === true) {
+                $view_data['domain_lock'] = $dec_link['referer'];
+            } 
             
             $this->setViewData($view_data);
         }

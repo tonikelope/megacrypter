@@ -18,7 +18,7 @@
     {% if expire is defined %}<div id="timer" title="{% trans "This link will expire in" %}..."></div>{% endif %}
     <div id="main"><div id="name" title="{{name}}">{% if (pass is defined) and (pass) %}<span id="pass_link"><img src="/images/lock_mini.png" /></span>{% endif %}{{name_trunc}}</div><div>[<span {% if size %}id="size">{{size}}{% else %}id="zero_size">{% trans "EMPTY FILE" %}{% endif %}</span>]</div></div>
     {% if extra is defined %}<div id="extra"><em>{{extra}}</em></div>{% endif %}
-    <div id="referer">( Ref -> <a href="{{referer}}" target="_blank">{{domain_lock}}</a> )</div>
+    {% if domain_lock is defined %}<div id="referer">( Ref -> <a href="{{referer}}" target="_blank">{{domain_lock}}</a> )</div>{% endif %}
 	{% endif %}
 </div>
 {% endblock content %}
