@@ -1,6 +1,6 @@
 ![Alt text](/public/images/lock.png?raw=true "MC logo")![Alt text](/public/images/logo.png?raw=true "MC logo")
 
-https://youtu.be/YvyG3KyOJb0
+<h1 align="center"><a href="https://youtu.be/YvyG3KyOJb0">DEMO (video)</a></h2>
 
 ![Diagrama](https://tonikelope.github.io/megacrypter/images/diagrama.png?raw=true&t=1 "Diagrama")
 
