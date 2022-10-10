@@ -3,6 +3,6 @@
 
       "twig/twig": "1.*",
       "twig/extensions": "1.0.*",
-	  "phpmailer/phpmailer": "v5.2.7"
+	  "phpmailer/phpmailer": "v6.5.0"
     }
 }
